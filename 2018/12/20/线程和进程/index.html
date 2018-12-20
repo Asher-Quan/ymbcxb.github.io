@@ -104,13 +104,17 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="小Q博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例 单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。 举个例子： 假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程和进程">
+<meta property="og:url" content="http://yoursite.com/2018/12/20/线程和进程/index.html">
 <meta property="og:site_name" content="小Q博客">
+<meta property="og:description" content="计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例 单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。 举个例子： 假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-12-20T04:59:31.331Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小Q博客">
+<meta name="twitter:title" content="线程和进程">
+<meta name="twitter:description" content="计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例 单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。 举个例子： 假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你">
 
 
 
@@ -119,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/20/线程和进程/">
 
 
 
@@ -129,7 +133,7 @@
   };
 </script>
 
-  <title>小Q博客</title>
+  <title>线程和进程 | 小Q博客</title>
   
 
 
@@ -177,8 +181,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -215,7 +218,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
 
     
     
@@ -294,9 +297,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -328,10 +331,8 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/12/20/线程和进程/" class="post-title-link" itemprop="http://yoursite.com/index.html">线程和进程</a>
+          <h1 class="post-title" itemprop="name headline">线程和进程
+
               
             
           </h1>
@@ -394,9 +395,7 @@
       
 
       
-        
-          
-            <p>计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例</p>
+        <p>计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例</p>
 <p>单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。</p>
 <p>举个例子：</p>
 <p>假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你在做美食时候突然来了个电话，你可能会先熄火，然后脑海里知道自己现在做到哪个位置（保存当前状态），然后去接电话，处理完了后，你可能才回来厨房想想刚才做到哪里了，然后继续之前继续做</p>
@@ -439,8 +438,6 @@
 <p>当Turn为0时,Process 0才能能进入临界区,否则等待。等Process 0离开临界区后,将Turn设置为1.</p>
 <p>当Turn为1时,Process 1才能进入临界区,否则等待。等Process 1离开临界区后,将Turn设置为0.</p>
 
-          
-        
       
     </div>
 
@@ -463,12 +460,12 @@
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -478,14 +475,15 @@
   </article>
 
 
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -688,6 +686,10 @@
 
 
   
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
 
   
 
