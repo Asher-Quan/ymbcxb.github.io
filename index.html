@@ -2,23 +2,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -29,7 +20,8 @@
 
 
 
-
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -54,34 +46,56 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=6.0.1" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.1">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
-
-
-
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.1" color="#222">
 
 
 
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
-<script id="hexo.configurations">
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="小Q博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Untitled">
+<meta property="og:url" content="http://yoursite.com/Untitled/index.html">
+<meta property="og:site_name" content="小Q博客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Untitled">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
-    version: '6.6.0',
+    scheme: 'Muse',
+    version: '6.0.1',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
     fastclick: false,
@@ -99,35 +113,12 @@
 </script>
 
 
-  
+
+  <link rel="canonical" href="http://yoursite.com/Untitled/">
 
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="小Q博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="小Q博客">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小Q博客">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="小Q博客" type="application/atom+xml">
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
 
   <title>小Q博客</title>
   
@@ -138,35 +129,6 @@
 
 
 
-
-
-
-
-
-  <noscript>
-  <style>
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion .logo-line-before i { left: initial; }
-    .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
 
 </head>
 
@@ -181,8 +143,10 @@
   page-home">
     <div class="headband"></div>
 
+    
+
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+      <div class="header-inner"> <div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
@@ -193,11 +157,13 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
+    <button>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -205,69 +171,27 @@
   </div>
 </div>
 
-
-
 <nav class="site-nav">
+  
+
   
     <ul id="menu" class="menu">
       
         
-        
-        
-          
-          <li class="menu-item menu-item-home menu-item-active">
-
-    
-    
-    
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+        </li>
       
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
         
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+        </li>
       
-    
 
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-
-      
       
     </ul>
-  
-
   
 
   
@@ -275,23 +199,12 @@
 
 
 
-  
-
-
-
-</div>
+ </div>
     </header>
-
-    
-
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          
-            
-
-          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -330,39 +243,23 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                
-                <a href="/2018/12/20/线程和进程/" class="post-title-link" itemprop="http://yoursite.com/index.html">线程和进程</a>
-              
-            
-          </h1>
+                <a class="post-title-link" href="/2018/12/20/线程和进程/" itemprop="url">线程和进程</a></h1>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
+                <span class="post-meta-item-text">Posted on</span>
               
-
-              
-                
-              
-
-              <time title="创建时间：2018-12-20 12:59:30 / 修改时间：12:59:31" itemprop="dateCreated datePublished" datetime="2018-12-20T12:59:30+08:00">2018-12-20</time>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-20T12:59:30+08:00">2018-12-20</time>
             
 
             
-              
 
-              
             
           </span>
 
@@ -377,6 +274,34 @@
 
           
 
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article1,955 字</span>
+                
+                <span title="Words count in article"></span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time7 分钟</span>
+                
+                <span title="Reading time"></span>
+              
+            </div>
           
 
           
@@ -396,56 +321,21 @@
       
         
           
-            <p>计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例</p>
-<p>单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。</p>
-<p>举个例子：</p>
-<p>假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你在做美食时候突然来了个电话，你可能会先熄火，然后脑海里知道自己现在做到哪个位置（保存当前状态），然后去接电话，处理完了后，你可能才回来厨房想想刚才做到哪里了，然后继续之前继续做</p>
-<p>一个进程就是某种类型的一个活动，它有程序、输入、输出以及状态。单个处理器可以被多个进程共享，CPU使用了某种调度算法决定何时停止一个进程的工作，并且转向另一个进程提供服务。</p>
-<p>进程的创建：有四种主要的事件<br>1、系统初始化<br>    前台进程<br>    守护进程<br>2、正在运行的程序执行了创建进程的系统调用<br>3、用户请求创建一个新进程<br>4、一个批处理作业的初始化</p>
-<p>进程的终止<br>1、正常退出<br>2、出错退出<br>3、严重错误<br>4、被其他进程给杀死</p>
-<p>只可以有一个父进程，但可以有零个或者多个子进程</p>
-<p>进程有三种状态：<br>运行态，就绪态，阻塞态</p>
-<p>​</p>
-<p>为了实现进程模型，操作系统维护着一张表格（一个结构数组）即进程表，每个进程占用一个进程表的一个项，这张表包含了许多信息，比如程序计数器，堆栈指针，内存分配状况，等等从而保证了该进程被断掉后重新启动的时候，能够保存之前的信息。</p>
-<p>线程<br>为什么需要线程？</p>
-<p>首先，有了线程，我们可以不必考虑终端、定时器、和上下文的切换只需考虑并行进程。其次，线程比进程更加轻量级，速度会比用进程效率要提高很多。</p>
-<p>每个单核处理器在某个时刻也是只能够执行一个线程的，这和进程是一样的，线程是CPU处理的基本单位，我们前面讨论的进程，是进程单线程模型。</p>
-<p>同样的，线程也是有阻塞态、运行态、就绪态。</p>
-<p>为了实现可移植的线程程序，IEEE在IEEE标准中定义了线程的标准，它定义的线程包叫做pthread</p>
-<p>实现线程包有两种方法，第一种把整个线程包放在用户空间</p>
-<p>从内核的角度上管理的就是单线程进程的模型，这样子尽管系统不支持线程，也可以进行实现</p>
-<p>用C语言实现</p>
-<p>#include&lt;pthread.h&gt;</p>
-<p>#include&lt;stdio.h&gt;</p>
-<p>#include&lt;stdlib.h&gt;</p>
-<p>#define NUMBER 10<br>void <em>hello(void </em>id){<br>    printf(“Thread—–%d\n”,id);<br>    pthread_exit(NULL);<br>}<br>int main()<br>{<br>    pthread_t threads[NUMBER];<br>    int status;<br>    int i;<br>    for(i=0;i&lt;NUMBER;i++){<br>        printf(“Main—Creating thread%d\n”,i);<br>        status = pthread_create(&amp;threads[i],NULL,hello,(void*)i);<br>        if(status!=0){<br>            printf(“ErrorCode—-&gt;%d\n”,status);<br>            exit(-1);<br>        }<br>    }<br>    return 0;<br>}<br>在用户空间管理线程的时候会创建一个运行时的系统，由这个系统进行管理，每个进程都需要其专用的线程表，用来跟踪该进程中的线程。这些表和进程表相似，不过它仅仅记录的是各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态。因为切换线程的时候不需要陷入到内核空间，不需要有上下文的切换，也不需要对内存高速缓存进行刷新，这就使得线程调度非常快捷。</p>
-<p>用户线程还有一个优点，允许每个进程有自己定制的调度算法，这样子就有一个很好的可扩展性</p>
-<p>如果某个线程阻塞了，就会导致整个进程的阻塞</p>
-<p>在内核中实现线程</p>
-<p>此时不再需要运行时的系统了，另外，每个进程中也没有线程表，内核中有用来记录系统中所有线程的线程表了，当某个线程希望创建一个新的线程的时候，就会进行一个系统的调用，这个系统调用通过对线程表的更新完成线程创建的工作。</p>
-<p>内核的线程表里保存了每个线程的信息，这些信息和在用户空间中的线程是一样的，但是现在保存在内核中</p>
-<p>由于在内核中创建线程的代价比较大，所以某些系统会采取一种方式：回收线程，当某个线程被撤销的时候，就标记为不可运行的，但是其内核数据的结构没有收到影响。再次创建一个新的线程的时候，就把这个线程给重新启动就可以了，这样子可以减少多次系统调用来开辟新的线程</p>
-<p>混合实现</p>
-<p>使用内核级的线程，然后将用户级的线程与某些或者全部内核线程多路复用，采取这种方式：开发人员就可以决定有多少个内核级的线程和多少个用户级线程即使多路复用，这个模型可以带来最大的灵活度</p>
-<p>进程之间的通信<br>比如说一个购票系统：</p>
-<p>进程A和进程B，此时：进程A去买票（一共十张）：首先读出票数，把票数减一，然后把减一后的数据放回去</p>
-<p>假设在第二个步骤的时候发生CPU 的切换，进程B去读票数，那么去读的时候此时票数还是10，然后进行减一后，放回去，再切回线程A，放回去，这里就有个问题：同一张票给了两个进程去卖了！这明显是不科学的。</p>
-<p>为了有效避免进程的竞争问题这里需要做的就是互斥，那么什么是互斥呢？就是A在访问的时候，禁止B访问，这样子就能够进行一个有效的防止竞争了。</p>
-<p>这里面设计很多种方法：</p>
-<p>屏蔽中断：每个进程在刚刚进入临界区后立刻屏蔽所有中断，并在就有离开之前再打开终端，屏蔽中断后，时钟中断也会被屏蔽，CPU只有发生时钟中断或者其他中断才会进行切换，这样子，在屏蔽中断之后，CPU将不会进行切换</p>
-<p>锁变量：共享一个变量（锁），初始值为0，当一个进程进入临界区的时候，就测试这把锁，如果该锁为0则进程把锁设置为1，然后进入，如果进入的时候锁的值为1，则等待，当出去临界区的时候再把锁的值改为0</p>
-<p>严格轮换法：</p>
-<p>严格轮换法同样也是针对一个临界区设置一个变量,假设为Turn。以两个进程为例子:</p>
-<p>当Turn为0时,Process 0才能能进入临界区,否则等待。等Process 0离开临界区后,将Turn设置为1.</p>
-<p>当Turn为1时,Process 1才能进入临界区,否则等待。等Process 1离开临界区后,将Turn设置为0.</p>
-
-          
+          计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例
+单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。
+举个例子：
+假设你在看着食谱做美食，那么你就相当于CPU，食谱
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/20/线程和进程/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
-
-    
-
     
     
     
@@ -453,12 +343,11 @@
     
 
     
-      
-    
-    
 
     
-
+    <div>
+  
+</div>
     <footer class="post-footer">
       
 
@@ -507,7 +396,7 @@
 
       
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -523,7 +412,7 @@
                   <a href="/archives/">
                 
                     <span class="site-state-item-count">1</span>
-                    <span class="site-state-item-name">日志</span>
+                    <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
               
@@ -546,17 +435,15 @@
           
 
           
-
-          
           
 
           
-            
           
+
           
 
         </div>
-      </div>
+      </section>
 
       
 
@@ -573,28 +460,49 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love" id="animate">
+  <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">小全</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site reading time&#58;</span>
+    
+    <span title="Site reading time"></span>
   
 </div>
 
 
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
+  <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.0.1</div>
 
 
 
 
         
-
 
 
 
@@ -615,13 +523,11 @@
 
     
 
-    
-
-    
   </div>
+
   
 
-<script>
+<script type="text/javascript">
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -654,45 +560,38 @@
 
   
   
-    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
   
   
-    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
 
   
 
 
-  <script src="/js/src/utils.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.1"></script>
 
-  <script src="/js/src/motion.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.1"></script>
 
 
 
   
   
-
-
-  <script src="/js/src/affix.js?v=6.6.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
-
-
 
   
 
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.1"></script>
 
 
 
@@ -700,13 +599,7 @@
 
 
 
-  
-
-
-
-
-
-
+	
 
 
 
@@ -720,7 +613,20 @@
 
   
 
+
+
+
+
+
+
+
+
+
   
+
+
+
+
 
   
 
@@ -736,16 +642,6 @@
   
 
   
-
-  
-
-  
-
-  
-
-
-      
-  <script type="text/javascript" color="0,0,255" opacity="0.7" zindex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"tagMode":false});</script></body>
 </html>

@@ -2,23 +2,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -29,7 +20,8 @@
 
 
 
-
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -54,34 +46,56 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+<link href="/css/main.css?v=6.0.1" rel="stylesheet" type="text/css">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.1">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
-
-
-
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.1" color="#222">
 
 
 
 
 
+  <meta name="keywords" content="Hexo, NexT">
 
-<script id="hexo.configurations">
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="小Q博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Untitled">
+<meta property="og:url" content="http://yoursite.com/Untitled/index.html">
+<meta property="og:site_name" content="小Q博客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Untitled">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
-    version: '6.6.0',
+    scheme: 'Muse',
+    version: '6.0.1',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
     fastclick: false,
@@ -99,37 +113,14 @@
 </script>
 
 
-  
+
+  <link rel="canonical" href="http://yoursite.com/Untitled/">
 
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="小Q博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
-<meta property="og:site_name" content="小Q博客">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小Q博客">
 
-
-
-  <link rel="alternate" href="/atom.xml" title="小Q博客" type="application/atom+xml">
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/archives/2018/">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>归档 | 小Q博客</title>
+  <title>Archive | 小Q博客</title>
   
 
 
@@ -138,35 +129,6 @@
 
 
 
-
-
-
-
-
-  <noscript>
-  <style>
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion .logo-line-before i { left: initial; }
-    .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
 
 </head>
 
@@ -180,8 +142,10 @@
   <div class="container sidebar-position-left page-archive">
     <div class="headband"></div>
 
+    
+
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
+      <div class="header-inner"> <div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
@@ -192,11 +156,13 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
+    <button>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -204,69 +170,27 @@
   </div>
 </div>
 
-
-
 <nav class="site-nav">
+  
+
   
     <ul id="menu" class="menu">
       
         
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+        </li>
       
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
         
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+        </li>
       
-    
 
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives menu-item-active">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-
-      
       
     </ul>
-  
-
   
 
   
@@ -274,39 +198,12 @@
 
 
 
-  
-
-
-
-</div>
+ </div>
     </header>
-
-    
-
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          
-            
-
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
-          
           <div id="content" class="content">
             
 
@@ -317,16 +214,14 @@
     <div id="posts" class="posts-collapse">
       <span class="archive-move-on"></span>
 
-      
       <span class="archive-page-counter">
         
         
         
           
         
-        嗯..! 目前共计 1 篇日志。 继续努力。
+        Um..! 1 post. Keep on posting.
       </span>
-      
 
       
 
@@ -403,7 +298,7 @@
 
       
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -419,7 +314,7 @@
                   <a href="/archives/">
                 
                     <span class="site-state-item-count">1</span>
-                    <span class="site-state-item-name">日志</span>
+                    <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
               
@@ -442,17 +337,15 @@
           
 
           
-
-          
           
 
           
-            
           
+
           
 
         </div>
-      </div>
+      </section>
 
       
 
@@ -469,28 +362,49 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love" id="animate">
+  <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">小全</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site reading time&#58;</span>
+    
+    <span title="Site reading time"></span>
   
 </div>
 
 
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
+  <span class="post-meta-divider">|</span>
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.0.1</div>
 
 
 
 
         
-
 
 
 
@@ -511,13 +425,11 @@
 
     
 
-    
-
-    
   </div>
+
   
 
-<script>
+<script type="text/javascript">
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -550,45 +462,38 @@
 
   
   
-    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
   
 
   
   
-    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   
 
   
   
-    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
 
   
 
 
-  <script src="/js/src/utils.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.1"></script>
 
-  <script src="/js/src/motion.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.1"></script>
 
 
 
   
   
-
-
-  <script src="/js/src/affix.js?v=6.6.0"></script>
-
-  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
-
-
 
   
 
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.1"></script>
 
 
 
@@ -596,13 +501,7 @@
 
 
 
-  
-
-
-
-
-
-
+	
 
 
 
@@ -616,7 +515,20 @@
 
   
 
+
+
+
+
+
+
+
+
+
   
+
+
+
+
 
   
 
@@ -632,16 +544,6 @@
   
 
   
-
-  
-
-  
-
-  
-
-
-      
-  <script type="text/javascript" color="0,0,255" opacity="0.7" zindex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"tagMode":false});</script></body>
 </html>
