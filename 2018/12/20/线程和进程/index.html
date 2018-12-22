@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-CN">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -83,7 +83,7 @@
 <meta property="og:title" content="Untitled">
 <meta property="og:url" content="http://yoursite.com/Untitled/index.html">
 <meta property="og:site_name" content="小Q博客">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Untitled">
@@ -132,7 +132,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -179,13 +179,37 @@
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+            <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
         </li>
       
         
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
-            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
         </li>
       
 
@@ -250,9 +274,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-20T12:59:30+08:00">2018-12-20</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-20T12:59:30+08:00">2018-12-20</time>
             
 
             
@@ -280,9 +304,9 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">Words count in article1,955 字</span>
+                  <span class="post-meta-item-text">字数统计1,978 字</span>
                 
-                <span title="Words count in article"></span>
+                <span title="字数统计"></span>
               
 
               
@@ -294,9 +318,9 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">Reading time7 分钟</span>
+                  <span class="post-meta-item-text">阅读时长7 分钟</span>
                 
-                <span title="Reading time"></span>
+                <span title="阅读时长"></span>
               
             </div>
           
@@ -334,11 +358,8 @@
 <p>为了实现可移植的线程程序，IEEE在IEEE标准中定义了线程的标准，它定义的线程包叫做pthread</p>
 <p>实现线程包有两种方法，第一种把整个线程包放在用户空间</p>
 <p>从内核的角度上管理的就是单线程进程的模型，这样子尽管系统不支持线程，也可以进行实现</p>
-<p>用C语言实现</p>
-<p>#include&lt;pthread.h&gt;</p>
-<p>#include&lt;stdio.h&gt;</p>
-<p>#include&lt;stdlib.h&gt;</p>
-<p>#define NUMBER 10<br>void <em>hello(void </em>id){<br>    printf(“Thread—–%d\n”,id);<br>    pthread_exit(NULL);<br>}<br>int main()<br>{<br>    pthread_t threads[NUMBER];<br>    int status;<br>    int i;<br>    for(i=0;i&lt;NUMBER;i++){<br>        printf(“Main—Creating thread%d\n”,i);<br>        status = pthread_create(&amp;threads[i],NULL,hello,(void*)i);<br>        if(status!=0){<br>            printf(“ErrorCode—-&gt;%d\n”,status);<br>            exit(-1);<br>        }<br>    }<br>    return 0;<br>}<br>在用户空间管理线程的时候会创建一个运行时的系统，由这个系统进行管理，每个进程都需要其专用的线程表，用来跟踪该进程中的线程。这些表和进程表相似，不过它仅仅记录的是各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态。因为切换线程的时候不需要陷入到内核空间，不需要有上下文的切换，也不需要对内存高速缓存进行刷新，这就使得线程调度非常快捷。</p>
+<p>用C语言实现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;pthread.h&gt;</span><br><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;stdlib.h&gt;</span><br><span class="line">#define NUMBER 10</span><br><span class="line">void *hello(void *id)&#123;</span><br><span class="line">    printf(&quot;Thread-----%d\n&quot;,id);</span><br><span class="line">    pthread_exit(NULL);</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    pthread_t threads[NUMBER];</span><br><span class="line">    int status;</span><br><span class="line">    int i;</span><br><span class="line">    for(i=0;i&lt;NUMBER;i++)&#123;</span><br><span class="line">        printf(&quot;Main---Creating thread%d\n&quot;,i);</span><br><span class="line">        status = pthread_create(&amp;threads[i],NULL,hello,(void*)i);</span><br><span class="line">        if(status!=0)&#123;</span><br><span class="line">            printf(&quot;ErrorCode----&gt;%d\n&quot;,status);</span><br><span class="line">            exit(-1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在用户空间管理线程的时候会创建一个运行时的系统，由这个系统进行管理，每个进程都需要其专用的线程表，用来跟踪该进程中的线程。这些表和进程表相似，不过它仅仅记录的是各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态。因为切换线程的时候不需要陷入到内核空间，不需要有上下文的切换，也不需要对内存高速缓存进行刷新，这就使得线程调度非常快捷。</p>
 <p>用户线程还有一个优点，允许每个进程有自己定制的调度算法，这样子就有一个很好的可扩展性</p>
 <p>如果某个线程阻塞了，就会导致整个进程的阻塞</p>
 <p>在内核中实现线程</p>
@@ -454,7 +475,7 @@
                   <a href="/archives/">
                 
                     <span class="site-state-item-count">1</span>
-                    <span class="site-state-item-name">posts</span>
+                    <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
               
@@ -513,7 +534,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-      <span class="post-meta-item-text">symbols_count_time.count_total:</span>
+      <span class="post-meta-item-text">symbols_count_time.count_total：</span>
     
     <span title="symbols_count_time.count_total"></span>
   
@@ -535,7 +556,7 @@
 
 
 
-  <div class="theme-info">Theme –  v</div>
+  <div class="theme-info">主题 –  v</div>
 
 
 
