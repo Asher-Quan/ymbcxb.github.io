@@ -12,16 +12,16 @@
       
       <categories>
           
-          <category> Solr </category>
-          
-          <category> 搜索引擎 </category>
+          <category> 技术分类 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 技术分类 </tag>
+            <tag> 搜索引擎 </tag>
+            
+            <tag> Solr </tag>
             
         </tags>
       
