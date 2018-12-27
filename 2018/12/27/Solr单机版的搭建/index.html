@@ -183,12 +183,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-        </li>
-      
-        
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
@@ -285,6 +279,39 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Solr/" itemprop="url" rel="index">
+                    <span itemprop="name">Solr</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Solr/搜索引擎/" itemprop="url" rel="index">
+                    <span itemprop="name">搜索引擎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -304,7 +331,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计571 字</span>
+                  <span class="post-meta-item-text">字数统计572 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -354,7 +381,7 @@
 </ul>
 <h2 id="Solr单机版的搭建："><a href="#Solr单机版的搭建：" class="headerlink" title="Solr单机版的搭建："></a>Solr单机版的搭建：</h2><p>解压solr和tomcat<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxf solr-4.10.3.tgz.tgz</span><br><span class="line">tar -zxf apache-tomcat-7.0.47.tar.gz</span><br></pre></td></tr></table></figure></p>
 <p>把solr的war包放到tomcat的webapp目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp solr-4.10.3/dist/solr-4.10.3.war /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr.war</span><br></pre></td></tr></table></figure></p>
-<p>cp solr-4.10.3/example/lib/ext/* /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/lib/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">配置一下solrhome</span><br></pre></td></tr></table></figure></p>
+<p>cp solr-4.10.3/example/lib/ext/* /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/lib/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">配置一下solrhome</span><br></pre></td></tr></table></figure></p>
 <p>vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改solr的web.xml</span><br></pre></td></tr></table></figure></p>
 <p>vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml<br><code>`</code><br><img src="/2018/12/27/Solr单机版的搭建/3.png"></p>
 <p>再重新启动一次Tomcat<br><img src="/2018/12/27/Solr单机版的搭建/4.png"></p>
@@ -386,6 +413,12 @@
   
 </div>
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/技术分类/" rel="tag"># 技术分类</a>
+          
+        </div>
       
 
       
@@ -487,7 +520,25 @@
               
 
               
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
 
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
             </nav>
           
