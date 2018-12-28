@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-27T03:43:30.224Z</updated>
+  <updated>2018-12-28T11:30:58.924Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,65 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>PHP手动搭建环境</title>
+    <link href="http://yoursite.com/2018/12/28/PHP%E6%89%8B%E5%8A%A8%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83/"/>
+    <id>http://yoursite.com/2018/12/28/PHP手动搭建环境/</id>
+    <published>2018-12-28T11:23:13.000Z</published>
+    <updated>2018-12-28T11:30:58.924Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/2018/12/28/PHP手动搭建环境/1.jpg"><h4 id="php环境手动搭建"><a href="#php环境手动搭建" class="headerlink" title="php环境手动搭建"></a>php环境手动搭建</h4><p>php下载路径<br><a href="https://windows.php.net/download" target="_blank" rel="noopener">https://windows.php.net/download</a><br>（注意一点的是要下线程安全的Thread Safe）</p><p>Apache下载路径<br><a href="http://httpd.apache.org/docs/current/platform/windows.html" target="_blank" rel="noopener">http://httpd.apache.org/docs/current/platform/windows.html</a></p><p>Mysql下载路径<br><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p><p>Apache的安装<br>进入Apache的bin目录下 命令行httpd -k install进行安装<br>这里注意，请先把你的Apache的目录放置好再进行安装，否则安装后再移动位置，会出问题</p><p>这里默认上面三个已经下载好而且已经安装好了</p><p>正题：<br>Apache和Mysql整合<br>在Apache的conf目录下的httpd.conf文件中加入下面三行代码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#加载PHP模块</span><br><span class="line">LoadModule php7_module &quot;E:/php7/php7apache2_4.dll&quot;</span><br><span class="line"></span><br><span class="line">#当执行后缀为php的文件，就去找这个模块执行</span><br><span class="line">AddType Application/x-httpd-php .php</span><br><span class="line"></span><br><span class="line">#载入php配置文件</span><br><span class="line">PHPIniDir &quot;E:/php7&quot;</span><br></pre></td></tr></table></figure><p>路径选择你们的位置</p><p>在php目录下拷贝php.ini-development改名为php.ini<br>在文件里面进行如下修改(目录为个人的目录)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extension_dir = &quot;E:/php7/ext&quot;</span><br></pre></td></tr></table></figure></p><p>在apache里面有个htdocs目录<br>在里面写入一个php文件<br>比如:<br>test.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">phpinfo();</span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure></p><p>在浏览器输入localhost/test.php</p><p>如果能够正确显示则配置完成</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;img src=&quot;/2018/12/28/PHP手动搭建环境/1.jpg&quot;&gt;
+&lt;h4 id=&quot;php环境手动搭建&quot;&gt;&lt;a href=&quot;#php环境手动搭建&quot; class=&quot;headerlink&quot; title=&quot;php环境手动搭建&quot;&gt;&lt;/a&gt;php环境手动搭建&lt;/h4&gt;&lt;p&gt;ph
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="http://yoursite.com/categories/PHP/"/>
+    
+    
+      <category term="环境搭建" scheme="http://yoursite.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>composer</title>
+    <link href="http://yoursite.com/2018/12/27/composer/"/>
+    <id>http://yoursite.com/2018/12/27/composer/</id>
+    <published>2018-12-27T13:21:02.000Z</published>
+    <updated>2018-12-27T13:23:28.738Z</updated>
+    
+    <content type="html"><![CDATA[<p>##composer</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;##composer&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="技术分类" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E7%B1%BB/"/>
+    
+    
+      <category term="PHP" scheme="http://yoursite.com/tags/PHP/"/>
+    
+      <category term="composer" scheme="http://yoursite.com/tags/composer/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Solr单机版的搭建</title>
     <link href="http://yoursite.com/2018/12/27/Solr%E5%8D%95%E6%9C%BA%E7%89%88%E7%9A%84%E6%90%AD%E5%BB%BA/"/>
     <id>http://yoursite.com/2018/12/27/Solr单机版的搭建/</id>
     <published>2018-12-26T16:35:59.000Z</published>
-    <updated>2018-12-27T03:43:30.224Z</updated>
+    <updated>2018-12-27T14:29:39.096Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Solr"><a href="#Solr" class="headerlink" title="Solr"></a><strong>Solr</strong></h2><img src="/2018/12/27/Solr单机版的搭建/1.jpg"><p>Solr是一个开源搜索平台，用于构建搜索应用程序。 它建立在Lucene(全文搜索引擎)之上。 Solr是企业级的，快速的和高度可扩展的。 使用Solr构建的应用程序非常复杂，可提供高性能。</p><p><strong>solr</strong>的一些突出的特点：</p><ul><li>Restful APIs − 要与Solr通信，并非一定需要有Java编程技能。相反，您可以使用restful服务与它通信。可使用文件格式(如xml，json和.CSV)在Solr中作为输入文档，并以相同的文件格式获取结果。</li><li>全文搜索 - Solr提供了全文搜索所需的所有功能，例如令牌，短语，拼写检查，通配符和自动完成。</li><li>企业准备 - 根据企业/组织的需要，Solr可以部署在任何类型的系统(大或小)，如独立，分布式，云等。<br>灵活和可扩展 - 通过扩展Java类并相应配置，可以轻松地定制Solr的组件。</li><li>NoSQL数据库 - Solr也可以用作大数据量级的NOSQL数据库，可以沿着集群分布搜索任务。</li><li>管理界面 - Solr提供了一个易于使用，用户友好，功能强大的用户界面，使用它可以执行所有可能的任务，如管理日志，添加，删除，更新和搜索文档。</li><li>高度可扩展 - 在使用Solr与Hadoop时，我们可以通过添加副本来扩展其容量。</li><li>以文本为中心并按相关性排序 - Solr主要用于搜索文本文档，结果根据与用户查询的相关性按顺序传送</li></ul><h2 id="Solr单机版的搭建："><a href="#Solr单机版的搭建：" class="headerlink" title="Solr单机版的搭建："></a>Solr单机版的搭建：</h2><p>解压solr和tomcat<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxf solr-4.10.3.tgz.tgz</span><br><span class="line">tar -zxf apache-tomcat-7.0.47.tar.gz</span><br></pre></td></tr></table></figure></p><p>把solr的war包放到tomcat的webapp目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp solr-4.10.3/dist/solr-4.10.3.war /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr.war</span><br></pre></td></tr></table></figure></p><p>cp solr-4.10.3/example/lib/ext/* /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/lib/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">配置一下solrhome</span><br></pre></td></tr></table></figure></p><p>vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改solr的web.xml</span><br></pre></td></tr></table></figure></p><p>vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml<br><code>`</code><br><img src="/2018/12/27/Solr单机版的搭建/3.png"></p><p>再重新启动一次Tomcat<br><img src="/2018/12/27/Solr单机版的搭建/4.png"></p><p>在浏览器里访问一下 localhost:8080/solr<br>会出现以下界面<br><img src="/2018/12/27/Solr单机版的搭建/5.png"></p><p>整个Solr服务就启动完成了</p>]]></content>
     
@@ -35,7 +89,7 @@
     
     </summary>
     
-      <category term="技术分类" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E7%B1%BB/"/>
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
       <category term="搜索引擎" scheme="http://yoursite.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
