@@ -346,6 +346,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/28/Java线程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/28/Java线程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -540,6 +550,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/28/七巧板/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/28/七巧板/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -729,6 +749,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/28/PHP手动搭建环境/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/28/PHP手动搭建环境/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -923,6 +953,16 @@ Mysql
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/27/composer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/27/composer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -1114,6 +1154,16 @@ Mysql
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/27/Solr单机版的搭建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/27/Solr单机版的搭建/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -1285,6 +1335,16 @@ Restful APIs − 要与Solr通信，并非一定需要有Jav
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/20/线程和进程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/20/线程和进程/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -1510,7 +1570,7 @@ Restful APIs − 要与Solr通信，并非一定需要有Jav
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-"></i>
   </span>
@@ -1673,6 +1733,28 @@ Restful APIs − 要与Solr通信，并非一定需要有Jav
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'tqeSMHVFaTzLk2RpCY3CqgGF-gzGzoHsz',
+        appKey: 'JMnx4klcSo9Lyls2ohWfaYeU',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
