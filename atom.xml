@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-02T12:43:37.938Z</updated>
+  <updated>2019-01-07T07:53:33.978Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计模式-单例</title>
+    <link href="http://yoursite.com/2019/01/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B/"/>
+    <id>http://yoursite.com/2019/01/06/设计模式-单例/</id>
+    <published>2019-01-06T15:52:39.000Z</published>
+    <updated>2019-01-07T07:53:33.978Z</updated>
+    
+    <content type="html"><![CDATA[<p>设计模式（Design Pattern）是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。</p><p>使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。 设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。</p><p>说白了就是：就是使用设计模式，代码会更好。</p><p>单例模式：就是单个实例</p><p>那么单例模式有什么好处呢？</p><p>很简单，首先，都是单个实例了，那么就可以怎样</p><p>一、实例控制</p><p>单例模式会阻止其他对象实例化其自己的单例对象的副本，从而确保所有对象都访问唯一实例。</p><p>二、灵活性</p><p>因为类控制了实例化过程，所以类可以灵活更改实例化过程。</p><p>但是还是有缺点的：</p><p>一、开销</p><p>虽然数量很少，但如果每次对象请求引用时都要检查是否存在类的实例，将仍然需要一些开销。可以通过使用静态初始化解决此问题。</p><p>二、可能的开发混淆</p><p>使用单例对象（尤其在类库中定义的对象）时，开发人员必须记住自己不能使用new关键字实例化对象。因为可能无法访问库源代码，因此应用程序开发人员可能会意外发现自己无法直接实例化此类。</p><p>三、对象生存期</p><p>不能解决删除单个对象的问题。在提供内存管理的语言中（例如基于.NET Framework的语言），只有单例类能够导致实例被取消分配，因为它包含对该实例的私有引用。在某些语言中（如 C++），其他类可以删除对象实例，但这样会导致单例类中出现悬浮引用。。</p><p><strong>单例模式根据实例化对象时机的不同分为两种</strong></p><p><strong>饿汉式</strong></p><p>上代码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Single&#123;</span><br><span class="line">/*私有化，防止外部创建实例*/</span><br><span class="line">private Single&#123;&#125;</span><br><span class="line">/*设置静态属性私有，防止外部通过类名访问*/</span><br><span class="line">private static Single single = new Single();</span><br><span class="line">/*设置静态方法*/</span><br><span class="line">public static Single getInstance()&#123;</span><br><span class="line">return single;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这个很简单的</p><p>上面有个问题，当类加载的时候，就会实例化Single（），假如我加载完类，一段时间没用，而实例却已经早就创建了，着就会造成一个浪费。</p><p>通过这个问题，我们可以想，当我们需要实例的时候我们才去实例化，而不是通过类加载，那么我们可以这样子做</p><p><strong>懒汉式</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Single&#123;</span><br><span class="line">/*私有化，防止外部创建实例*/</span><br><span class="line">private Single&#123;&#125;</span><br><span class="line">/*设置静态属性私有,先设空，需要的时候再实例化*/</span><br><span class="line">private static Single single=null;</span><br><span class="line">/*设置静态方法*/</span><br><span class="line">public static Single getInstance()&#123;</span><br><span class="line">if(single==null)&#123;</span><br><span class="line">single = new Single()</span><br><span class="line">&#125;</span><br><span class="line">return single</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这样子，就没什么问题了</p><p>但是现在再思考一个问题，万一是多线程的时候呢？这样就有问题的了</p><p>这样子我们就需要加一个锁</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Single&#123;</span><br><span class="line">/*私有化，防止外部创建实例*/</span><br><span class="line">private Single&#123;&#125;</span><br><span class="line">/*设置静态属性私有,先设空，需要的时候再实例化*/</span><br><span class="line">private static Single single=null;</span><br><span class="line">/*设置静态方法*/</span><br><span class="line">public static Single getInstance()&#123;</span><br><span class="line">/*两重判空是为了提高效率*/</span><br><span class="line">if(single==null)&#123;</span><br><span class="line">/*上锁*/</span><br><span class="line">synchronized(Single.Class)&#123;</span><br><span class="line">if (single==null) &#123;</span><br><span class="line">single = new Single()</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">return single;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这样子整个单例模式就做得比较好了</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;设计模式（Design Pattern）是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。&lt;/p&gt;
+&lt;p&gt;使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。 设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Laravel简单增删改查</title>
