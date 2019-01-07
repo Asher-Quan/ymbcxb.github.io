@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-28T12:08:15.305Z</updated>
+  <updated>2019-01-02T12:43:37.938Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,20 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Laravel简单增删改查</title>
+    <link href="http://yoursite.com/2019/01/02/Laravel%E7%AE%80%E5%8D%95%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5/"/>
+    <id>http://yoursite.com/2019/01/02/Laravel简单增删改查/</id>
+    <published>2019-01-02T12:43:37.000Z</published>
+    <updated>2019-01-02T12:43:37.938Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Java线程</title>
