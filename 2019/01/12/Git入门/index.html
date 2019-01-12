@@ -381,7 +381,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计1,096 字</span>
+                  <span class="post-meta-item-text">字数统计1,464 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -395,7 +395,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长4 分钟</span>
+                  <span class="post-meta-item-text">阅读时长5 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -461,7 +461,25 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
 <p>再打开文本，发现已经恢复了，用git log去查看的时候发现也确实少了一条记录<br>HEAD代表的是当前版本<br>HEAD^代表的是当前版本的上一个版本<br>HEAD^^代表的是上上版本</p>
 <p>HEAD~N 代表的是当前邦本的上N个版本</p>
-<h2 id="Git与GitHub"><a href="#Git与GitHub" class="headerlink" title="Git与GitHub"></a>Git与GitHub</h2>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><p>GitHub是提供Git仓库托管服务的,所以首先要有一个GitHub账号</p>
+<p>自行注册GitHub的账号，这个问题，不在这里描述了</p>
+<p>其次注册完账号还有做一些事情</p>
+<p>先创建一个SSH KEY</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>在C盘本地账号下有一个文件夹.ssh</p>
+<p>里面有两个文件，分别是id_rsa.pub 和 id_rsa<br>分别对应着公钥和私钥</p>
+<p>登陆GitHub，打开Settings里有一个选项，SSH and GPG keys<br>添加自己机子的公钥</p>
+<p>因为Git支持SSH协议，所以添加了SSH KEY之后可以防止别人冒充来对我们的仓库进行恶意修改</p>
+<h3 id="添加文件到GitHub"><a href="#添加文件到GitHub" class="headerlink" title="添加文件到GitHub"></a>添加文件到GitHub</h3><p>首先在GitHub里面创建一个Repository</p>
+<p>比如说我创建了一个gitTest</p>
+<p>然后回到git Bash<br>添加远程仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:用户名/仓库名字.git</span><br></pre></td></tr></table></figure></p>
+<p>那么对应删除远程仓库的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote rm origin</span><br></pre></td></tr></table></figure></p>
+<p>现在我们添加成功之后，接下来就是要上传到远程仓库里面去了</p>
+<p>接着去刷新我们的仓库，发现文件已经提交上去了</p>
+<h3 id="GitHub上下载文件"><a href="#GitHub上下载文件" class="headerlink" title="GitHub上下载文件"></a>GitHub上下载文件</h3><p>这个也很简单对应着一条命令就可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:用户名/仓库名字.git</span><br></pre></td></tr></table></figure>
+<p>好了，本章对Git的介绍就讲到这里，这里只是入门，后面会有一些更加多的内容介绍，敬请关注~</p>
+
       
     </div>
     
@@ -653,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本控制器："><span class="nav-number">1.</span> <span class="nav-text">版本控制器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">2.</span> <span class="nav-text">Git:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的安装"><span class="nav-number">3.</span> <span class="nav-text">Git的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的入门"><span class="nav-number">4.</span> <span class="nav-text">Git的入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加"><span class="nav-number">4.2.</span> <span class="nav-text">添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交"><span class="nav-number">4.3.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add-和-git-commit的区别"><span class="nav-number">4.4.</span> <span class="nav-text">git add 和 git commit的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载文件"><span class="nav-number">5.</span> <span class="nav-text">下载文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git与GitHub"><span class="nav-number">6.</span> <span class="nav-text">Git与GitHub</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本控制器："><span class="nav-number">1.</span> <span class="nav-text">版本控制器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">2.</span> <span class="nav-text">Git:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的安装"><span class="nav-number">3.</span> <span class="nav-text">Git的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的入门"><span class="nav-number">4.</span> <span class="nav-text">Git的入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加"><span class="nav-number">4.2.</span> <span class="nav-text">添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交"><span class="nav-number">4.3.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add-和-git-commit的区别"><span class="nav-number">4.4.</span> <span class="nav-text">git add 和 git commit的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载文件"><span class="nav-number">5.</span> <span class="nav-text">下载文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程仓库"><span class="nav-number">6.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加文件到GitHub"><span class="nav-number">6.1.</span> <span class="nav-text">添加文件到GitHub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub上下载文件"><span class="nav-number">6.2.</span> <span class="nav-text">GitHub上下载文件</span></a></li></ol></li></ol></div>
             
 
           </div>
