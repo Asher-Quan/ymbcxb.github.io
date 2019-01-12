@@ -120,7 +120,7 @@
 
 
 
-  <title>composer | 小Q博客</title>
+  <title>Python爬取网易云音乐 | 小Q博客</title>
   
 
 
@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/27/composer/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/12/Python爬取网易云音乐/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小全">
@@ -297,7 +297,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">composer</h2>
+          <h2 class="post-title" itemprop="name headline">Python爬取网易云音乐</h2>
         
 
         <div class="post-meta">
@@ -309,7 +309,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-27T21:21:02+08:00">2018-12-27</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T10:20:26+08:00">2019-01-12</time>
             
 
             
@@ -330,8 +330,19 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术分类/" itemprop="url" rel="index">
-                    <span itemprop="name">技术分类</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
                   </a>
                 </span>
 
@@ -348,8 +359,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/12/27/composer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/27/composer/" itemprop="commentCount"></span>
+                <a href="/2019/01/12/Python爬取网易云音乐/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/12/Python爬取网易云音乐/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -357,7 +368,7 @@
 
           
           
-             <span id="/2018/12/27/composer/" class="leancloud_visitors" data-flag-title="composer">
+             <span id="/2019/01/12/Python爬取网易云音乐/" class="leancloud_visitors" data-flag-title="Python爬取网易云音乐">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -381,7 +392,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计1 字</span>
+                  <span class="post-meta-item-text">字数统计1,837 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -395,7 +406,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长1 分钟</span>
+                  <span class="post-meta-item-text">阅读时长8 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -417,7 +428,71 @@
       
 
       
-        <p>##composer</p>
+        <h2 id="Python爬取网易云音乐"><a href="#Python爬取网易云音乐" class="headerlink" title="Python爬取网易云音乐"></a><em>Python爬取网易云音乐</em></h2><p>首先放网址：</p>
+<p><a href="https://music.163.com/" target="_blank" rel="noopener">https://music.163.com/</a></p>
+<p>通过Network我们可以找到我们的音乐url存放的位置</p>
+<img src="/2019/01/12/Python爬取网易云音乐/1.png">
+<p>那么我们就简单啦，知道Ajax的请求页面，我们当然就可以直接爬取了，但是：</p>
+<img src="/2019/01/12/Python爬取网易云音乐/2.png">
+<p>这个FormData好像不简单，那我怎么请求呢？</p>
+<p>第一直觉，就感觉是被加密了，不愧是网易云，有一套呢</p>
+<img src="/2019/01/12/Python爬取网易云音乐/3.png">
+<p>那么肯定就是和JS脱离不了关系了，找到JS，然后保存到本地进行分析一下</p>
+<img src="/2019/01/12/Python爬取网易云音乐/4.png">
+<p>把代码保存到本地，进行一些操作</p>
+<img src="/2019/01/12/Python爬取网易云音乐/5.png">
+<p>加密用到了四个参数，那么我们可以打印一下这四个参数</p>
+<p>那么问题来了，这JS文件在我的本地，我怎么让网站进行加载呢？</p>
+<p>对的，这里要运用到一个工具，Fiddler4</p>
+<p>这是个什么东西呢</p>
+<p>它能够记录并检查所有你的电脑和互联网之间的Http通讯，设置断点，查看所有的进出Fiddler的数据（cookie,html,css,js）</p>
+<p>大概就是，在客户端和服务器之间创建一个代理服务器来对之间进行交互通讯信息进行监控</p>
+<p>下载安装完成之后还要对Fiddler4进行配置：</p>
+<p>Tools—》Options</p>
+<img src="/2019/01/12/Python爬取网易云音乐/6.png">
+<img src="/2019/01/12/Python爬取网易云音乐/7.png">
+<p>更详细的介绍，这里就不多说了</p>
+<p>那么大概界面是这样的</p>
+<img src="/2019/01/12/Python爬取网易云音乐/8.png">
+<p>接着我们打开网易云官网</p>
+<img src="/2019/01/12/Python爬取网易云音乐/9.png">
+<p>把core.js拖拉都右边，钩上相应的选项，在最下面找到要替换的JS，最后点击一下save</p>
+<p>就能发现上面的路径变了，上图是我已经替换好的了</p>
+<p>接下来：在网易云上搜索一首歌，打开控制台</p>
+<p>你会发现，居然这样子了：</p>
+<img src="/2019/01/12/Python爬取网易云音乐/10.png">
+<p>打印成功了！</p>
+<p>再看XHR里面</p>
+<img src="/2019/01/12/Python爬取网易云音乐/11.png">
+<p>我们的重点是url这个，所以我们只用关注第一个打印的，显然ids就是歌曲的序号</p>
+<p>多试几组可以看出来一个问题就是：</p>
+<p>后三个参数是不用管的</p>
+<p>那么歌曲的序号又要怎么获取呢？最终找到的结果是在</p>
+<img src="/2019/01/12/Python爬取网易云音乐/12.png">
+<p>然而这个页面也是加密的，很强，没事</p>
+<p>我们再看看后台打印的东西</p>
+<img src="/2019/01/12/Python爬取网易云音乐/13.png">
+<p>span class = “s-fc7”又是什么东西呢？</p>
+<p>经过测试，发现这是固定的值</p>
+<p>整个Json不同的地方在于s，传入歌名就可以了</p>
+<p>呼</p>
+<p>offset是偏移量，与翻页数有关系</p>
+<p>好了，接下来又得去看我们的JS代码，去分析加密过程了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">function a(a) &#123;</span><br><span class="line">        var d, e, b = &quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;, c = &quot;&quot;;</span><br><span class="line">        for (d = 0; a &gt; d; d += 1)</span><br><span class="line">            e = Math.random() * b.length,</span><br><span class="line">            e = Math.floor(e),</span><br><span class="line">            c += b.charAt(e);</span><br><span class="line">        return c</span><br><span class="line">    &#125;</span><br><span class="line">    function b(a, b) &#123;</span><br><span class="line">        var c = CryptoJS.enc.Utf8.parse(b)</span><br><span class="line">          , d = CryptoJS.enc.Utf8.parse(&quot;0102030405060708&quot;)</span><br><span class="line">          , e = CryptoJS.enc.Utf8.parse(a)</span><br><span class="line">          , f = CryptoJS.AES.encrypt(e, c, &#123;</span><br><span class="line">            iv: d,</span><br><span class="line">            mode: CryptoJS.mode.CBC</span><br><span class="line">        &#125;);</span><br><span class="line">        return f.toString()</span><br><span class="line">    &#125;</span><br><span class="line">    function c(a, b, c) &#123;</span><br><span class="line">        var d, e;</span><br><span class="line">        return setMaxDigits(131),</span><br><span class="line">        d = new RSAKeyPair(b,&quot;&quot;,c),</span><br><span class="line">        e = encryptedString(d, a)</span><br><span class="line">    &#125;</span><br><span class="line">    function d(d, e, f, g) &#123;</span><br><span class="line">        var h = &#123;&#125;</span><br><span class="line">          , i = a(16);</span><br><span class="line">        return h.encText = b(d, g),</span><br><span class="line">        h.encText = b(h.encText, i),</span><br><span class="line">        h.encSecKey = c(i, e, f),</span><br><span class="line">        h</span><br><span class="line">    &#125;</span><br><span class="line">    function e(a, b, d, e) &#123;</span><br><span class="line">        var f = &#123;&#125;;</span><br><span class="line">        return f.encText = c(a + e, b, d),</span><br><span class="line">        f</span><br><span class="line">    &#125;</span><br><span class="line">    window.asrsea = d</span><br></pre></td></tr></table></figure>
+<p>首先看函数d</p>
+<p>函数d首先有个i，这个i是一个随机的十六位字符串，</p>
+<p>然后进行了两次加密，第一次是第一个参数和第四个参数进行加密，把结果返回出来后与i字符串进行第二次加密，这个encText就是我们的params</p>
+<p>而通过我们的刚才打印结果来看，后三个参数是固定的，然而i是随机的，也就是我们可以固定一个参数（一个最不可能的坑你，就是每次随机刚好就是随机到我的字符串），也就是说h.encSecKey=c(i,e,f)也是固定的，那也没什么好看的了</p>
+<p>最主要的还是我们的params参数的第一次加密，因为第二次加密是在第一次加密的结果和一个固定的字符串，所以也没有讨论的必要了</p>
+<p>首先看看我们的加密算法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#AES加密算法</span><br><span class="line">def AES_encrypt(text, key, iv):</span><br><span class="line">    pad = 16 - len(text) % 16</span><br><span class="line">    if type(text)==type(b&apos;&apos;):</span><br><span class="line">        text = str(text, encoding=&apos;utf-8&apos;)</span><br><span class="line">    text = text + pad * chr(pad)</span><br><span class="line">    encryptor = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    encrypt_text = encryptor.encrypt(text)</span><br><span class="line">    encrypt_text = base64.b64encode(encrypt_text)</span><br><span class="line">    return encrypt_text</span><br></pre></td></tr></table></figure>
+<p>这里，要安装一下Crypto模块，不然会报错，模块找不到</p>
+<p>接下来就是源代码了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">from Crypto.Cipher import AES</span><br><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line">import os</span><br><span class="line">import codecs</span><br><span class="line">import json</span><br><span class="line">from pypinyin import  lazy_pinyin</span><br><span class="line">from urllib.request import urlretrieve</span><br><span class="line"># 后三个参数和i的值（随机的十六位字符串）</span><br><span class="line">b = &apos;010001&apos;</span><br><span class="line">c = &apos;00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7&apos;</span><br><span class="line">d = &apos;0CoJUm6Qyw8W8jud&apos;</span><br><span class="line">#随机的十六位字符串</span><br><span class="line">def createSecretKey(size):</span><br><span class="line">	return (&apos;&apos;.join(map(lambda xx: (hex(ord(xx))[2:]), str(os.urandom(size)))))[0:16]</span><br><span class="line">#AES加密算法</span><br><span class="line">def AES_encrypt(text, key, iv):</span><br><span class="line">    pad = 16 - len(text) % 16</span><br><span class="line">    if type(text)==type(b&apos;&apos;):</span><br><span class="line">        text = str(text, encoding=&apos;utf-8&apos;)</span><br><span class="line">    text = text + str(pad * chr(pad))</span><br><span class="line">    encryptor = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    encrypt_text = encryptor.encrypt(text)</span><br><span class="line">    encrypt_text = base64.b64encode(encrypt_text)</span><br><span class="line">    return encrypt_text</span><br><span class="line">#得到第一个加密参数</span><br><span class="line">def Getparams(a,SecretKey):</span><br><span class="line">    #0102030405060708是偏移量，固定值</span><br><span class="line">    iv = &apos;0102030405060708&apos;</span><br><span class="line">    h_encText = AES_encrypt(a,d,iv)</span><br><span class="line">    h_encText = AES_encrypt(h_encText,SecretKey,iv)</span><br><span class="line">    return h_encText</span><br><span class="line">#得到第二个加密参数</span><br><span class="line">def GetSecKey(text, pubKey, modulus):</span><br><span class="line">    text = text[::-1]</span><br><span class="line">    rs = int(codecs.encode(text.encode(&apos;utf-8&apos;), &apos;hex_codec&apos;), 16) ** int(pubKey, 16) % int(modulus, 16)</span><br><span class="line">    return format(rs, &apos;x&apos;).zfill(256)</span><br><span class="line">#得到表单的两个参数</span><br><span class="line">def GetFormData(a):</span><br><span class="line">    SecretKey = createSecretKey(16)</span><br><span class="line">    params = Getparams(a,SecretKey)</span><br><span class="line">    enSecKey = GetSecKey(SecretKey,b,c)</span><br><span class="line">    data = &#123;</span><br><span class="line">		&quot;params&quot;:str(params,encoding=&apos;utf-8&apos;),</span><br><span class="line">		&quot;encSecKey&quot;:enSecKey</span><br><span class="line">	&#125;</span><br><span class="line">    return data</span><br><span class="line">def getOnePatam():</span><br><span class="line">    # 查询id的url</span><br><span class="line">    url = &apos;https://music.163.com/weapi/cloudsearch/get/web?csrf_token=&apos;</span><br><span class="line">    #伪装头部</span><br><span class="line">    head = &#123;</span><br><span class="line">        &apos;Host&apos;: &apos;music.163.com&apos;,</span><br><span class="line">        &apos;Origin&apos;:&apos;https://music.163.com&apos;,</span><br><span class="line">        &apos;Referer&apos;:&apos;https://music.163.com/search/&apos;,</span><br><span class="line">        &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&apos;,</span><br><span class="line">    &#125;</span><br><span class="line">    print(&quot;输入你想要下载的歌手&quot;)</span><br><span class="line">    song_name = input()</span><br><span class="line">    #第一个参数</span><br><span class="line">    song_name = &apos;&apos;.join(lazy_pinyin(song_name))</span><br><span class="line">    key = &apos;&#123;hlpretag:&quot;&quot;,hlposttag:&quot;&lt;/span&gt;&quot;,s:&quot;&apos;+song_name+&apos;&quot;,type:&quot;1&quot;,csrf_token:&quot;&quot;,limit:&quot;30&quot;,total:&quot;true&quot;,offset:&quot;0&quot;&#125;&apos;</span><br><span class="line">    FormData = GetFormData(key)</span><br><span class="line">    html = requests.post(url,headers=head,data=FormData)</span><br><span class="line">    result = json.loads(html.text)</span><br><span class="line">    return result[&apos;result&apos;][&apos;songs&apos;]</span><br><span class="line">#下载器：</span><br><span class="line">def download(name,id):</span><br><span class="line">    # 获取歌曲的url的路径</span><br><span class="line">    song_url = &quot;https://music.163.com/weapi/song/enhance/player/url?csrf_token=&quot;</span><br><span class="line">    # 伪装头部</span><br><span class="line">    headers = &#123;</span><br><span class="line">        &apos;Host&apos;: &apos;music.163.com&apos;,</span><br><span class="line">        &apos;Origin&apos;: &apos;https://music.163.com&apos;,</span><br><span class="line">        &apos;Referer&apos;: &apos;https://music.163.com/&apos;,</span><br><span class="line">        &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    # 把上个页面查询到的id放到第二个页面的第一个参数上</span><br><span class="line">    a =str(&#123;&apos;ids&apos;: &quot;[&quot;+str(id)+&quot;]&quot;, &apos;br&apos;: 320000, &apos;csrf_token&apos;: &quot;&quot;&#125;)</span><br><span class="line">    FormData = GetFormData(a)</span><br><span class="line">    response = requests.post(song_url,data = FormData,headers=headers)</span><br><span class="line">    json_dict = json.loads(response.content)</span><br><span class="line">    song_url=json_dict[&apos;data&apos;][0][&apos;url&apos;]</span><br><span class="line">    print(song_url)</span><br><span class="line">    folder = os.path.exists(&apos;songs&apos;)</span><br><span class="line">    if not folder:</span><br><span class="line">        os.makedirs(&apos;songs&apos;)</span><br><span class="line">    path = os.path.join(&apos;songs&apos;,name+&quot;.mp3&quot;)</span><br><span class="line">    urlretrieve(song_url,filename=path)</span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    song_list = getOnePatam()</span><br><span class="line">    for i in song_list:</span><br><span class="line">        name = i[&apos;name&apos;]</span><br><span class="line">        id = i[&apos;id&apos;]</span><br><span class="line">        download(name,id)</span><br></pre></td></tr></table></figure>
+<p>以下是效果图</p>
+<img src="/2019/01/12/Python爬取网易云音乐/14.png">
+<p>这次程序重点的是对加密的网页，学会如何去处理</p>
+<p>有一点要强调一下，因为如果是中文，会导致加密的时候字符串长度不匹配的问题，所以只能用拼音，所以这里加了一个中文转拼音的库，pypinyin的lazy_pinyin()的方法</p>
 
       
     </div>
@@ -447,11 +522,8 @@
       
         <div class="post-tags">
           
-            <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i>
- PHP</a>
-          
-            <a href="/tags/composer/" rel="tag"><i class="fa fa-tag"></i>
- composer</a>
+            <a href="/tags/网易云音乐/" rel="tag"><i class="fa fa-tag"></i>
+ 网易云音乐</a>
           
         </div>
       
@@ -464,8 +536,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/27/Solr单机版的搭建/" rel="next" title="Solr单机版的搭建">
-                <i class="fa fa-chevron-left"></i> Solr单机版的搭建
+              <a href="/2019/01/06/设计模式-单例/" rel="next" title="设计模式-单例">
+                <i class="fa fa-chevron-left"></i> 设计模式-单例
               </a>
             
           </div>
@@ -473,10 +545,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/28/PHP手动搭建环境/" rel="prev" title="PHP手动搭建环境">
-                PHP手动搭建环境 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -528,8 +596,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -546,7 +623,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -557,7 +634,7 @@
                 
                 <div class="site-state-item site-state-categories">
                   <a href="/categories/index.html">
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -598,6 +675,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python爬取网易云音乐"><span class="nav-number">1.</span> <span class="nav-text">Python爬取网易云音乐</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
