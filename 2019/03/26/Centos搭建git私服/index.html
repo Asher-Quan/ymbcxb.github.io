@@ -120,7 +120,7 @@
 
 
 
-  <title>分类: Java | 小Q博客</title>
+  <title>Centos搭建git私服 | 小Q博客</title>
   
 
 
@@ -149,7 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     
@@ -264,57 +264,267 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>Java<small>分类</small>
-        </h2>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/26/Centos搭建git私服/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小全">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小Q博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/01/06/设计模式-单例/" itemprop="url">
-              
-                <span itemprop="name">设计模式-单例</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">Centos搭建git私服</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-06T23:52:39+08:00" content="2019-01-06">
-          01-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T12:14:48+08:00">2019-03-26</time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/版本控制器/" itemprop="url" rel="index">
+                    <span itemprop="name">版本控制器</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/26/Centos搭建git私服/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/26/Centos搭建git私服/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/03/26/Centos搭建git私服/" class="leancloud_visitors" data-flag-title="Centos搭建git私服">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计375 字</span>
+                
+                <span title="字数统计"></span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长2 分钟</span>
+                
+                <span title="阅读时长"></span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Centos搭建GIT私服"><a href="#Centos搭建GIT私服" class="headerlink" title="Centos搭建GIT私服"></a>Centos搭建GIT私服</h3><h4 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h4><p>Centos默认自带Git</p>
+<p>可以通过以下命令进行查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<p>默认是1.8</p>
+<h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">groupadd git</span><br><span class="line">adduser git -g git</span><br><span class="line">password git</span><br></pre></td></tr></table></figure>
+<p>先创建一个用户组</p>
+<p>再在这个用户组里面创建一个用户</p>
+<p>再给用户设置密码</p>
+<h4 id="创建authorized-keys文件"><a href="#创建authorized-keys文件" class="headerlink" title="创建authorized_keys文件"></a>创建authorized_keys文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git</span><br><span class="line">mkdir .ssh</span><br><span class="line">chmod 700 .ssh</span><br><span class="line">touch .ssh/authorized_keys</span><br><span class="line">chmod 600 .ssh/authorized_keys</span><br><span class="line">cd /home</span><br><span class="line">chown -R git:git git</span><br></pre></td></tr></table></figure>
+<p><strong>要注意的是文件权限和所属用户。</strong></p>
+<p><strong>(后续的git clone如果需要密码，很有可能是git用户没有访问authorized_keys文件的权限)</strong></p>
+<h4 id="客户端创建密钥并上传"><a href="#客户端创建密钥并上传" class="headerlink" title="客户端创建密钥并上传"></a>客户端创建密钥并上传</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your_email&quot;</span><br></pre></td></tr></table></figure>
+<p>该命令会产生两个文件: id_rsa对应私钥，id_rsa.pub对应公钥。</p>
+<p>将id_rsa.pub中的内容写到服务器的authorized_keys文件中。</p>
+<p>如果有多个客户端，那么在authorized_keys文件中，一行保存一个客户端的公钥。</p>
+<h4 id="创建git仓库"><a href="#创建git仓库" class="headerlink" title="创建git仓库"></a>创建git仓库</h4><p><strong>为了方便管理，所有的git仓库都置于同一目录下，假设为/home/gitrepo，</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /home</span><br><span class="line">mkdir gitrepo</span><br><span class="line">chown git:git gitrepo</span><br></pre></td></tr></table></figure>
+<p>接下来创建git仓库：test.git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd gitrepo</span><br><span class="line">git init --bare test.git</span><br></pre></td></tr></table></figure>
+<p>把仓库所属用户改为git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R git:git test.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意每次新建的仓库，都要修改仓库的所属用户</strong></p>
+<h4 id="git私服搭建完毕"><a href="#git私服搭建完毕" class="headerlink" title="git私服搭建完毕"></a>git私服搭建完毕</h4><p><strong>push 和 clone示例</strong></p>
+<p>打开git bash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@ip:/home/gitrepo/test.git</span><br><span class="line"></span><br><span class="line">git remote add origin git@ip:/home/gitrepo/test.git</span><br><span class="line">git push -u origin</span><br></pre></td></tr></table></figure>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+  
+</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i>
+ Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/Git-进阶/" rel="next" title="Git-进阶">
+                <i class="fa fa-chevron-left"></i> Git-进阶
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -335,8 +545,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -405,6 +624,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Centos搭建GIT私服"><span class="nav-number">1.</span> <span class="nav-text">Centos搭建GIT私服</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装git"><span class="nav-number">1.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建用户"><span class="nav-number">1.2.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建authorized-keys文件"><span class="nav-number">1.3.</span> <span class="nav-text">创建authorized_keys文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户端创建密钥并上传"><span class="nav-number">1.4.</span> <span class="nav-text">客户端创建密钥并上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建git仓库"><span class="nav-number">1.5.</span> <span class="nav-text">创建git仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git私服搭建完毕"><span class="nav-number">1.6.</span> <span class="nav-text">git私服搭建完毕</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -552,6 +787,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.1"></script>
+
+
 
   
 
