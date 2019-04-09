@@ -80,12 +80,13 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="小Q博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:title" content="Untitled">
+<meta property="og:url" content="http://yoursite.com/Untitled/index.html">
 <meta property="og:site_name" content="小Q博客">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小Q博客">
+<meta name="twitter:title" content="Untitled">
 
 
 
@@ -113,7 +114,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/">
+  <link rel="canonical" href="http://yoursite.com/Untitled/">
 
 
 
@@ -317,6 +318,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -358,7 +381,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计0 字</span>
+                  <span class="post-meta-item-text">字数统计1,381 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -372,7 +395,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长1 分钟</span>
+                  <span class="post-meta-item-text">阅读时长5 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -394,7 +417,46 @@
       
 
       
-        
+        <h3 id="Mysql基本架构示意图"><a href="#Mysql基本架构示意图" class="headerlink" title="Mysql基本架构示意图"></a>Mysql基本架构示意图</h3><img src="/2019/04/09/一条SQL语句的执行过程/01.png">
+<p>大体来说，MySQL 可以分为 Server 层和存储引擎层两部分。</p>
+<p>Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核<br>心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引<br>擎的功能都在这一层实现，比如存储过程、触发器、视图等。</p>
+<p>而存储引擎层负责数据的存储和提取。其架构模式是插件式的，支持 InnoDB、<br>MyISAM、Memory 等多个存储引擎。现在最常用的存储引擎是 InnoDB，它从 MySQL<br>5.5.5 版本开始成为了默认存储引擎。</p>
+<p>也就是说，你执行 create table 建表的时候，如果不指定引擎类型，默认使用的就是<br>InnoDB。不过，你也可以通过指定存储引擎的类型来选择别的引擎，比如在 create table<br>语句中使用 engine=memory, 来指定使用内存引擎创建表。不同存储引擎的表数据存取<br>方式不同，支持的功能也不同</p>
+<h4 id="连接器"><a href="#连接器" class="headerlink" title="连接器"></a>连接器</h4><p>连接器是连接我们客户端和服务器首先经过的第一个功能模块，当我们连接我们的Mysql的时候，首先就会执行一条语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h[ip地址] -P[端口号] -u[用户名] -p[密码]</span><br></pre></td></tr></table></figure>
+<p>这条语句做的事情就是让本机连接上远端或者本地的Mysql服务器，从而进行管理Mysql</p>
+<p>此时连接器就是用来验证我们的用户名和密码是否正确的，正确则可以得到操作的权限，其实就是和我们网站的第一个入口—&gt;登陆是一个意思，进行用户验证</p>
+<p><strong>如果连接了之后,没有别的操作，则当前连接就正处于一个空闲状态</strong></p>
+<p>当连接上数据库的时候，会保持一个连接，这个连接是长连接，直到连接关闭，否则一直保持连接，中途所有的客户端请求，都由该连接进行工作。短连接只能保证客户端在某个时间段的请求由该连接进行工作，下次查询将会使用一个新的连接</p>
+<p>使用长连接也会由问题：</p>
+<p><strong>因为长连接保持连接，所以长时间下来，当连接数很多的时候，所占用的内存就会很多</strong></p>
+<p>解决办法如下：</p>
+<p>1.定期断开长连接</p>
+<p>2.Mysql5.7版本之后，每次执行一个比较大的操作后，通过执行mysql_reset_connection来重新初始化连接资源。这个过程不需要重连和重新做权限验证，速度会比较快</p>
+<h4 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h4><p>我们首先可以查看mysql关于缓存的配置</p>
+<img src="/2019/04/09/一条SQL语句的执行过程/02.png">
+<ol>
+<li>query_cache_type: 查询缓存类型,是否打开缓存</li>
+</ol>
+<p>可选项</p>
+<p>  1、0(OFF)：关闭 Query Cache 功能，任何情况下都不会使用 Query Cache；<br>  2、1(ON)：开启 Query Cache 功能，但是当SELECT语句中使用SQL_NO_CACHE提示后，将不使用Query Cache；<br>  3、2(DEMAND)：开启Query Cache 功能，但是只有当SELECT语句中使用了SQL_CACHE 提示后，才使用Query Cache。</p>
+<p>备注1:</p>
+<p>如果query_cache_type为on而又不想利用查询缓存中的数据，可以用下面的SQL：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT SQL_NO_CACHE * FROM my_table WHERE condition;</span><br></pre></td></tr></table></figure>
+<p>如果值为2，要使用缓存的话，需要使用SQL_CACHE开关参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT SQL_CACHE * FROM my_table WHERE condition;</span><br></pre></td></tr></table></figure>
+<p>但是大多情况下，建议不要使用查询缓存，因为查询缓存的失效非常频繁，任意一个表的更新操作，这个表上的所有查询缓存都会被清空了，所以查询缓存的命中率非常低，除非表中基本上只会涉及到查操作而很少更新操作的时候可以考虑使用查询缓存的方式</p>
+<p><strong>Mysql8.0没有查询缓存的功能，已被彻底抛弃</strong></p>
+<h4 id="分析器"><a href="#分析器" class="headerlink" title="分析器"></a>分析器</h4><p>往上说的，如果开启了缓存机制的，就在缓存里查，否则就要走分析器了，所谓分析器，就是判断你输入的这条语句到底是什么意思，是要做查操作呢还是更新操作呢，还是语法有错误呢，都是由分析器去做的事情</p>
+<h4 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h4><p>经过了分析器，Mysql就知道你要做的是查还是更新还是什么，此时，到优化器，顾名思义，就是如何优化你查的方式</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t1 join t2 using(ID) where t1.c = 10 and t2.d =20</span><br></pre></td></tr></table></figure>
+<p>既可以先从表 t1 里面取出 c=10 的记录的 ID 值，再根据 ID 值关联到表 t2，再判断 t2<br>里面 d 的值是否等于 20。</p>
+<p>也可以先从表 t2 里面取出 d=20 的记录的 ID 值，再根据 ID 值关联到 t1，再判断 t1<br>里面 c 的值是否等于 10。</p>
+<p>这两种执行方法的逻辑结果是一样的，但是执行的效率会有不同，而优化器的作用就是决<br>定选择使用哪一个方案。</p>
+<h4 id="执行器"><a href="#执行器" class="headerlink" title="执行器"></a>执行器</h4><p>通过分析器，知道要做什么了，通过优化器知道选择什么的方式做了，执行器就是根据上面的两个结论去做，调用InnoDB引擎去取表中的数据</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这就是Mysql的逻辑架构，对一个Sql语句完整执行流程的各个阶段有一个初步的认识</p>
+
       
     </div>
     
@@ -420,6 +482,13 @@
   
 </div>
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mysql执行过程/" rel="tag"><i class="fa fa-tag"></i>
+ Mysql执行过程</a>
+          
+        </div>
       
 
       
@@ -490,8 +559,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -519,7 +597,7 @@
                 
                 <div class="site-state-item site-state-categories">
                   <a href="/categories/index.html">
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -530,7 +608,7 @@
                 
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -560,6 +638,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql基本架构示意图"><span class="nav-number">1.</span> <span class="nav-text">Mysql基本架构示意图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#连接器"><span class="nav-number">1.1.</span> <span class="nav-text">连接器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询缓存"><span class="nav-number">1.2.</span> <span class="nav-text">查询缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析器"><span class="nav-number">1.3.</span> <span class="nav-text">分析器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化器"><span class="nav-number">1.4.</span> <span class="nav-text">优化器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行器"><span class="nav-number">1.5.</span> <span class="nav-text">执行器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
