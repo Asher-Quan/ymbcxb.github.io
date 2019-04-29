@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Docker---Docker容器数据卷]]></title>
+    <url>%2F2019%2F04%2F29%2FDocker-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker---DockerFile的]]></title>
+    <url>%2F2019%2F04%2F29%2FDocker-DockerFile%E7%9A%84%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker之DockerFile的使用]]></title>
+    <url>%2F2019%2F04%2F29%2FDocker%E4%B9%8BDockerFile%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker深入]]></title>
+    <url>%2F2019%2F04%2F29%2FDocker%E6%B7%B1%E5%85%A5%2F</url>
+    <content type="text"><![CDATA[Docker深入 前面讲解了Docker的基本概念以及Docker的安装，还简单跑了一个例子，相信能够对Docker有一个大致的了解 本章将对Docker进一步的探索 DockerFileDockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。 DockerFile就是用来构建Docker镜像的，现在DockerHub上面有很多镜像，但是有时候我们会根据需求来自定义镜像，（比如说我们要改造Centos）常用两种方法： 我们在DockerHub上面拉取一个镜像下来，然后进入容器里面进行修改，接着进行docker commit（形成新的一个镜像） 我们自己编写DockerFile文件，因为所有镜像本质都是DockerFile，编写完自己构建出一个镜像 DockerFile和 docker commit 的区别： DockerFile更加灵活，我可以随时根据需求来更改我的文件而docker commit，不具备重复性，什么意思呢，就是说，在DockerFile我不要一个东西，只是删除一行就好了（因为这是构建文件，我把某一块去掉就可以了），但是如果用docker commit就不行了，你安装了好些东西，要删除可能得一个个卸载，而且有时候你想要回复到之前某个点的，就非常困难了，所以：构建镜像不推荐docker commit,请使用DockerFile 构建DockerFile三步骤 编写DockerFile文件 docker build docker run 写一个例子吧： 新建一个DockerFile文件编写以下内容 12345from centosENV mypath /tmpWORKDIR $mypathEXPOSE 80CMD /bin/bash 执行docker build命令 我这里遇到过一个小问题，很多也遇到了，就是build的时候报错 docker build -f 文件所在的位置 -t 名字：版本号 . 如果文件在当前目录下可以省略-f 1$ docker build -f /dockerFile/DockerFile -t mycentos:2.2 . 重要的事情说三遍 最后面有小数点！！！ 最后面有小数点！！！ 最后面有小数点！！！ 1234//不加小数点报错：$ &quot;docker build&quot; requires exactly 1 argument(s).//没启动docker报错：$ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? 可以看到当前的目录是tmp，因为我构建镜像的时候就设置了WORKDIR 简单的例子讲完了： 现在看看常用的构建文件命令： FROM 基础镜像，当前镜像是基于哪个镜像，可以想象成类与类之间的继承关系 MAINTAINER，镜像的维护者的姓名和邮箱地址 RUN，容器构建时需要运行的命令 EXPOSE，当前容器对外暴露出的端口 WORKDIR，指定创建容器后，终端默认登陆进来的工作目录 ENV，用来构建镜像过程中设置环境变量 ADD，将宿主机的目录下的文件拷贝到镜像里面并且ADD命令会自动处理URL和解压tar COPY，类似ADD，拷贝文件和目录到镜像中。&lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置 VOLUME，容器数据卷，用于保存和持久化工作 CND，指定一个容器启动时要运行的命令，DockerFile中可以有多个CMD指令，但只有最后一个生效，会被docker run 后面的参数给覆盖 ENTRYPOINT，和CMD一样是指定一个容器启动时要运行的命令，区别在于不会被覆盖，都能执行 ONBUILD，当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发]]></content>
+      <categories>
+        <category>Docker深入</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[Docker初探]]></title>
     <url>%2F2019%2F04%2F23%2FDocker%E5%88%9D%E6%8E%A2%2F</url>
     <content type="text"><![CDATA[Docker初识什么是Docker呢？ Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署，包括VMs（虚拟机）、bare metal)、OpenStack 集群和其他的基础应用平台。 简单点理解呢：Docker是一个管理容器的平台 简单介绍一下容器和虚拟机： 虚拟机：虚拟出一套硬件，在其之上的一个运行一个完整的操作系统 容器：容器之间互相隔离，但共享这同一份硬件系统 我们平时会在电脑上安装各种软件，比如微信，QQ。那么我们Docker呢，在想的是把一个系统看成一个软件，我们安装一个软件（本质是一个系统），比如，你现在的操作系统有很多软件，假设，你要换到一台新的电脑是不是要重新安装软件呢，这就很麻烦了，我们可以直接把你的系统当作一个软件，直接一安装就和你旧的电脑一摸一样了。 Docker的好处： 轻：开启速度快，因为不像Vmware那样子有一套虚拟化硬件，所以快 开发运维一致性：不会再对环境不一样起争议 弹性大：这点解释下，比如我现在一台服务器不够用的情况下，理论上是要新建一台服务器，但是新建的过程是很费时间的，因为有各种配置文件，所以，在Docker里，当不够用的时候，不过是安装多一个容器的事情，容器里面什么都做好了 安全：怎么捣鼓都是在容器里，实在不行，删了重建而已，不会影响导别的容器 附上一张图，以供了解： 那么Docker有几个核心概念： 仓库 镜像 容器 简单描述如下： 容器呢就是我们实际运行的东西 镜像呢就是用生成容器 这里可以这么理解为：用面向对象的思想来说，镜像就是类，容器就是实例对象 仓库呢就是用来放镜像的 首先简单跑一个Docker例子首先开启我们的虚拟机,我这里是Centos7，不同虚拟机可能有一点点差别，总体来说差别不大： 安装docker这里要注意一点： Centos 需要内核版本为3.8以及以上才能运行Docker (命令不包含$符号) 12//查看内核版本$ uname -r 12//安装docker$ sudo yum install docker 启动docker123456//启动 docker$ systemctl start docker//将 docker 服务设为开机启动$ systemctl enable docker//查看 docker版本，验证启动成功$ docker -v 拉取一个Centos镜像拉取之前，先要搜索 1$ docker search centos OFFICIAL ：代表官方 这里拉取的时候，默认是很慢的，因为使用的源地址是国外的，速度非常非常慢 为了提高速度，可以换取阿里或者网易的源 我这里使用的是阿里云 首先得注册一个阿里云账号，进入控制台找到 在这里可以看到加速器的地址，由于每个人的加速器地址，我这里就教下怎么配置 123456//打开配置文件$ vi /etc/docker/daemon.json//配置下面这段&#123; &quot;registry-mirrors&quot;: [&quot;https://xxxxx.mirror.aliyuncs.com&quot;]&#125; 接下来开始正式拉取镜像 1$ docker pull centos 12//查看所有镜像$ docker images 什么！！！只有两百M？对的，就是这么小，为什么，因为没有虚拟出一套物理硬件，单纯在硬件之上的层次，就这么小 默认的就是拉取最新版 如果想拉6的怎么办 指定一下就可以了 1$ docker pull centos:centos6 那么我怎么知道标签是多少呢？？？ 去官网https://hub.docker.com/_/centos查就可以了 最后一步！！！ 创建容器12//docker run 镜像名字:标签,这里 -it代表交互$ docker run -it centos:latest 此时就跑起来了 这就跑起来了一个建立在你虚拟机上的一个centos，而且秒开 你可以在这个界面里输入一些Linux指令也是可以行的，如果要退出 有两种方式 1234//第一种 退出容器，且杀死容器，说白了就容器没了$ exec //第二种，退出容器，且容器后台运行，可以重新进入$ ctrl+p+q 12//检查所有容器的状态$ docker ps -a 本章就到此结束了，算入个门吧，复杂的东西，后面再讲]]></content>

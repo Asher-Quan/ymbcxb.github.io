@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-04-23T06:06:34.236Z</updated>
+  <updated>2019-04-29T05:41:52.642Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker---Docker容器数据卷</title>
+    <link href="http://yoursite.com/2019/04/29/Docker-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/"/>
+    <id>http://yoursite.com/2019/04/29/Docker-Docker容器数据卷/</id>
+    <published>2019-04-29T05:41:52.000Z</published>
+    <updated>2019-04-29T05:41:52.642Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Docker---DockerFile的</title>
+    <link href="http://yoursite.com/2019/04/29/Docker-DockerFile%E7%9A%84/"/>
+    <id>http://yoursite.com/2019/04/29/Docker-DockerFile的/</id>
+    <published>2019-04-29T05:41:38.000Z</published>
+    <updated>2019-04-29T05:41:38.305Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Docker之DockerFile的使用</title>
+    <link href="http://yoursite.com/2019/04/29/Docker%E4%B9%8BDockerFile%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2019/04/29/Docker之DockerFile的使用/</id>
+    <published>2019-04-29T05:40:34.000Z</published>
+    <updated>2019-04-29T05:40:34.571Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Docker深入</title>
+    <link href="http://yoursite.com/2019/04/29/Docker%E6%B7%B1%E5%85%A5/"/>
+    <id>http://yoursite.com/2019/04/29/Docker深入/</id>
+    <published>2019-04-29T04:16:38.000Z</published>
+    <updated>2019-04-29T05:38:32.238Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/2019/04/29/Docker深入/01.jpg"><p><strong>Docker深入</strong></p><p>前面讲解了Docker的基本概念以及Docker的安装，还简单跑了一个例子，相信能够对Docker有一个大致的了解</p><p>本章将对Docker进一步的探索</p><h3 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h3><p>DockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。</p><p>DockerFile就是用来构建Docker镜像的，现在DockerHub上面有很多镜像，但是有时候我们会根据需求来自定义镜像，（比如说我们要改造Centos）常用两种方法：</p><ol><li>我们在DockerHub上面拉取一个镜像下来，然后进入容器里面进行修改，接着进行docker commit（形成新的一个镜像）</li><li>我们自己编写DockerFile文件，因为所有镜像本质都是DockerFile，编写完自己构建出一个镜像</li></ol><p><strong>DockerFile和 docker commit 的区别：</strong></p><p>DockerFile更加灵活，我可以随时根据需求来更改我的文件而docker commit，不具备重复性，什么意思呢，就是说，在DockerFile我不要一个东西，只是删除一行就好了（因为这是构建文件，我把某一块去掉就可以了），但是如果用docker commit就不行了，你安装了好些东西，要删除可能得一个个卸载，而且有时候你想要回复到之前某个点的，就非常困难了，所以：<strong>构建镜像不推荐docker commit,请使用DockerFile</strong></p><p>构建DockerFile三步骤</p><ul><li>编写DockerFile文件</li><li>docker build</li><li>docker run</li></ul><p><strong>写一个例子吧：</strong></p><p>新建一个DockerFile文件编写以下内容</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from centos</span><br><span class="line">ENV mypath /tmp</span><br><span class="line">WORKDIR $mypath</span><br><span class="line">EXPOSE 80</span><br><span class="line">CMD /bin/bash</span><br></pre></td></tr></table></figure><p>执行docker build命令</p><p>我这里遇到过一个小问题，很多也遇到了，就是build的时候报错</p><p>docker build -f 文件所在的位置 -t 名字：版本号 .</p><p>如果文件在当前目录下可以省略-f</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -f /dockerFile/DockerFile -t mycentos:2.2 .</span><br></pre></td></tr></table></figure><p><strong>重要的事情说三遍</strong></p><p><strong>最后面有小数点！！！</strong></p><p><strong>最后面有小数点！！！</strong></p><p><strong>最后面有小数点！！！</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//不加小数点报错：</span><br><span class="line">$ &quot;docker build&quot; requires exactly 1 argument(s).</span><br><span class="line">//没启动docker报错：</span><br><span class="line">$ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</span><br></pre></td></tr></table></figure><img src="/2019/04/29/Docker深入/02.jpg"><p>可以看到当前的目录是tmp，因为我构建镜像的时候就设置了WORKDIR</p><p>简单的例子讲完了：</p><p>现在看看常用的构建文件命令：</p><ol><li>FROM 基础镜像，当前镜像是基于哪个镜像，可以想象成类与类之间的继承关系</li><li>MAINTAINER，镜像的维护者的姓名和邮箱地址</li><li>RUN，容器构建时需要运行的命令</li><li>EXPOSE，当前容器对外暴露出的端口</li><li>WORKDIR，指定创建容器后，终端默认登陆进来的工作目录</li><li>ENV，用来构建镜像过程中设置环境变量</li><li>ADD，将宿主机的目录下的文件拷贝到镜像里面并且ADD命令会自动处理URL和解压tar</li><li>COPY，类似ADD，拷贝文件和目录到镜像中。&lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置</li><li>VOLUME，容器数据卷，用于保存和持久化工作</li><li>CND，指定一个容器启动时要运行的命令，DockerFile中可以有多个CMD指令，但只有最后一个生效，会被docker run 后面的参数给覆盖</li><li>ENTRYPOINT，和CMD一样是指定一个容器启动时要运行的命令，区别在于不会被覆盖，都能执行</li><li>ONBUILD，当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;img src=&quot;/2019/04/29/Docker深入/01.jpg&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Docker深入&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;前面讲解了Docker的基本概念以及Docker的安装，还简单跑了一个例子，相信能够对Docker有一个大致的了解&lt;/p&gt;
+&lt;p
+      
+    
+    </summary>
+    
+      <category term="Docker深入" scheme="http://yoursite.com/categories/Docker%E6%B7%B1%E5%85%A5/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Docker初探</title>
