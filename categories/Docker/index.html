@@ -120,7 +120,7 @@
 
 
 
-  <title>Docker深入 | 小Q博客</title>
+  <title>分类: Docker | 小Q博客</title>
   
 
 
@@ -149,7 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     
@@ -264,288 +264,109 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block category">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h2>Docker<small>分类</small>
+        </h2>
+      </div>
 
-  
-  
-  
-
-  
+      
+        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/29/Docker深入/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小全">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小Q博客">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h3 class="post-title">
         
+            <a class="post-title-link" href="/2019/04/29/Docker-Docker容器数据卷/" itemprop="url">
+              
+                <span itemprop="name">Docker---Docker容器数据卷</span>
+              
+            </a>
         
-          <h2 class="post-title" itemprop="name headline">Docker深入</h2>
-        
+      </h3>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-29T12:16:38+08:00">2019-04-29</time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-29T13:41:52+08:00" content="2019-04-29">
+          04-29
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker深入/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker深入</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/29/Docker深入/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/29/Docker深入/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2019/04/29/Docker深入/" class="leancloud_visitors" data-flag-title="Docker深入">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-                 <span></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计922 字</span>
-                
-                <span title="字数统计"></span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长3 分钟</span>
-                
-                <span title="阅读时长"></span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <img src="/2019/04/29/Docker深入/01.jpg">
-<p><strong>Docker深入</strong></p>
-<p>前面讲解了Docker的基本概念以及Docker的安装，还简单跑了一个例子，相信能够对Docker有一个大致的了解</p>
-<p>本章将对Docker进一步的探索</p>
-<h3 id="DockerFile"><a href="#DockerFile" class="headerlink" title="DockerFile"></a>DockerFile</h3><p>DockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。</p>
-<p>DockerFile就是用来构建Docker镜像的，现在DockerHub上面有很多镜像，但是有时候我们会根据需求来自定义镜像，（比如说我们要改造Centos）常用两种方法：</p>
-<ol>
-<li>我们在DockerHub上面拉取一个镜像下来，然后进入容器里面进行修改，接着进行docker commit（形成新的一个镜像）</li>
-<li>我们自己编写DockerFile文件，因为所有镜像本质都是DockerFile，编写完自己构建出一个镜像</li>
-</ol>
-<p><strong>DockerFile和 docker commit 的区别：</strong></p>
-<p>DockerFile更加灵活，我可以随时根据需求来更改我的文件而docker commit，不具备重复性，什么意思呢，就是说，在DockerFile我不要一个东西，只是删除一行就好了（因为这是构建文件，我把某一块去掉就可以了），但是如果用docker commit就不行了，你安装了好些东西，要删除可能得一个个卸载，而且有时候你想要回复到之前某个点的，就非常困难了，所以：<strong>构建镜像不推荐docker commit,请使用DockerFile</strong></p>
-<p>构建DockerFile三步骤</p>
-<ul>
-<li>编写DockerFile文件</li>
-<li>docker build</li>
-<li>docker run</li>
-</ul>
-<p><strong>写一个例子吧：</strong></p>
-<p>新建一个DockerFile文件编写以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from centos</span><br><span class="line">ENV mypath /tmp</span><br><span class="line">WORKDIR $mypath</span><br><span class="line">EXPOSE 80</span><br><span class="line">CMD /bin/bash</span><br></pre></td></tr></table></figure>
-<p>执行docker build命令</p>
-<p>我这里遇到过一个小问题，很多也遇到了，就是build的时候报错</p>
-<p>docker build -f 文件所在的位置 -t 名字：版本号 .</p>
-<p>如果文件在当前目录下可以省略-f</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -f /dockerFile/DockerFile -t mycentos:2.2 .</span><br></pre></td></tr></table></figure>
-<p><strong>重要的事情说三遍</strong></p>
-<p><strong>最后面有小数点！！！</strong></p>
-<p><strong>最后面有小数点！！！</strong></p>
-<p><strong>最后面有小数点！！！</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//不加小数点报错：</span><br><span class="line">$ &quot;docker build&quot; requires exactly 1 argument(s).</span><br><span class="line">//没启动docker报错：</span><br><span class="line">$ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</span><br></pre></td></tr></table></figure>
-<img src="/2019/04/29/Docker深入/02.jpg">
-<p>可以看到当前的目录是tmp，因为我构建镜像的时候就设置了WORKDIR</p>
-<p>简单的例子讲完了：</p>
-<p>现在看看常用的构建文件命令：</p>
-<ol>
-<li>FROM 基础镜像，当前镜像是基于哪个镜像，可以想象成类与类之间的继承关系</li>
-<li>MAINTAINER，镜像的维护者的姓名和邮箱地址</li>
-<li>RUN，容器构建时需要运行的命令</li>
-<li>EXPOSE，当前容器对外暴露出的端口</li>
-<li>WORKDIR，指定创建容器后，终端默认登陆进来的工作目录</li>
-<li>ENV，用来构建镜像过程中设置环境变量</li>
-<li>ADD，将宿主机的目录下的文件拷贝到镜像里面并且ADD命令会自动处理URL和解压tar</li>
-<li>COPY，类似ADD，拷贝文件和目录到镜像中。&lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置</li>
-<li>VOLUME，容器数据卷，用于保存和持久化工作</li>
-<li>CND，指定一个容器启动时要运行的命令，DockerFile中可以有多个CMD指令，但只有最后一个生效，会被docker run 后面的参数给覆盖</li>
-<li>ENTRYPOINT，和CMD一样是指定一个容器启动时要运行的命令，区别在于不会被覆盖，都能执行</li>
-<li>ONBUILD，当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发</li>
-</ol>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-    <div>
-  
-    <div>
-    
-        <div style="text-align:center;color: #ccc;font-size:14px;">
-            -------------本文结束
-            <i class="fa fa-paw"></i>
-            感谢您的阅读-------------
-        </div>
-    
-</div>
-  
-</div>
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/04/23/Docker初探/" rel="next" title="Docker初探">
-                <i class="fa fa-chevron-left"></i> Docker初探
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/29/Docker之DockerFile的使用/" rel="prev" title="Docker之DockerFile的使用">
-                Docker之DockerFile的使用 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
+      
+        
 
-    <div class="post-spread">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h3 class="post-title">
+        
+            <a class="post-title-link" href="/2019/04/29/Docker-DockerFile的/" itemprop="url">
+              
+                <span itemprop="name">Docker---DockerFile的</span>
+              
+            </a>
+        
+      </h3>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-29T13:41:38+08:00" content="2019-04-29">
+          04-29
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h3 class="post-title">
+        
+            <a class="post-title-link" href="/2019/04/23/Docker初探/" itemprop="url">
+              
+                <span itemprop="name">Docker初探</span>
+              
+            </a>
+        
+      </h3>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-23T10:34:02+08:00" content="2019-04-23">
+          04-23
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
       
     </div>
+
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-  
-
-
 
         </div>
         
@@ -566,17 +387,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -593,7 +405,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -604,7 +416,7 @@
                 
                 <div class="site-state-item site-state-categories">
                   <a href="/categories/index.html">
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -615,7 +427,7 @@
                 
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -645,22 +457,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DockerFile"><span class="nav-number">1.</span> <span class="nav-text">DockerFile</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -808,10 +604,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.0.1"></script>
-
-
 
   
 

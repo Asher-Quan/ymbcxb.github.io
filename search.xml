@@ -4,23 +4,16 @@
     <title><![CDATA[Docker---Docker容器数据卷]]></title>
     <url>%2F2019%2F04%2F29%2FDocker-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7%2F</url>
     <content type="text"></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[Docker---DockerFile的]]></title>
     <url>%2F2019%2F04%2F29%2FDocker-DockerFile%E7%9A%84%2F</url>
     <content type="text"></content>
-  </entry>
-  <entry>
-    <title><![CDATA[Docker之DockerFile的使用]]></title>
-    <url>%2F2019%2F04%2F29%2FDocker%E4%B9%8BDockerFile%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
-    <content type="text"></content>
-  </entry>
-  <entry>
-    <title><![CDATA[Docker深入]]></title>
-    <url>%2F2019%2F04%2F29%2FDocker%E6%B7%B1%E5%85%A5%2F</url>
-    <content type="text"><![CDATA[Docker深入 前面讲解了Docker的基本概念以及Docker的安装，还简单跑了一个例子，相信能够对Docker有一个大致的了解 本章将对Docker进一步的探索 DockerFileDockerFile是用来构建Docker镜像的构建文件，是由一系列命令和参数构成的脚本。 DockerFile就是用来构建Docker镜像的，现在DockerHub上面有很多镜像，但是有时候我们会根据需求来自定义镜像，（比如说我们要改造Centos）常用两种方法： 我们在DockerHub上面拉取一个镜像下来，然后进入容器里面进行修改，接着进行docker commit（形成新的一个镜像） 我们自己编写DockerFile文件，因为所有镜像本质都是DockerFile，编写完自己构建出一个镜像 DockerFile和 docker commit 的区别： DockerFile更加灵活，我可以随时根据需求来更改我的文件而docker commit，不具备重复性，什么意思呢，就是说，在DockerFile我不要一个东西，只是删除一行就好了（因为这是构建文件，我把某一块去掉就可以了），但是如果用docker commit就不行了，你安装了好些东西，要删除可能得一个个卸载，而且有时候你想要回复到之前某个点的，就非常困难了，所以：构建镜像不推荐docker commit,请使用DockerFile 构建DockerFile三步骤 编写DockerFile文件 docker build docker run 写一个例子吧： 新建一个DockerFile文件编写以下内容 12345from centosENV mypath /tmpWORKDIR $mypathEXPOSE 80CMD /bin/bash 执行docker build命令 我这里遇到过一个小问题，很多也遇到了，就是build的时候报错 docker build -f 文件所在的位置 -t 名字：版本号 . 如果文件在当前目录下可以省略-f 1$ docker build -f /dockerFile/DockerFile -t mycentos:2.2 . 重要的事情说三遍 最后面有小数点！！！ 最后面有小数点！！！ 最后面有小数点！！！ 1234//不加小数点报错：$ &quot;docker build&quot; requires exactly 1 argument(s).//没启动docker报错：$ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? 可以看到当前的目录是tmp，因为我构建镜像的时候就设置了WORKDIR 简单的例子讲完了： 现在看看常用的构建文件命令： FROM 基础镜像，当前镜像是基于哪个镜像，可以想象成类与类之间的继承关系 MAINTAINER，镜像的维护者的姓名和邮箱地址 RUN，容器构建时需要运行的命令 EXPOSE，当前容器对外暴露出的端口 WORKDIR，指定创建容器后，终端默认登陆进来的工作目录 ENV，用来构建镜像过程中设置环境变量 ADD，将宿主机的目录下的文件拷贝到镜像里面并且ADD命令会自动处理URL和解压tar COPY，类似ADD，拷贝文件和目录到镜像中。&lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置 VOLUME，容器数据卷，用于保存和持久化工作 CND，指定一个容器启动时要运行的命令，DockerFile中可以有多个CMD指令，但只有最后一个生效，会被docker run 后面的参数给覆盖 ENTRYPOINT，和CMD一样是指定一个容器启动时要运行的命令，区别在于不会被覆盖，都能执行 ONBUILD，当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发]]></content>
       <categories>
-        <category>Docker深入</category>
+        <category>Docker</category>
       </categories>
   </entry>
   <entry>
@@ -28,7 +21,7 @@
     <url>%2F2019%2F04%2F23%2FDocker%E5%88%9D%E6%8E%A2%2F</url>
     <content type="text"><![CDATA[Docker初识什么是Docker呢？ Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署，包括VMs（虚拟机）、bare metal)、OpenStack 集群和其他的基础应用平台。 简单点理解呢：Docker是一个管理容器的平台 简单介绍一下容器和虚拟机： 虚拟机：虚拟出一套硬件，在其之上的一个运行一个完整的操作系统 容器：容器之间互相隔离，但共享这同一份硬件系统 我们平时会在电脑上安装各种软件，比如微信，QQ。那么我们Docker呢，在想的是把一个系统看成一个软件，我们安装一个软件（本质是一个系统），比如，你现在的操作系统有很多软件，假设，你要换到一台新的电脑是不是要重新安装软件呢，这就很麻烦了，我们可以直接把你的系统当作一个软件，直接一安装就和你旧的电脑一摸一样了。 Docker的好处： 轻：开启速度快，因为不像Vmware那样子有一套虚拟化硬件，所以快 开发运维一致性：不会再对环境不一样起争议 弹性大：这点解释下，比如我现在一台服务器不够用的情况下，理论上是要新建一台服务器，但是新建的过程是很费时间的，因为有各种配置文件，所以，在Docker里，当不够用的时候，不过是安装多一个容器的事情，容器里面什么都做好了 安全：怎么捣鼓都是在容器里，实在不行，删了重建而已，不会影响导别的容器 附上一张图，以供了解： 那么Docker有几个核心概念： 仓库 镜像 容器 简单描述如下： 容器呢就是我们实际运行的东西 镜像呢就是用生成容器 这里可以这么理解为：用面向对象的思想来说，镜像就是类，容器就是实例对象 仓库呢就是用来放镜像的 首先简单跑一个Docker例子首先开启我们的虚拟机,我这里是Centos7，不同虚拟机可能有一点点差别，总体来说差别不大： 安装docker这里要注意一点： Centos 需要内核版本为3.8以及以上才能运行Docker (命令不包含$符号) 12//查看内核版本$ uname -r 12//安装docker$ sudo yum install docker 启动docker123456//启动 docker$ systemctl start docker//将 docker 服务设为开机启动$ systemctl enable docker//查看 docker版本，验证启动成功$ docker -v 拉取一个Centos镜像拉取之前，先要搜索 1$ docker search centos OFFICIAL ：代表官方 这里拉取的时候，默认是很慢的，因为使用的源地址是国外的，速度非常非常慢 为了提高速度，可以换取阿里或者网易的源 我这里使用的是阿里云 首先得注册一个阿里云账号，进入控制台找到 在这里可以看到加速器的地址，由于每个人的加速器地址，我这里就教下怎么配置 123456//打开配置文件$ vi /etc/docker/daemon.json//配置下面这段&#123; &quot;registry-mirrors&quot;: [&quot;https://xxxxx.mirror.aliyuncs.com&quot;]&#125; 接下来开始正式拉取镜像 1$ docker pull centos 12//查看所有镜像$ docker images 什么！！！只有两百M？对的，就是这么小，为什么，因为没有虚拟出一套物理硬件，单纯在硬件之上的层次，就这么小 默认的就是拉取最新版 如果想拉6的怎么办 指定一下就可以了 1$ docker pull centos:centos6 那么我怎么知道标签是多少呢？？？ 去官网https://hub.docker.com/_/centos查就可以了 最后一步！！！ 创建容器12//docker run 镜像名字:标签,这里 -it代表交互$ docker run -it centos:latest 此时就跑起来了 这就跑起来了一个建立在你虚拟机上的一个centos，而且秒开 你可以在这个界面里输入一些Linux指令也是可以行的，如果要退出 有两种方式 1234//第一种 退出容器，且杀死容器，说白了就容器没了$ exec //第二种，退出容器，且容器后台运行，可以重新进入$ ctrl+p+q 12//检查所有容器的状态$ docker ps -a 本章就到此结束了，算入个门吧，复杂的东西，后面再讲]]></content>
       <categories>
-        <category>Docker初探</category>
+        <category>Docker</category>
       </categories>
   </entry>
   <entry>
@@ -46,20 +39,6 @@
       <categories>
         <category>Mysql</category>
       </categories>
-      <tags>
-        <tag>Mysql执行过程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Java异常处理机制]]></title>
-    <url>%2F2019%2F04%2F01%2FJava%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6%2F</url>
-    <content type="text"><![CDATA[Java异常处理机制异常：程序在运行过程中发生由于硬件设备问题、软件设计错误等导致的程序异常事件 （在Java等面向对象的编程语言中）异常本身是一个对象，产生异常就是产生了一个异常对象 Exception和Error都是属于Throwable的子类，只有Exception才可以被捕获和抛出 Error]]></content>
-      <categories>
-        <category>Java基础</category>
-      </categories>
-      <tags>
-        <tag>异常处理</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[Centos搭建git私服]]></title>
@@ -102,21 +81,14 @@
         <category>Python</category>
         <category>爬虫</category>
       </categories>
-      <tags>
-        <tag>网易云音乐</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[Solr集群版的搭建]]></title>
     <url>%2F2019%2F01%2F10%2FSolr%E9%9B%86%E7%BE%A4%E7%89%88%E7%9A%84%E6%90%AD%E5%BB%BA%2F</url>
     <content type="text"><![CDATA[Solr集群版的搭建搭建Solr集群 首选需要配置zookeeper集群 先搭建四个tomcat 1234cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat01cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat02cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat03cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat04 1234vim tomcat01/conf/server.xmlvim tomcat02/conf/server.xmlvim tomcat03/conf/server.xmlvim tomcat04/conf/server.xml 给不同的Tomcat修改端口，tomcat01为81，tomcat02为82,以此类推，主要修改以下三个地方 把单机版的Solr放到Tomcat下 1234cp -r solr /home/app/solr-cloud/tomcat01/webapps/cp -r solr /home/app/solr-cloud/tomcat02/webapps/cp -r solr /home/app/solr-cloud/tomcat03/webapps/cp -r solr /home/app/solr-cloud/tomcat04/webapps/ 再复制四个solrhome到solr-cloud目录下 再修改每个solrhome下的solr.xml 注意写自己的端口号和IP地址 修改每个tomcat的solr的web.xml 修改catalina文件 1234vim tomcat01/bin/catalina.shvim tomcat02/bin/catalina.shvim tomcat03/bin/catalina.shvim tomcat04/bin/catalina.sh tomcat运行catalinda.sh脚本命令 配置JAVA_OPTS 1JAVA_OPTS=&quot;-DzkHost=192.168.25.130:2181,192.168.25.130:2182,192.168.25.130:2183&quot; 在solr文件下的example目录下的script目下的cloud-scripts目录下有个zkcli.sh 上传配置文件至zookeeper的命令 1./zkcli.sh -zkhost 192.168.25.130:2181,192.168.25.130:2182,192.168.25.130:2183 -cmd upconfig -confdir /home/quan/app/solr-cloud/solrhome01/collection1/conf/ -confname myconf 进入solr-cloud的zookeeper01中的bin目录下进行连接zookeeper 1./zkCli.sh -server 192.168.25.130:2182 检查一下 1./zkCli.sh -server 192.168.25.130:2182 myconf就是我们上传的 内容里面有我们上传的solr文件 整个搭建就完成了 开启四个Tomcat 1234/home/quan/app/solr-cloud/tomcat01/bin/startup.sh/home/quan/app/solr-cloud/tomcat02/bin/startup.sh/home/quan/app/solr-cloud/tomcat03/bin/startup.sh/home/quan/app/solr-cloud/tomcat04/bin/startup.sh SolrCloud创建Collection的命令 1http://192.168.25.130:8180/solr/admin/collections?action=CREATE&amp;name=collection2&amp;numShards=2&amp;relicationFactor=2 SolrCloud删除Collection的命令 1http://192.168.25.130:8180/solr/admin/collections?action=DELETE&amp;name=collection1]]></content>
       <categories>
-        <category>Java</category>
+        <category>Solr</category>
       </categories>
-      <tags>
-        <tag>搜索引擎</tag>
-        <tag>Solr</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[设计模式-单例]]></title>
@@ -124,11 +96,7 @@
     <content type="text"><![CDATA[设计模式（Design Pattern）是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结。 使用设计模式的目的：为了代码可重用性、让代码更容易被他人理解、保证代码可靠性。 设计模式使代码编写真正工程化；设计模式是软件工程的基石脉络，如同大厦的结构一样。 说白了就是：就是使用设计模式，代码会更好。 单例模式：就是单个实例 那么单例模式有什么好处呢？ 很简单，首先，都是单个实例了，那么就可以怎样 一、实例控制 单例模式会阻止其他对象实例化其自己的单例对象的副本，从而确保所有对象都访问唯一实例。 二、灵活性 因为类控制了实例化过程，所以类可以灵活更改实例化过程。 但是还是有缺点的： 一、开销 虽然数量很少，但如果每次对象请求引用时都要检查是否存在类的实例，将仍然需要一些开销。可以通过使用静态初始化解决此问题。 二、可能的开发混淆 使用单例对象（尤其在类库中定义的对象）时，开发人员必须记住自己不能使用new关键字实例化对象。因为可能无法访问库源代码，因此应用程序开发人员可能会意外发现自己无法直接实例化此类。 三、对象生存期 不能解决删除单个对象的问题。在提供内存管理的语言中（例如基于.NET Framework的语言），只有单例类能够导致实例被取消分配，因为它包含对该实例的私有引用。在某些语言中（如 C++），其他类可以删除对象实例，但这样会导致单例类中出现悬浮引用。。 单例模式根据实例化对象时机的不同分为两种 饿汉式 上代码 12345678910public class Single&#123; /*私有化，防止外部创建实例*/ private Single&#123;&#125; /*设置静态属性私有，防止外部通过类名访问*/ private static Single single = new Single(); /*设置静态方法*/ public static Single getInstance()&#123; return single; &#125;&#125; 这个很简单的 上面有个问题，当类加载的时候，就会实例化Single（），假如我加载完类，一段时间没用，而实例却已经早就创建了，着就会造成一个浪费。 通过这个问题，我们可以想，当我们需要实例的时候我们才去实例化，而不是通过类加载，那么我们可以这样子做 懒汉式 12345678910111213public class Single&#123; /*私有化，防止外部创建实例*/ private Single&#123;&#125; /*设置静态属性私有,先设空，需要的时候再实例化*/ private static Single single=null; /*设置静态方法*/ public static Single getInstance()&#123; if(single==null)&#123; single = new Single() &#125; return single &#125;&#125; 这样子，就没什么问题了 但是现在再思考一个问题，万一是多线程的时候呢？这样就有问题的了 这样子我们就需要加一个锁 12345678910111213141516171819public class Single&#123; /*私有化，防止外部创建实例*/ private Single&#123;&#125; /*设置静态属性私有,先设空，需要的时候再实例化*/ private static Single single=null; /*设置静态方法*/ public static Single getInstance()&#123; /*两重判空是为了提高效率*/ if(single==null)&#123; /*上锁*/ synchronized(Single.Class)&#123; if (single==null) &#123; single = new Single() &#125; &#125; &#125; return single; &#125;&#125; 这样子整个单例模式就做得比较好了]]></content>
       <categories>
         <category>设计模式</category>
-        <category>Java</category>
       </categories>
-      <tags>
-        <tag>单例模式</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[Java线程]]></title>
@@ -148,25 +116,21 @@
       <categories>
         <category>PHP</category>
       </categories>
-      <tags>
-        <tag>环境搭建</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[Solr单机版的搭建]]></title>
     <url>%2F2018%2F12%2F27%2FSolr%E5%8D%95%E6%9C%BA%E7%89%88%E7%9A%84%E6%90%AD%E5%BB%BA%2F</url>
     <content type="text"><![CDATA[Solr Solr是一个开源搜索平台，用于构建搜索应用程序。 它建立在Lucene(全文搜索引擎)之上。 Solr是企业级的，快速的和高度可扩展的。 使用Solr构建的应用程序非常复杂，可提供高性能。 solr的一些突出的特点： Restful APIs − 要与Solr通信，并非一定需要有Java编程技能。相反，您可以使用restful服务与它通信。可使用文件格式(如xml，json和.CSV)在Solr中作为输入文档，并以相同的文件格式获取结果。 全文搜索 - Solr提供了全文搜索所需的所有功能，例如令牌，短语，拼写检查，通配符和自动完成。 企业准备 - 根据企业/组织的需要，Solr可以部署在任何类型的系统(大或小)，如独立，分布式，云等。灵活和可扩展 - 通过扩展Java类并相应配置，可以轻松地定制Solr的组件。 NoSQL数据库 - Solr也可以用作大数据量级的NOSQL数据库，可以沿着集群分布搜索任务。 管理界面 - Solr提供了一个易于使用，用户友好，功能强大的用户界面，使用它可以执行所有可能的任务，如管理日志，添加，删除，更新和搜索文档。 高度可扩展 - 在使用Solr与Hadoop时，我们可以通过添加副本来扩展其容量。 以文本为中心并按相关性排序 - Solr主要用于搜索文本文档，结果根据与用户查询的相关性按顺序传送 Solr单机版的搭建：解压solr和tomcat12tar zxf solr-4.10.3.tgz.tgztar -zxf apache-tomcat-7.0.47.tar.gz 把solr的war包放到tomcat的webapp目录下1cp solr-4.10.3/dist/solr-4.10.3.war /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr.war cp solr-4.10.3/example/lib/ext/* /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/lib/123配置一下solrhome vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml12修改solr的web.xml vim /home/quan/taotao/apache-tomcat-7.0.47/webapps/solr/WEB-INF/web.xml` 再重新启动一次Tomcat 在浏览器里访问一下 localhost:8080/solr会出现以下界面 整个Solr服务就启动完成了]]></content>
       <categories>
-        <category>Java</category>
+        <category>Solr</category>
       </categories>
-      <tags>
-        <tag>搜索引擎</tag>
-        <tag>Solr</tag>
-      </tags>
   </entry>
   <entry>
     <title><![CDATA[线程和进程]]></title>
     <url>%2F2018%2F12%2F20%2F%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%2F</url>
     <content type="text"><![CDATA[计算机所有可运行的软件，通常也包括操作系统，被组织成若干顺序进程，简称进程。一个进程就是一个正在执行程序的实例 单核CPU也就是单个核心的CPU，每次只能执行一个进程，由于CPU在各进程之间快速切换，所以每个进程所执行的时间是不确定的。 举个例子： 假设你在看着食谱做美食，那么你就相当于CPU，食谱就是程序，而做美食的材料就是输入数据，进程就是，你在阅读食谱取食材以及制作美食的这一系列动作，假设你在做美食时候突然来了个电话，你可能会先熄火，然后脑海里知道自己现在做到哪个位置（保存当前状态），然后去接电话，处理完了后，你可能才回来厨房想想刚才做到哪里了，然后继续之前继续做 一个进程就是某种类型的一个活动，它有程序、输入、输出以及状态。单个处理器可以被多个进程共享，CPU使用了某种调度算法决定何时停止一个进程的工作，并且转向另一个进程提供服务。 进程的创建：有四种主要的事件1、系统初始化 前台进程 守护进程2、正在运行的程序执行了创建进程的系统调用3、用户请求创建一个新进程4、一个批处理作业的初始化 进程的终止1、正常退出2、出错退出3、严重错误4、被其他进程给杀死 只可以有一个父进程，但可以有零个或者多个子进程 进程有三种状态：运行态，就绪态，阻塞态 ​ 为了实现进程模型，操作系统维护着一张表格（一个结构数组）即进程表，每个进程占用一个进程表的一个项，这张表包含了许多信息，比如程序计数器，堆栈指针，内存分配状况，等等从而保证了该进程被断掉后重新启动的时候，能够保存之前的信息。 线程为什么需要线程？ 首先，有了线程，我们可以不必考虑终端、定时器、和上下文的切换只需考虑并行进程。其次，线程比进程更加轻量级，速度会比用进程效率要提高很多。 每个单核处理器在某个时刻也是只能够执行一个线程的，这和进程是一样的，线程是CPU处理的基本单位，我们前面讨论的进程，是进程单线程模型。 同样的，线程也是有阻塞态、运行态、就绪态。 为了实现可移植的线程程序，IEEE在IEEE标准中定义了线程的标准，它定义的线程包叫做pthread 实现线程包有两种方法，第一种把整个线程包放在用户空间 从内核的角度上管理的就是单线程进程的模型，这样子尽管系统不支持线程，也可以进行实现 用C语言实现1234567891011121314151617181920212223#include&lt;pthread.h&gt;#include&lt;stdio.h&gt;#include&lt;stdlib.h&gt;#define NUMBER 10void *hello(void *id)&#123; printf(&quot;Thread-----%d\n&quot;,id); pthread_exit(NULL);&#125;int main()&#123; pthread_t threads[NUMBER]; int status; int i; for(i=0;i&lt;NUMBER;i++)&#123; printf(&quot;Main---Creating thread%d\n&quot;,i); status = pthread_create(&amp;threads[i],NULL,hello,(void*)i); if(status!=0)&#123; printf(&quot;ErrorCode----&gt;%d\n&quot;,status); exit(-1); &#125; &#125; return 0;&#125; 在用户空间管理线程的时候会创建一个运行时的系统，由这个系统进行管理，每个进程都需要其专用的线程表，用来跟踪该进程中的线程。这些表和进程表相似，不过它仅仅记录的是各个线程的属性，如每个线程的程序计数器，堆栈指针，寄存器和状态。因为切换线程的时候不需要陷入到内核空间，不需要有上下文的切换，也不需要对内存高速缓存进行刷新，这就使得线程调度非常快捷。 用户线程还有一个优点，允许每个进程有自己定制的调度算法，这样子就有一个很好的可扩展性 如果某个线程阻塞了，就会导致整个进程的阻塞 在内核中实现线程 此时不再需要运行时的系统了，另外，每个进程中也没有线程表，内核中有用来记录系统中所有线程的线程表了，当某个线程希望创建一个新的线程的时候，就会进行一个系统的调用，这个系统调用通过对线程表的更新完成线程创建的工作。 内核的线程表里保存了每个线程的信息，这些信息和在用户空间中的线程是一样的，但是现在保存在内核中 由于在内核中创建线程的代价比较大，所以某些系统会采取一种方式：回收线程，当某个线程被撤销的时候，就标记为不可运行的，但是其内核数据的结构没有收到影响。再次创建一个新的线程的时候，就把这个线程给重新启动就可以了，这样子可以减少多次系统调用来开辟新的线程 混合实现 使用内核级的线程，然后将用户级的线程与某些或者全部内核线程多路复用，采取这种方式：开发人员就可以决定有多少个内核级的线程和多少个用户级线程即使多路复用，这个模型可以带来最大的灵活度 进程之间的通信比如说一个购票系统： 进程A和进程B，此时：进程A去买票（一共十张）：首先读出票数，把票数减一，然后把减一后的数据放回去 假设在第二个步骤的时候发生CPU 的切换，进程B去读票数，那么去读的时候此时票数还是10，然后进行减一后，放回去，再切回线程A，放回去，这里就有个问题：同一张票给了两个进程去卖了！这明显是不科学的。 为了有效避免进程的竞争问题这里需要做的就是互斥，那么什么是互斥呢？就是A在访问的时候，禁止B访问，这样子就能够进行一个有效的防止竞争了。 这里面设计很多种方法： 屏蔽中断：每个进程在刚刚进入临界区后立刻屏蔽所有中断，并在就有离开之前再打开终端，屏蔽中断后，时钟中断也会被屏蔽，CPU只有发生时钟中断或者其他中断才会进行切换，这样子，在屏蔽中断之后，CPU将不会进行切换 锁变量：共享一个变量（锁），初始值为0，当一个进程进入临界区的时候，就测试这把锁，如果该锁为0则进程把锁设置为1，然后进入，如果进入的时候锁的值为1，则等待，当出去临界区的时候再把锁的值改为0 严格轮换法： 严格轮换法同样也是针对一个临界区设置一个变量,假设为Turn。以两个进程为例子: 当Turn为0时,Process 0才能能进入临界区,否则等待。等Process 0离开临界区后,将Turn设置为1. 当Turn为1时,Process 1才能进入临界区,否则等待。等Process 1离开临界区后,将Turn设置为0.]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
   </entry>
 </search>
