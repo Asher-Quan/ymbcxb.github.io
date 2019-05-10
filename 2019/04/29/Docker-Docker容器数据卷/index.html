@@ -80,12 +80,13 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="小Q博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:title" content="Untitled">
+<meta property="og:url" content="http://yoursite.com/Untitled/index.html">
 <meta property="og:site_name" content="小Q博客">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小Q博客">
+<meta name="twitter:title" content="Untitled">
 
 
 
@@ -113,7 +114,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/">
+  <link rel="canonical" href="http://yoursite.com/Untitled/">
 
 
 
@@ -380,7 +381,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计847 字</span>
+                  <span class="post-meta-item-text">字数统计846 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -436,7 +437,9 @@
 <p>查看一下容器内挂载的与宿主机对应的位置在哪</p>
 <img src="/2019/04/29/Docker-Docker容器数据卷/04.png">
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;Type&quot;: &quot;volume&quot;,</span><br><span class="line">                &quot;Name&quot;: &quot;b3b394fac32e2e263e360de210b36665d03554425d23fe23ad8ebc54aa304716&quot;,</span><br><span class="line">                &quot;Source&quot;: &quot;/var/lib/docker/volumes/b3b394fac32e2e263e360de210b36665d03554425d23fe23ad8ebc54aa304716/_data&quot;,</span><br><span class="line">                &quot;Destination&quot;: &quot;/BBBB&quot;,</span><br><span class="line">                &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">                &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">                &quot;RW&quot;: true,</span><br><span class="line">                &quot;Propagation&quot;: &quot;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br></pre></td></tr></table></figure>
-<p>/BBBB对应在宿主机的位置为/var/lib/docker/volumes/b3b394fac32e2e263e360de210b36665d03554425d23fe23ad8ebc54aa304716/_data</p>
+<p>/BBBB对应的宿主机位置为</p>
+<p>/var/lib/docker/volumes/</p>
+<p>b3b394fac32e2e263e360de210b36665d03554425d23fe23ad8ebc54aa304716/_data</p>
 <p>因为我们也说过宿主机和容器内布，是共享的，我们可以亲自去测试一下，这里我就不演示了(如果要测试，记得加上特权模式 –privileged =true，否则会报没权限错误)</p>
 <h3 id="数据卷容器"><a href="#数据卷容器" class="headerlink" title="数据卷容器"></a>数据卷容器</h3><p><strong>建立一个容器挂载数据卷，其他容器通过挂载这个容器（父容器）来实现数据共享，挂载数据卷的容器就是数据卷容器</strong></p>
 <p>容器之间传递共享 –volumes-from</p>
