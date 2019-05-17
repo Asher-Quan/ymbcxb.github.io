@@ -124,7 +124,7 @@
 
 
 
-  <title>分类 | 小Q博客</title>
+  <title>Redis-持久化 | 小Q博客</title>
   
 
 
@@ -270,45 +270,293 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/17/Redis-持久化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ymbcxb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小Q博客">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">分类</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 2 个分类
+          <h2 class="post-title" itemprop="name headline">Redis-持久化</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T15:36:07Z">2019-05-17</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术分享/" itemprop="url" rel="index">
+                    <span itemprop="name">技术分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/17/Redis-持久化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/17/Redis-持久化/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/05/17/Redis-持久化/" class="leancloud_visitors" data-flag-title="Redis-持久化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+                 <span></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计1,179 字</span>
+                
+                <span title="字数统计"></span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长5 分钟</span>
+                
+                <span title="阅读时长"></span>
+              
             </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java基础/">Java基础</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术分享/">技术分享</a><span class="category-list-count">18</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <img src="/2019/05/17/Redis-持久化/01.png">
+<h3 id="什么是持久化"><a href="#什么是持久化" class="headerlink" title="什么是持久化"></a>什么是持久化</h3><p>redis所有数据都是保存在内存当中的，对数据的更新将保存到磁盘上，称之为数据的持久化</p>
+<p>如果没有持久化，那断电，宕机，都会导致一个数据的缺失</p>
+<h3 id="持久化的两种方式"><a href="#持久化的两种方式" class="headerlink" title="持久化的两种方式"></a>持久化的两种方式</h3><h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><p>Redis的数据是存储在内存当中的，RDB是通过快照的方式，将内存中的数据存储到硬盘当中的一个文件，这个文件就是RDB文件</p>
+<h5 id="RDB的三种触发机制"><a href="#RDB的三种触发机制" class="headerlink" title="RDB的三种触发机制"></a>RDB的三种触发机制</h5><ul>
+<li>save(同步)：占用的内存比较小，对性能开销没那么大，但是一旦数据比较多的时候，就会导致阻塞</li>
+<li>bgsave(异步)：fork出子进程，子进程来进行一个save操作，不会导致阻塞，但是相对内存的消耗会比较大</li>
+<li>自动</li>
+<li>全量复制</li>
+<li>debug reload</li>
+</ul>
+<p>在演示之前，我们需要对我们redis.conf配置文件来进行一个配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 以守护进程的方式启动</span><br><span class="line">daemonize yes</span><br><span class="line"># 当运行多个redis服务时，需要指定不同的pid文件和端口</span><br><span class="line">pidfile /var/run/redis:6379.pid</span><br><span class="line"># 以端口号为6379启动</span><br><span class="line">port 6379</span><br><span class="line"># 配置日志文件的存放位置</span><br><span class="line">logfile = &quot;6379.log&quot;</span><br><span class="line"># 存储至本地数据库时（持久化到rdb文件）是否压缩数据，默认为yes</span><br><span class="line">rdbcompression yes</span><br><span class="line">#当bgsave执行失败的时候，是否停止redis的工作</span><br><span class="line">stop-writes-on-bgsave-error yes</span><br><span class="line">#是否校验格式</span><br><span class="line">rdbchecksum yes</span><br><span class="line">#rdb文件名</span><br><span class="line">dbfilename dump6379.rdb</span><br><span class="line"># 工作目录（按照自己的电脑进行一个配置）</span><br><span class="line">dir /redis/data</span><br></pre></td></tr></table></figure>
+<h6 id="save（同步机制）"><a href="#save（同步机制）" class="headerlink" title="save（同步机制）"></a>save（同步机制）</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#执行set方法</span><br><span class="line">$ set k1 v1</span><br><span class="line">#手动save保存</span><br><span class="line">$ save</span><br></pre></td></tr></table></figure>
+<p>查看data目录下，会发现有一个文件dump6379.rdb</p>
+<p>删除文件再进行下一个实验</p>
+<h6 id="bgsave（异步机制）"><a href="#bgsave（异步机制）" class="headerlink" title="bgsave（异步机制）"></a>bgsave（异步机制）</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#执行set方法</span><br><span class="line">$ set k1 v1</span><br><span class="line">#手动bgsave保存</span><br><span class="line">$ save</span><br></pre></td></tr></table></figure>
+<p>同样的，再data目录下，会发现有一个文件dump6379.rdb</p>
+<p>删除文件再进行下一个实验</p>
+<h5 id="自动（根据配置文件的配置）"><a href="#自动（根据配置文件的配置）" class="headerlink" title="自动（根据配置文件的配置）"></a>自动（根据配置文件的配置）</h5><p>我们查看一下redis.conf配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 比如默认配置文件中的设置，就设置了三个条件</span><br><span class="line">#</span><br><span class="line"># save 900 1 900秒内至少有1个key被改变</span><br><span class="line"># save 300 10 300秒内至少有300个key被改变</span><br><span class="line"># save 60 10000 60秒内至少有10000个key被改变</span><br><span class="line">save 900 1</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br></pre></td></tr></table></figure>
+<p>我这里将值修改如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save 10 1</span><br></pre></td></tr></table></figure>
+<p>重启redis</p>
+<p>redis-cli shutdown</p>
+<p>redis-server redis.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#完成一次set</span><br><span class="line">$ set k1 v1</span><br></pre></td></tr></table></figure>
+<p>同样的，再data目录下，会发现有一个文件dump6379.rdb</p>
+<h5 id="RDB的问题"><a href="#RDB的问题" class="headerlink" title="RDB的问题"></a>RDB的问题</h5><h6 id="耗时，耗性能"><a href="#耗时，耗性能" class="headerlink" title="耗时，耗性能"></a>耗时，耗性能</h6><p>耗时，全部数据都要写入一个新的文件，O（N）</p>
+<p>fork(),，数据量很大的情况下，写的时候会占用很大内存</p>
+<p>硬盘的IO性能</p>
+<h6 id="不可控，丢失数据"><a href="#不可控，丢失数据" class="headerlink" title="不可控，丢失数据"></a>不可控，丢失数据</h6><p>这是最最重要的问题，你耗时，我大不了久一点，你好性能，大不了就堆配置</p>
+<p>丢数据可不行啊，这是最大的问题</p>
+<p>为什么会丢数据呢？？？</p>
+<p>save和bgsave都是要手动触发</p>
+<p>而配置文件的自动生成rdb文件也是有间隔的，总会存在丢失数据的可能性</p>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>AOP就解决了上述一个问题，AOP的原理是这样子的，我每次执行一个set k1 v1的时候就回去AOF文件中去进行一个记录，说白了就是一个日志功能，万一，我执行完set后宕机了，只需要把日志里的动作再做一遍就可以保证数据的恢复</p>
+<p>首先AOF是先将命令写入缓冲区，然后再把缓冲区写进AOF文件</p>
+<h5 id="AOF的三种策略"><a href="#AOF的三种策略" class="headerlink" title="AOF的三种策略"></a>AOF的三种策略</h5><h6 id="always：每次都写进"><a href="#always：每次都写进" class="headerlink" title="always：每次都写进"></a>always：每次都写进</h6><h6 id="everysec：每一秒写进一次"><a href="#everysec：每一秒写进一次" class="headerlink" title="everysec：每一秒写进一次"></a>everysec：每一秒写进一次</h6><h6 id="no：根据操作系统决定"><a href="#no：根据操作系统决定" class="headerlink" title="no：根据操作系统决定"></a>no：根据操作系统决定</h6><p><strong>一般来说，折中考虑，会选择everysec，即可保证数据的丢失不会太大，也可以保证IO的开销会没那么大</strong></p>
+<h5 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h5><p>什么是AOF重写，举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ set k1 1</span><br><span class="line">$ incr k1</span><br><span class="line">$ incr k1</span><br></pre></td></tr></table></figure>
+<p>AOF会记录三条命令，但是，其实三条命令可以简化成一条命令的，会大大减少我们的AOF的文件，大大加速我们恢复的速度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ set k1 3</span><br></pre></td></tr></table></figure>
+<h5 id="AOF重写的两种方式"><a href="#AOF重写的两种方式" class="headerlink" title="AOF重写的两种方式"></a>AOF重写的两种方式</h5><ul>
+<li>bgrewriteaof，会fork出一个子进程来进行AOF的重写</li>
+<li>配置文件<ul>
+<li>auto-aof-rewrite-min-size：AOF文件需要重写的大小是多少</li>
+<li>auto-aof-rewrite-percentage：下一次重写距离这一次重写需要在文件提升多少的百分比的时候进行</li>
+<li>aof_current_size：统计当前AOF的大小</li>
+<li>aof_base_size：AOF上次启动和重写的尺寸</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/05/17/Redis-持久化/02.jpg">
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+  
+</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i>
+ Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/14/设计模式-工厂方法/" rel="next" title="设计模式-工厂方法">
+                <i class="fa fa-chevron-left"></i> 设计模式-工厂方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -329,8 +577,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -399,6 +656,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是持久化"><span class="nav-number">1.</span> <span class="nav-text">什么是持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化的两种方式"><span class="nav-number">2.</span> <span class="nav-text">持久化的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB"><span class="nav-number">2.1.</span> <span class="nav-text">RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的三种触发机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">RDB的三种触发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#save（同步机制）"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">save（同步机制）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#bgsave（异步机制）"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">bgsave（异步机制）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自动（根据配置文件的配置）"><span class="nav-number">2.1.2.</span> <span class="nav-text">自动（根据配置文件的配置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的问题"><span class="nav-number">2.1.3.</span> <span class="nav-text">RDB的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#耗时，耗性能"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">耗时，耗性能</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不可控，丢失数据"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">不可控，丢失数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF"><span class="nav-number">2.2.</span> <span class="nav-text">AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF的三种策略"><span class="nav-number">2.2.1.</span> <span class="nav-text">AOF的三种策略</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#always：每次都写进"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">always：每次都写进</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#everysec：每一秒写进一次"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">everysec：每一秒写进一次</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#no：根据操作系统决定"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">no：根据操作系统决定</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写"><span class="nav-number">2.2.2.</span> <span class="nav-text">AOF重写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写的两种方式"><span class="nav-number">2.2.3.</span> <span class="nav-text">AOF重写的两种方式</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

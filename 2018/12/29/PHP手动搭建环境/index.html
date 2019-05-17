@@ -79,14 +79,18 @@
 
 
 
+<meta name="description" content="专注 Java 开发的技术博客">
+<meta name="keywords" content="小Q博客">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Untitled">
 <meta property="og:url" content="http://yoursite.com/Untitled/index.html">
 <meta property="og:site_name" content="小Q博客">
+<meta property="og:description" content="专注 Java 开发的技术博客">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-12-20T03:26:09.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Untitled">
+<meta name="twitter:description" content="专注 Java 开发的技术博客">
 
 
 
@@ -120,7 +124,7 @@
 
 
 
-  <title>Git入门 | 小Q博客</title>
+  <title>PHP手动搭建环境 | 小Q博客</title>
   
 
 
@@ -280,10 +284,10 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/12/Git入门/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/PHP手动搭建环境/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小全">
+      <meta itemprop="name" content="ymbcxb">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/head.jpg">
     </span>
@@ -297,7 +301,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Git入门</h2>
+          <h2 class="post-title" itemprop="name headline">PHP手动搭建环境</h2>
         
 
         <div class="post-meta">
@@ -309,7 +313,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-12T16:13:30+08:00">2019-01-12</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-29T03:23:13+08:00">2018-12-28</time>
             
 
             
@@ -348,8 +352,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/12/Git入门/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/12/Git入门/" itemprop="commentCount"></span>
+                <a href="/2018/12/29/PHP手动搭建环境/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/29/PHP手动搭建环境/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -357,7 +361,7 @@
 
           
           
-             <span id="/2019/01/12/Git入门/" class="leancloud_visitors" data-flag-title="Git入门">
+             <span id="/2018/12/29/PHP手动搭建环境/" class="leancloud_visitors" data-flag-title="PHP手动搭建环境">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -381,7 +385,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计1,470 字</span>
+                  <span class="post-meta-item-text">字数统计495 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -395,7 +399,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长5 分钟</span>
+                  <span class="post-meta-item-text">阅读时长2 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -417,69 +421,27 @@
       
 
       
-        <h2 id="版本控制器："><a href="#版本控制器：" class="headerlink" title="版本控制器："></a>版本控制器：</h2><p>首先了解Git之前要明白另外一样东西，那就是版本控制系统</p>
-<p>什么叫版本控制系统呢？</p>
-<p><strong>版本控制是指对软件开发过程中各种程序代码、配置文件及说明文档等文件变更的管理，是软件配置管理的核心思想之一。</strong></p>
-<p>程序员写代码，学会一种版本控制器是必不可少的技能</p>
-<p>写代码，少不了的就是不断的修改源代码，但是代码是一种很神奇的东西，你会发现，原本只有一个BUG的改着改着<br>突然发现BUG数量不仅仅没有减少而且还增加，此时的心里感受，哈哈，应该要吐血，那么怎么办？我原来的代码也被我改掉了<br>说白了就是已经没有的备份，那就凉了~</p>
-<p>好的，小白曾经是这么干的，比如说，出现BUG吗，那我要修改，修改之前，先拷贝一份现在的源文件，然后再去改，这样子就稳了</p>
-<p>当然小白一开始做得还是很开心的，因为很简单啊，写的代码也不多，而且往往只是一个文件，随着小白的进步当中，代码往往牵涉<br>到多个文件的修改，这样子也是可以ctrl+c和ctrl+v的，但是一是一个文件夹里密密麻麻的项目，二是，看着一堆副本一副本二，简直就是头疼啊！！！</p>
-<p>好啦，现在开始讲我们的版本控制器了</p>
-<p>简单来说呢，版本控制器就是可以更加方便地对我们的代码进行管理</p>
-<p>进入正题：</p>
-<h2 id="Git"><a href="#Git" class="headerlink" title="Git:"></a>Git:</h2><p>Git：分布式版本控制系统</p>
-<p>那么有分布式那么就会有集中式，没错！</p>
-<p>SVN就是集中式版本控制系统，本章不做介绍</p>
-<p>Git很火的呢，怎么说，GitHub就是基于Git的基础上的</p>
-<p>至于分布式版本系统控制系统和集中式版本控制系统，等我把Git和SVN讲解完再进行一个比较</p>
-<h2 id="Git的安装"><a href="#Git的安装" class="headerlink" title="Git的安装"></a>Git的安装</h2><p>Git的安装可以参考官网<br><a href="https://git-scm.com/downloads" target="_blank" rel="noopener">https://git-scm.com/downloads</a><br>直接下载后安装后就可以了，很简单</p>
-<p>安装后在开始菜单中找到Git Bash<br>鼠标右键也会有</p>
-<h2 id="Git的入门"><a href="#Git的入门" class="headerlink" title="Git的入门"></a>Git的入门</h2><p>我首先创建了一个文件夹，专门进行讲解<br>文件夹名字为Git，首先创建一个文件，名字为a.txt，内容为AAA</p>
-<p>接下来进行提交</p>
-<p>在文件夹里面右键 git Bash</p>
-<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>首先我们要初始化一个仓库，这个仓库是放在我们本机的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-<p>默认为隐藏的，要设置查看隐藏文件就可以看得到多了一个文件夹</p>
-<h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><p>将文件添加到仓库里</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add a.txt</span><br></pre></td></tr></table></figure>
-<h3 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h3><p>将文件提交到仓库里</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;version 1.0&quot;</span><br></pre></td></tr></table></figure>
-<p>-m后面是本次提交的一个说明，就是提交的是什么东西(原则上可以省略，但是建议不要)</p>
-<h3 id="git-add-和-git-commit的区别"><a href="#git-add-和-git-commit的区别" class="headerlink" title="git add 和 git commit的区别"></a>git add 和 git commit的区别</h3><p>首先git add添加自己指定的文件<br>git commit不可以，一次性将所有提交，不可指定文件</p>
-<p><strong>git add是先将文件添加到暂存区，git commit将暂存区里的文件一次性提交到仓库里！！！</strong></p>
-<p>基本上简单的一个Git流程的上传部分就介绍完了</p>
-<h2 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h2><p>既然前面我们讲完了如何将文件上传到自己的仓库，那么我们现在要用到的情况下，怎么从仓库下载下来呢？？？</p>
-<p>现在为了模仿以下真实环境</p>
-<p>我进行多了两次提交</p>
-<p>第一次提交之前，在a.txt增加了一行BBB</p>
-<p>第二次提交之前，在a.txt增加了一行CCC</p>
-<p>接下来我们就要去查看记录了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/12/Git入门/1.png">
-<p>当前TXT是这样子的<br><img src="/2019/01/12/Git入门/2.png"></p>
-<p>现在要恢复啦！！！<br><strong>见证奇迹的时刻——-</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
-<p>再打开文本，发现已经恢复了，用git log去查看的时候发现也确实少了一条记录<br>HEAD代表的是当前版本<br>HEAD^代表的是当前版本的上一个版本<br>HEAD^^代表的是上上版本</p>
-<p>HEAD~N 代表的是当前邦本的上N个版本</p>
-<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><p>GitHub是提供Git仓库托管服务的,所以首先要有一个GitHub账号</p>
-<p>自行注册GitHub的账号，这个问题，不在这里描述了</p>
-<p>其次注册完账号还有做一些事情</p>
-<p>先创建一个SSH KEY</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;邮箱&quot;</span><br></pre></td></tr></table></figure>
-<p>在C盘本地账号下有一个文件夹.ssh</p>
-<p>里面有两个文件，分别是id_rsa.pub 和 id_rsa<br>分别对应着公钥和私钥</p>
-<p>登陆GitHub，打开Settings里有一个选项，SSH and GPG keys<br>添加自己机子的公钥</p>
-<p>因为Git支持SSH协议，所以添加了SSH KEY之后可以防止别人冒充来对我们的仓库进行恶意修改</p>
-<h3 id="添加文件到GitHub"><a href="#添加文件到GitHub" class="headerlink" title="添加文件到GitHub"></a>添加文件到GitHub</h3><p>首先在GitHub里面创建一个Repository</p>
-<p>比如说我创建了一个gitTest</p>
-<p>然后回到git Bash<br>添加远程仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:用户名/仓库名字.git</span><br></pre></td></tr></table></figure></p>
-<p>那么对应删除远程仓库的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote rm origin</span><br></pre></td></tr></table></figure></p>
-<p>现在我们添加成功之后，接下来就是要上传到远程仓库里面去了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-<p>接着去刷新我们的仓库，发现文件已经提交上去了</p>
-<h3 id="GitHub上下载文件"><a href="#GitHub上下载文件" class="headerlink" title="GitHub上下载文件"></a>GitHub上下载文件</h3><p>这个也很简单对应着一条命令就可以了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:用户名/仓库名字.git</span><br></pre></td></tr></table></figure>
-<p>好了，本章对Git的介绍就讲到这里，这里只是入门，后面会有一些更加多的内容介绍，敬请关注~</p>
+        <img src="/2018/12/29/PHP手动搭建环境/1.jpg">
+<h4 id="php环境手动搭建"><a href="#php环境手动搭建" class="headerlink" title="php环境手动搭建"></a>php环境手动搭建</h4><p>php下载路径<br><a href="https://windows.php.net/download" target="_blank" rel="noopener">https://windows.php.net/download</a><br>（注意一点的是要下线程安全的Thread Safe）</p>
+<p>Apache下载路径<br><a href="http://httpd.apache.org/docs/current/platform/windows.html" target="_blank" rel="noopener">http://httpd.apache.org/docs/current/platform/windows.html</a></p>
+<p>Mysql下载路径<br><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p>
+<p>Apache的安装</p>
+<p><strong>这里注意，请先把你的Apache的目录放置好再进行安装，否则安装后再移动位置，会出问题</strong><br>进入Apache目录下的conf目录修改httpd.conf<br>大概在38行附近修改成如下：<br>路径使用自己Apache的安装位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Define SRVROOT &quot;E:\Apache24&quot; </span><br><span class="line">ServerRoot &quot;$&#123;SRVROOT&#125;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>用管理员模式开启CMD<br>进入Apache的bin目录下 命令行httpd -k install进行安装<br>可以使用httpd -t进行测试，是否安装成功</p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>如果失败，导致原因有可能是：</p>
+<ol>
+<li>端口被占用<br> 解决办法：<br> netstat -aon | findstr :80<br> 查看端口是否正在被监听，如果被监听了，有两种方法<pre><code>1. 修改Apache的端口，打开Apache的conf目录下修改httpd.conf,查找Listen关键字 找到 Listen 80 修改到你想设置的端口即可
+2. 停止正在监听的服务，打开资源管理器，找到对应的PID，停止运行
+</code></pre></li>
+</ol>
+<p>这里默认上面三个已经下载好而且已经安装好了</p>
+<p>正题：<br>Apache和PHP整合<br>在Apache的conf目录下的httpd.conf文件中加入下面三行代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#加载PHP模块</span><br><span class="line">LoadModule php7_module &quot;E:/php7/php7apache2_4.dll&quot;</span><br><span class="line"></span><br><span class="line">#当执行后缀为php的文件，就去找这个模块执行</span><br><span class="line">AddType Application/x-httpd-php .php</span><br><span class="line"></span><br><span class="line">#载入php配置文件</span><br><span class="line">PHPIniDir &quot;E:/php7&quot;</span><br></pre></td></tr></table></figure>
+<p>路径选择你们的位置</p>
+<p>在php目录下拷贝php.ini-development改名为php.ini<br>在文件里面进行如下修改(目录为个人的目录)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extension_dir = &quot;E:/php7/ext&quot;</span><br></pre></td></tr></table></figure></p>
+<p>在apache里面有个htdocs目录<br>在里面写入一个php文件<br>比如:<br>test.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">	phpinfo();</span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器输入localhost/test.php</p>
+<p>如果能够正确显示则配置完成</p>
 
       
     </div>
@@ -509,8 +471,8 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i>
- Git</a>
+            <a href="/tags/PHP/" rel="tag"><i class="fa fa-tag"></i>
+ PHP</a>
           
         </div>
       
@@ -523,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/12/Python爬取网易云音乐/" rel="next" title="Python爬取网易云音乐">
-                <i class="fa fa-chevron-left"></i> Python爬取网易云音乐
+              <a href="/2018/12/27/Solr单机版的搭建/" rel="next" title="Solr单机版的搭建">
+                <i class="fa fa-chevron-left"></i> Solr单机版的搭建
               </a>
             
           </div>
@@ -533,8 +495,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/31/Git-进阶/" rel="prev" title="Git-进阶">
-                Git-进阶 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/29/Java线程/" rel="prev" title="Java线程">
+                Java线程 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -601,9 +563,9 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="小全">
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="ymbcxb">
             
-              <p class="site-author-name" itemprop="name">小全</p>
+              <p class="site-author-name" itemprop="name">ymbcxb</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -614,7 +576,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -636,7 +598,7 @@
                 
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -676,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本控制器："><span class="nav-number">1.</span> <span class="nav-text">版本控制器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git"><span class="nav-number">2.</span> <span class="nav-text">Git:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的安装"><span class="nav-number">3.</span> <span class="nav-text">Git的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git的入门"><span class="nav-number">4.</span> <span class="nav-text">Git的入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加"><span class="nav-number">4.2.</span> <span class="nav-text">添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交"><span class="nav-number">4.3.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-add-和-git-commit的区别"><span class="nav-number">4.4.</span> <span class="nav-text">git add 和 git commit的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载文件"><span class="nav-number">5.</span> <span class="nav-text">下载文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程仓库"><span class="nav-number">6.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加文件到GitHub"><span class="nav-number">6.1.</span> <span class="nav-text">添加文件到GitHub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub上下载文件"><span class="nav-number">6.2.</span> <span class="nav-text">GitHub上下载文件</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#php环境手动搭建"><span class="nav-number">1.</span> <span class="nav-text">php环境手动搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">2.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
             
 
           </div>
