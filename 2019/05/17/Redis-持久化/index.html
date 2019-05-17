@@ -385,7 +385,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计1,179 字</span>
+                  <span class="post-meta-item-text">字数统计1,540 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -399,7 +399,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长5 分钟</span>
+                  <span class="post-meta-item-text">阅读时长6 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -475,6 +475,61 @@
 </li>
 </ul>
 <img src="/2019/05/17/Redis-持久化/02.jpg">
+<p><strong>上demo</strong></p>
+<p>首先还是要修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#开启append only模式之后，redis会把所接收到的每一次写操作请求都追加到appendonly.aof文件中</span><br><span class="line">appendonly yes</span><br><span class="line">#AOF的文件名</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br><span class="line">#默认使用everysec策略</span><br><span class="line">appendfsync everysec</span><br><span class="line">#是否会在append的时候，由于请求过长，而阻止</span><br><span class="line">no-appendfsync-on-rewrite no</span><br><span class="line">#默认的aof的最小文件大小，以及增长率</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">#当aof文件出错的时候，重启的时候是否忽略错误</span><br><span class="line">aof-load truncated yes</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 插入两条数据</span><br><span class="line">$ set k1 v1</span><br><span class="line">$ set k2 v2</span><br></pre></td></tr></table></figure>
+<p>去data目录下会发现有aof的文件生成</p>
+<p>把文件删除掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 手动生成AOF文件</span><br><span class="line">$ bgrewriteaof</span><br></pre></td></tr></table></figure>
+<p>可以看到也是有AOF文件生成的</p>
+<h4 id="RDB与AOF的区别"><a href="#RDB与AOF的区别" class="headerlink" title="RDB与AOF的区别"></a>RDB与AOF的区别</h4><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>RDB</th>
+<th>AOF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动优先级</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>体积</td>
+<td>小</td>
+<td>大</td>
+</tr>
+<tr>
+<td>恢复速度</td>
+<td>快</td>
+<td>慢</td>
+</tr>
+<tr>
+<td>数据安全性</td>
+<td>丢数据</td>
+<td>根据策略决定</td>
+</tr>
+<tr>
+<td>轻重</td>
+<td>重</td>
+<td>轻</td>
+</tr>
+</tbody>
+</table>
+<h5 id="RDB的选择"><a href="#RDB的选择" class="headerlink" title="RDB的选择"></a>RDB的选择</h5><ul>
+<li>在单机操作大多数情况下，建议关闭</li>
+<li>当数据恢复的量级比较大的情况下建议开启</li>
+<li>在集群的情况下，建议从节点开</li>
+</ul>
+<h5 id="AOF的最佳选择"><a href="#AOF的最佳选择" class="headerlink" title="AOF的最佳选择"></a>AOF的最佳选择</h5><ul>
+<li>在单机大多数操作情况下，建议开启</li>
+<li>AOF重写集中管理（防止Redis自动做重写操作而导致fork太多引起的内存不足等问题）</li>
+<li>建议使用everysec策略</li>
+</ul>
+
       
     </div>
     
@@ -666,7 +721,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是持久化"><span class="nav-number">1.</span> <span class="nav-text">什么是持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化的两种方式"><span class="nav-number">2.</span> <span class="nav-text">持久化的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB"><span class="nav-number">2.1.</span> <span class="nav-text">RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的三种触发机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">RDB的三种触发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#save（同步机制）"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">save（同步机制）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#bgsave（异步机制）"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">bgsave（异步机制）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自动（根据配置文件的配置）"><span class="nav-number">2.1.2.</span> <span class="nav-text">自动（根据配置文件的配置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的问题"><span class="nav-number">2.1.3.</span> <span class="nav-text">RDB的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#耗时，耗性能"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">耗时，耗性能</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不可控，丢失数据"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">不可控，丢失数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF"><span class="nav-number">2.2.</span> <span class="nav-text">AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF的三种策略"><span class="nav-number">2.2.1.</span> <span class="nav-text">AOF的三种策略</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#always：每次都写进"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">always：每次都写进</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#everysec：每一秒写进一次"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">everysec：每一秒写进一次</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#no：根据操作系统决定"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">no：根据操作系统决定</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写"><span class="nav-number">2.2.2.</span> <span class="nav-text">AOF重写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写的两种方式"><span class="nav-number">2.2.3.</span> <span class="nav-text">AOF重写的两种方式</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是持久化"><span class="nav-number">1.</span> <span class="nav-text">什么是持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化的两种方式"><span class="nav-number">2.</span> <span class="nav-text">持久化的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB"><span class="nav-number">2.1.</span> <span class="nav-text">RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的三种触发机制"><span class="nav-number">2.1.1.</span> <span class="nav-text">RDB的三种触发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#save（同步机制）"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">save（同步机制）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#bgsave（异步机制）"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">bgsave（异步机制）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自动（根据配置文件的配置）"><span class="nav-number">2.1.2.</span> <span class="nav-text">自动（根据配置文件的配置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的问题"><span class="nav-number">2.1.3.</span> <span class="nav-text">RDB的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#耗时，耗性能"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">耗时，耗性能</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#不可控，丢失数据"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">不可控，丢失数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF"><span class="nav-number">2.2.</span> <span class="nav-text">AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF的三种策略"><span class="nav-number">2.2.1.</span> <span class="nav-text">AOF的三种策略</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#always：每次都写进"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">always：每次都写进</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#everysec：每一秒写进一次"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">everysec：每一秒写进一次</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#no：根据操作系统决定"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">no：根据操作系统决定</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写"><span class="nav-number">2.2.2.</span> <span class="nav-text">AOF重写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF重写的两种方式"><span class="nav-number">2.2.3.</span> <span class="nav-text">AOF重写的两种方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB与AOF的区别"><span class="nav-number">2.3.</span> <span class="nav-text">RDB与AOF的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB的选择"><span class="nav-number">2.3.1.</span> <span class="nav-text">RDB的选择</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF的最佳选择"><span class="nav-number">2.3.2.</span> <span class="nav-text">AOF的最佳选择</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
