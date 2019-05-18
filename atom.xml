@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-05-17T14:04:55.531Z</updated>
+  <updated>2019-05-18T07:50:32.663Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis-主从复制</title>
+    <link href="http://yoursite.com/2019/05/18/Redis-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"/>
+    <id>http://yoursite.com/2019/05/18/Redis-主从复制/</id>
+    <published>2019-05-18T14:52:43.000Z</published>
+    <updated>2019-05-18T07:50:32.663Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/2019/05/18/Redis-主从复制/01.png"><h3 id="单机版的Redis"><a href="#单机版的Redis" class="headerlink" title="单机版的Redis"></a>单机版的Redis</h3><p>单机版的Redis能够支持十万的QPS（<em>QPS</em>是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准）</p><p>假设需要一百万怎么办？那就多台Redis实现集群</p><p>单机版的Redis，万一坏了，怎么办，数据没了怎么办？那就多台Redis进行数据的一个复制</p><p>所以有了Redis的主从复制的概念</p><h3 id="Redis主从复制"><a href="#Redis主从复制" class="headerlink" title="Redis主从复制"></a>Redis主从复制</h3><p>主从复制可以理解为，一主多从或者一主一丛（一个主节点可以有多个从节点，一个从节点只能有一个主节点，数据流向是单向的，只能从master到slave）</p><p>可以做数据副本，也可以提高扩展读的性能</p><h3 id="Redis主从复制的配置"><a href="#Redis主从复制的配置" class="headerlink" title="Redis主从复制的配置"></a>Redis主从复制的配置</h3><p>实现主从复制有以下两种方式</p><ul><li>slaveof命令</li><li>配置文件</li></ul><p>上demo，首先是用slaveof</p><p>先走一遍主节点的配置文件redis-6379.conf</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br><span class="line">logfile &quot;6379.log&quot;</span><br><span class="line">dbfilename dump-6379.rdb</span><br><span class="line">dir /redis/data</span><br><span class="line">#关闭RDB的save配置</span><br></pre></td></tr></table></figure><p>再走一遍从节点的配置文件redis-6380.conf</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br><span class="line">logfile &quot;6380.log&quot;</span><br><span class="line">dbfilename dump-6380.rdb</span><br><span class="line">dir /redis/data</span><br><span class="line">slaveof 127.0.0.1 6379</span><br><span class="line">#关闭RDB的save配置</span><br></pre></td></tr></table></figure><p>启动两个redis</p><p>先查看6379端口的redis</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ info replication</span><br></pre></td></tr></table></figure><img src="/2019/05/18/Redis-主从复制/02.png"><p>然后查看6380端口的redis</p><img src="/2019/05/18/Redis-主从复制/03.jpg"><p>根据上面的两个图，可以看到6379的redis是显示master也就是主节点</p><p>而6380的redis是现实slave也就是从节点</p><p>接下来是实例操作</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在6379端口的redis进行set</span><br><span class="line">$ set k1 v1</span><br><span class="line"># 在6380端口的redis进行get</span><br><span class="line">$ get k1</span><br></pre></td></tr></table></figure><p>会发现6380的redis是可以get到的</p><p>如果想将6380的redis变为单独的节点，也就是从节点的</p><p>可以动态修改</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ slaveof no one</span><br><span class="line">#再查看信息的分片，会发现，变成master节点了</span><br><span class="line">$ info replication</span><br></pre></td></tr></table></figure><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>主从复制的时候，我们并没有开启RDB和AOP，但是为什么从节点能够把主节点的数据来进行一个记录呢？这是因为</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;img src=&quot;/2019/05/18/Redis-主从复制/01.png&quot;&gt;
+&lt;h3 id=&quot;单机版的Redis&quot;&gt;&lt;a href=&quot;#单机版的Redis&quot; class=&quot;headerlink&quot; title=&quot;单机版的Redis&quot;&gt;&lt;/a&gt;单机版的Redis&lt;/h3&gt;&lt;p&gt;
+      
+    
+    </summary>
+    
+      <category term="技术分享" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
+    
+    
+      <category term="Redis" scheme="http://yoursite.com/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis-持久化</title>
