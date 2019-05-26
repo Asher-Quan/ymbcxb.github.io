@@ -124,7 +124,7 @@
 
 
 
-  <title>Git-进阶 | 小Q博客</title>
+  <title>Redis-Cluster常见问题 | 小Q博客</title>
   
 
 
@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/Git-进阶/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/26/Redis-Cluster常见问题/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ymbcxb">
@@ -301,7 +301,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Git-进阶</h2>
+          <h2 class="post-title" itemprop="name headline">Redis-Cluster常见问题</h2>
         
 
         <div class="post-meta">
@@ -313,7 +313,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T21:58:03+08:00">2019-01-31</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T13:00:30Z">2019-05-26</time>
             
 
             
@@ -321,28 +321,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术分享/" itemprop="url" rel="index">
-                    <span itemprop="name">技术分享</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -352,8 +330,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/31/Git-进阶/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/31/Git-进阶/" itemprop="commentCount"></span>
+                <a href="/2019/05/26/Redis-Cluster常见问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/26/Redis-Cluster常见问题/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -361,7 +339,7 @@
 
           
           
-             <span id="/2019/01/31/Git-进阶/" class="leancloud_visitors" data-flag-title="Git-进阶">
+             <span id="/2019/05/26/Redis-Cluster常见问题/" class="leancloud_visitors" data-flag-title="Redis-Cluster常见问题">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -385,7 +363,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计636 字</span>
+                  <span class="post-meta-item-text">字数统计1,654 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -399,7 +377,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长2 分钟</span>
+                  <span class="post-meta-item-text">阅读时长6 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -421,49 +399,107 @@
       
 
       
-        <h2 id="Git进阶"><a href="#Git进阶" class="headerlink" title="Git进阶"></a>Git进阶</h2><h3 id="本地分支管理"><a href="#本地分支管理" class="headerlink" title="本地分支管理"></a>本地分支管理</h3><p>一个项目如果是你一个人开发，那就没什么，反正就一份项目，你想做哪个模块就做哪个模块<br>但是这样子开发效率慢啊</p>
-<p>要是两个人开发，开发效率提高一倍，那么怎么合并起来呢？？？</p>
-<p>如果说两个人做的地方，刚好互不影响，那很简单，学过数学的人都知道，直接合并起来嘛</p>
-<p>问题来了！！！</p>
-<p>如果两个人做的地方有重复怎么办？？？一行一行对比，然后一行行改?还是说一个人做完再让另外一个人做？那这和一个人做有什么区别</p>
-<p>这就太麻烦了</p>
-<p>所以引入了分支管理！这是个好东西</p>
-<img src="/2019/01/31/Git-进阶/01.PNG">
-<h4 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h4><p>根据上图我们可以知道，我们首先是有一个主干的(称为master分支)</p>
-<p>我们每次提交，会多一个新的节点</p>
-<img src="/2019/01/31/Git-进阶/02.png">
-<p>提交越多，master分支也会边长</p>
-<p>创建分支的代码：(新的分支名字为dev)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch dev</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/31/Git-进阶/03.png">
-<p>我们可以看到一个*标记在master，这代表着我们操控着master分支<br>假设我们要切换分支：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev</span><br></pre></td></tr></table></figure>
-<p>(我们也有一个更加方便的代码，创建分支同时切换到该分支上)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br></pre></td></tr></table></figure>
-<p>接下来，我们执行一次提交</p>
-<img src="/2019/01/31/Git-进阶/04.png">
-<p>然后我又返回到master里再提交一次</p>
-<img src="/2019/01/31/Git-进阶/05.png">
-<h4 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h4><p>首先切换到master分支<br>将dev分支合并到master分支下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge dev</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/31/Git-进阶/06.png">
-<h4 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d dev</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/31/Git-进阶/07.png">
-<h3 id="GitHub上实现分支管理"><a href="#GitHub上实现分支管理" class="headerlink" title="GitHub上实现分支管理"></a>GitHub上实现分支管理</h3><p>上面说这么多，其实为了熟悉一下命令，还有通过一些图来表明，每个操作，到底发生了什么</p>
-<p>接下来才是实际开发中会用到的，结合GitHub上讲解</p>
-<p>首先我拉取一下我Github，我仓库里只有一个A.txt,里面有句Hello</p>
-<p>我新建两个文件夹用来模拟两台电脑</p>
-<img src="/2019/01/31/Git-进阶/08.png">
-<p><strong> 接着做如下操作 </strong></p>
-<img src="/2019/01/31/Git-进阶/09.png">
-<img src="/2019/01/31/Git-进阶/10.png">
-<p>然后把文件都添加到本地仓库中</p>
-<p>接着在Git2里推送到github上的分支下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br><span class="line">git push -u origin dev</span><br></pre></td></tr></table></figure></p>
-<p>这样子在Github上就有分支了</p>
-<p>接着Git去上传自己的到github的master下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure></p>
-<p>在创建一个文件夹Git3</p>
-<p>分别把两个分支拉下来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git clone 路径</span><br><span class="line">进入仓库</span><br><span class="line">git checkout dev </span><br><span class="line">git clone -b dev(分支名) 路径</span><br><span class="line">git checkout master</span><br><span class="line">git merge dev</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+        <img src="/2019/05/26/Redis-Cluster常见问题/01.png">
+<h3 id="集群完整性"><a href="#集群完整性" class="headerlink" title="集群完整性"></a>集群完整性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 默认为yes</span><br><span class="line">cluster-require-full-coverage yes</span><br></pre></td></tr></table></figure>
+<p>默认的配置保证了两个问题：</p>
+<ul>
+<li>集群中的161384个槽全部可用，保证了集群的完整性</li>
+<li>节点故障或者故障转移的时候，进行set操作会报 (error) CLUSTERRDOWN The cluster is down</li>
+</ul>
+<p>一个节点坏了，整个集群都不可用了，这在实际业务上是有问题的</p>
+<p>所以我们通常需要将它修改为no</p>
+<h3 id="带宽消耗"><a href="#带宽消耗" class="headerlink" title="带宽消耗"></a>带宽消耗</h3><p>RedisCluster会定期进行Ping/Pong进行心跳检测，也会进行信息的一个交互</p>
+<p>官方建议RedisCluster的节点数量不要超过1000个，因为RedisCluster对带宽的消耗很高</p>
+<p>主要来自下面三个方面</p>
+<ul>
+<li>消息发送频率，节点发现与其他节点最后通信时间超过cluster-node-timeout/2时会直接发送ping消息</li>
+<li>消息数据量：slots槽数组（2KB空间）和整个集群1/10的状态数据（10个节点的状态数据约1KB）</li>
+<li>节点部署的机器规模：集群分布的机器越多且每台机器划分的节点数越均匀，则集群内整体的可用带宽就越高</li>
+</ul>
+<p>举个例子：</p>
+<p>规模：节点200个，20台物理机（每台10个节点）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster-node-timeout = 15000</span><br></pre></td></tr></table></figure>
+<p>ping/pong的带宽为25Mb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster-node-timeout = 20000</span><br></pre></td></tr></table></figure>
+<p>ping/pong带宽会低于15Mb</p>
+<h4 id="优化："><a href="#优化：" class="headerlink" title="优化："></a>优化：</h4><ol>
+<li>避免多业务使用一个集群，大业务可以多集群</li>
+<li>cluster-node-timeout:带宽和故障转移速度的均衡</li>
+<li>尽量均匀分配到多机器上，保证高可用和带宽</li>
+</ol>
+<h3 id="Pub-Sub广播"><a href="#Pub-Sub广播" class="headerlink" title="Pub/Sub广播"></a>Pub/Sub广播</h3><p>问题：publish在集群每个节点广播：加重带宽</p>
+<p>解决：针对这种情况建议使用sentinel结构专门用于Pub/Sub功能，从而<br>规避这一问题。</p>
+<h3 id="数据倾斜"><a href="#数据倾斜" class="headerlink" title="数据倾斜"></a>数据倾斜</h3><p>集群内特定节点<strong>数据量</strong>过大将导致节点之间负载不均，影响集群均衡和运维成本。</p>
+<p>数据倾斜主要分为以下几种：</p>
+<ol>
+<li><p>·节点和槽分配严重不均。</p>
+<p>当节点对应槽数量不均匀时，可以使用redis-trib.rb rebalance命令进行平衡</p>
+</li>
+<li><p>·不同槽对应键数量差异过大。</p>
+<p>通过命令：cluster countkeysinslot{slot}可以获取槽对应的键数量，识别出哪些槽映射了过多的键。再通过命令clustergetkeysinslot{slot}{count}循环迭代出槽下所有的键。</p>
+</li>
+<li><p>·集合对象包含大量元素。</p>
+<p>对于大集合对象的识别可以使用redis-cli–bigkeys命令识别</p>
+</li>
+<li><p>·内存相关配置不一致。</p>
+<p>当集群大量使用hash、set等数据结构时，如果内存压缩数据结构配置不一致，极端情况下会相差数倍的内存，从而造成节点内存量倾斜。</p>
+</li>
+</ol>
+<h3 id="请求倾斜"><a href="#请求倾斜" class="headerlink" title="请求倾斜"></a>请求倾斜</h3><p>集群内特定节点<strong>请求量/流量</strong>过大将导致节点之间负载不均，影响集群均衡和运维成本。</p>
+<p>避免方式如下：</p>
+<ol>
+<li>合理设计键，热点大集合对象做拆分或使用hmget替代hgetall避免整体读取。</li>
+<li>不要使用热键作为hash_tag，避免映射到同一槽。</li>
+<li>对于一致性要求不高的场景，客户端可使用本地缓存减少热键调用。</li>
+</ol>
+<h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h4 id="只读连接"><a href="#只读连接" class="headerlink" title="只读连接"></a>只读连接</h4><p>集群模式下从节点不接受任何读写请求，发送过来的键命令会重定向到负责槽的主节点上（其中包括它的主节点）</p>
+<p>当需要使用从节点分担主节点读压力时，可以使用readonly命令打开客户端连接只读状态。</p>
+<p><strong>注意：readonly是连接级别生效，每次连接都要开启一遍才可以</strong></p>
+<img src="/2019/05/26/Redis-Cluster常见问题/02.png">
+<h4 id="读写分离-1"><a href="#读写分离-1" class="headerlink" title="读写分离"></a>读写分离</h4><p>问题：复制延迟，读取过期数据，从节点故障</p>
+<p>集群模式下读写分离涉及对客户端修改如下：</p>
+<ol>
+<li>维护每个主节点可用从节点列表</li>
+<li>针对读命令维护请求节点路由</li>
+<li>从节点新建连接开启readonly转态</li>
+</ol>
+<p><strong>集群模式下读写分离成本比较高，可以直接扩展主节点数量提高集群性能，一般不建议集群模式下做读写分离</strong></p>
+<p>集群读写分离有时用于特殊业务场景如：</p>
+<ol>
+<li>利用复制的最终一致性使用多个从节点做跨机房部署降低读命令网络延迟。</li>
+<li>主节点故障转移时间过长，业务端把读请求路由给从节点保证读操作可用。</li>
+</ol>
+<h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>应用Redis集群时，常需要把单机Redis数据迁移到集群环境。redis-trib.rb工具提供了导入功能，用于数据从单机向集群环境迁移的场景，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ redis-trib.rb import host:port --from &lt;arg&gt; --copy --replace</span><br></pre></td></tr></table></figure>
+<img src="/2019/05/26/Redis-Cluster常见问题/03.png">
+<p>redis-trib.rb import命令内部采用批量scan和migrate的方式迁移数据。这<br>种迁移方式存在以下缺点：</p>
+<ol>
+<li>迁移只能从单机节点向集群环境导入数据。</li>
+<li>不支持在线迁移数据，迁移数据时应用方必须停写，无法平滑迁移<br>数据。</li>
+<li>迁移过程中途如果出现超时等错误，不支持断点续传只能重新全量<br>导入。</li>
+<li>使用单线程进行数据迁移，大数据量迁移速度过慢</li>
+</ol>
+<p>正因为这些问题，社区开源了很多迁移工具，这里推荐一款唯品会开发的redis-migrate-tool，该工具可满足大多数Redis迁移需求，特点如下：</p>
+<ol>
+<li>·支持单机、Twemproxy、Redis Cluster、RDB/AOF等多种类型的数据迁移</li>
+<li>工具模拟成从节点基于复制流迁移数据，从而支持在线迁移数据，业务方不需要停写</li>
+<li>采用多线程加速数据迁移过程且提供数据校验和查看迁移状态等功能</li>
+</ol>
+<h3 id="集群VS单机"><a href="#集群VS单机" class="headerlink" title="集群VS单机"></a>集群VS单机</h3><h4 id="集群限制"><a href="#集群限制" class="headerlink" title="集群限制"></a>集群限制</h4><ol>
+<li>key批量操作支持有限：mget，mset必须在一个slot上</li>
+<li>key事务和Lua支持有限：操作的key必须在一个节点上</li>
+<li>key是数据分区的最小粒度，不支持bigkey</li>
+<li>不支持多个数据库：集群下只有一个db0</li>
+<li>复制只支持复制一层，不支持树形复制结构</li>
+</ol>
+<h4 id="思考分布式Redis"><a href="#思考分布式Redis" class="headerlink" title="思考分布式Redis"></a>思考分布式Redis</h4><ol>
+<li>RedisCluster:用来满足容量和性能的扩展性，但是要看业务来使用</li>
+<li>大多数情况客户端性能会降低</li>
+<li>命令无法跨节点使用</li>
+<li>Lua和事务无法跨节点使用</li>
+<li>客户端维护更加复杂</li>
+</ol>
+
       
     </div>
     
@@ -490,13 +526,6 @@
 </div>
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i>
- Git</a>
-          
-        </div>
-      
 
       
       
@@ -506,8 +535,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/13/Git入门/" rel="next" title="Git入门">
-                <i class="fa fa-chevron-left"></i> Git入门
+              <a href="/2019/05/20/Redis-Cluster(集群)/" rel="next" title="Redis-Cluster(集群)">
+                <i class="fa fa-chevron-left"></i> Redis-Cluster(集群)
               </a>
             
           </div>
@@ -515,10 +544,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/26/Centos搭建git私服/" rel="prev" title="Centos搭建git私服">
-                Centos搭建git私服 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -659,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git进阶"><span class="nav-number">1.</span> <span class="nav-text">Git进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地分支管理"><span class="nav-number">1.1.</span> <span class="nav-text">本地分支管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建分支"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并分支"><span class="nav-number">1.1.2.</span> <span class="nav-text">合并分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除分支"><span class="nav-number">1.1.3.</span> <span class="nav-text">删除分支</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub上实现分支管理"><span class="nav-number">1.2.</span> <span class="nav-text">GitHub上实现分支管理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群完整性"><span class="nav-number">1.</span> <span class="nav-text">集群完整性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带宽消耗"><span class="nav-number">2.</span> <span class="nav-text">带宽消耗</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化："><span class="nav-number">2.1.</span> <span class="nav-text">优化：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-Sub广播"><span class="nav-number">3.</span> <span class="nav-text">Pub/Sub广播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据倾斜"><span class="nav-number">4.</span> <span class="nav-text">数据倾斜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求倾斜"><span class="nav-number">5.</span> <span class="nav-text">请求倾斜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写分离"><span class="nav-number">6.</span> <span class="nav-text">读写分离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#只读连接"><span class="nav-number">6.1.</span> <span class="nav-text">只读连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读写分离-1"><span class="nav-number">6.2.</span> <span class="nav-text">读写分离</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据迁移"><span class="nav-number">7.</span> <span class="nav-text">数据迁移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群VS单机"><span class="nav-number">8.</span> <span class="nav-text">集群VS单机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集群限制"><span class="nav-number">8.1.</span> <span class="nav-text">集群限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考分布式Redis"><span class="nav-number">8.2.</span> <span class="nav-text">思考分布式Redis</span></a></li></ol></li></ol></div>
             
 
           </div>
