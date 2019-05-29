@@ -385,7 +385,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计1,324 字</span>
+                  <span class="post-meta-item-text">字数统计2,210 字</span>
                 
                 <span title="字数统计"></span>
               
@@ -399,7 +399,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">阅读时长5 分钟</span>
+                  <span class="post-meta-item-text">阅读时长8 分钟</span>
                 
                 <span title="阅读时长"></span>
               
@@ -459,7 +459,7 @@
 <h5 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h5><p>可以根据自己的业务需求来完成缓存的更新，解决了单纯使用expire设置过期时间的局限性</p>
 <p>一致性最高，但如果主动更新发生了问题，那么这条数据很可能很长时间不会更新，所以建议结合超时剔除一起使用效果会更好</p>
 <h5 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h5><p>维护成本会比较高，开发者需要自己来完成更新，并保证更新操作的正确性</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><img src="/2019/05/27/Redis-缓存设计/03.png">
+<img src="/2019/05/27/Redis-缓存设计/03.png">
 <p>有两个建议：</p>
 <ol>
 <li>低一致性业务建议配置最大内存和淘汰策略的方式使用</li>
@@ -478,8 +478,50 @@
 <li>全部数据可能每次传输产生的网络流量会比较大，耗时相对较大，在极端情况下会阻塞网络</li>
 <li>全部数据的序列化和反序列化的CPU开销更大</li>
 </ol>
-<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><img src="/2019/05/27/Redis-缓存设计/04.png">
+<img src="/2019/05/27/Redis-缓存设计/04.png">
 <p>缓存粒度问题是一个容易被忽视的问题，如果使用不当，可能会造成很多无用空间的浪费，网络带宽的浪费，代码通用性较差等情况，需要综合数据通用性、空间占用比、代码维护性三点进行取舍</p>
+<h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><img src="/2019/05/27/Redis-缓存设计/05.png">
+<p>缓存穿透是指查询一个根本不存在的数据，缓存层和存储层都不会命中，当被别人恶意访问查询一个不存在的数据的时候，请求就会访问到存储层（Mysql），当请求量很大的情况下，Mysql是承受不了的，可能造成后端存储宕掉，而且缓存层也失去了保护存储层的意义</p>
+<p>解决办法：</p>
+<ol>
+<li><p>缓存空对象</p>
+<p>当第2步存储层不命中后，仍然将空对象保留到缓存层中，之后再访问这个数据将会从缓存中获取，这样就保护了后端数据源，缺点：</p>
+<ol>
+<li><p>缓存层中存了更多的键，需要更多的内存空间(也是一种危害)</p>
+<p><strong>措施：是将这类的Key设置一个较短的过期时间</strong></p>
+</li>
+<li><p>缺点：缓存层和存储层的短暂不一致</p>
+<p><strong>措施：可以利用消息系统或者其他方式清除掉缓存层中的空对象</strong></p>
+</li>
+</ol>
+</li>
+<li><p>布隆过滤器</p>
+<p>在访问缓存层之前，将存在的key用布隆过滤器提前保存起来,当访问不存在的key的时候，布隆过滤器直接返回，可以避免访问缓存层和存储层</p>
+</li>
+<li><p>使用互斥锁：根据key获取value值为空时，锁上，从数据库中load数据后再释放锁（适合并发量比较低的情况，因为并发量很大的情况下，会导致阻塞和死锁的情况）</p>
+</li>
+</ol>
+<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><p>由于缓存层承载大量请求，当cache服务异常/脱机，流量打向了后端的存储层，造成存储层也会级联宕机的情<br>况，除了缓存服务异常和脱机的情况，还有另外一种情况：缓存key大片面积失效（时间到期）也会导致缓存雪崩</p>
+<img src="/2019/05/27/Redis-缓存设计/06.png">
+<p>关于解决缓存服务异常和脱机需要注意的几个问题:</p>
+<ol>
+<li><p>保证缓存层服务高可用性</p>
+<p>如果缓存层设计成高可用的，即使个别节点、个别机器、甚至是机房宕掉，依然可以提供服务</p>
+</li>
+<li><p>依赖隔离组件为后端限流并降级</p>
+<p>我们需要对重要的资源（例如Redis、MySQL、HBase、外部接口）都进行隔离，让每种资源都单独运行在自己的线程池中，即使个别资源出现了问题，对其他服务没有影响</p>
+</li>
+<li><p>提前演练</p>
+<p>演练缓存层宕掉后，应用以及后端的负载情况以及可能出现的问题，在此基础上做一些预案设定</p>
+</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li>在设置缓存时候，不设置统一的过期时间，而是在一个范围内随机设置过期时间，以防止大量的key同时过期</li>
+<li>使用互斥锁：根据key获取value值为空时，锁上，从数据库中load数据后再释放锁（适合并发量比较低的情况，因为并发量很大的情况下，会导致阻塞和死锁的情况）</li>
+<li>提前使用互斥锁，比如key10S过期，在内部使用一个标识key 8S过期，假设标识key过期的时候，就给对应的Key延长过期时间</li>
+<li>双缓存，缓存A和缓存B，A设置超时时间，B不设值超时时间，先从A读缓存，如果A没有则读B，并且更新A缓存和B缓存（对存储的消耗比较大）</li>
+</ol>
 
       
     </div>
@@ -672,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存有什么作用？"><span class="nav-number">1.</span> <span class="nav-text">缓存有什么作用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存更新策略"><span class="nav-number">2.</span> <span class="nav-text">缓存更新策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LRU-LFU-FIFO算法剔除"><span class="nav-number">2.1.</span> <span class="nav-text">LRU/LFU/FIFO算法剔除</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-number">2.1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点"><span class="nav-number">2.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超时剔除"><span class="nav-number">2.2.</span> <span class="nav-text">超时剔除</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主动更新"><span class="nav-number">2.3.</span> <span class="nav-text">主动更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存粒度"><span class="nav-number">3.</span> <span class="nav-text">缓存粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#总结-1"><span class="nav-number">3.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存有什么作用？"><span class="nav-number">1.</span> <span class="nav-text">缓存有什么作用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存更新策略"><span class="nav-number">2.</span> <span class="nav-text">缓存更新策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LRU-LFU-FIFO算法剔除"><span class="nav-number">2.1.</span> <span class="nav-text">LRU/LFU/FIFO算法剔除</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-number">2.1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点"><span class="nav-number">2.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超时剔除"><span class="nav-number">2.2.</span> <span class="nav-text">超时剔除</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主动更新"><span class="nav-number">2.3.</span> <span class="nav-text">主动更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存粒度"><span class="nav-number">3.</span> <span class="nav-text">缓存粒度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存穿透"><span class="nav-number">4.</span> <span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存雪崩"><span class="nav-number">5.</span> <span class="nav-text">缓存雪崩</span></a></li></ol></div>
             
 
           </div>
