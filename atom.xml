@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-05-29T05:38:25.468Z</updated>
+  <updated>2019-06-23T13:01:17.465Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>布隆过滤器</title>
+    <link href="http://yoursite.com/2019/06/23/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    <id>http://yoursite.com/2019/06/23/布隆过滤器/</id>
+    <published>2019-06-23T14:51:43.000Z</published>
+    <updated>2019-06-23T13:01:17.465Z</updated>
+    
+    <content type="html"><![CDATA[<p>先探讨一个问题？</p><p>现在有50亿个电话号码，现在要快速准确判断这些电话号码是否已经存在？</p><ol><li>数据库查询？太慢了</li><li>数据使用集合存放在内存？内存浪费</li><li>布隆过滤器！</li></ol><h3 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h3><h4 id="什么是布隆过滤器"><a href="#什么是布隆过滤器" class="headerlink" title="什么是布隆过滤器"></a>什么是布隆过滤器</h4><p>它实际上是一个很长的二进制向量和一系列随机映射函数</p><h4 id="布隆过滤器的实现原理"><a href="#布隆过滤器的实现原理" class="headerlink" title="布隆过滤器的实现原理"></a>布隆过滤器的实现原理</h4><p>当一个元素被加入集合时，通过K个散列函数将这个元素映射成一个位数组中的K个点，把它们置为1。检索时，我们只要看看这些点是不是都是1就（大约）知道集合中有没有它了：如果这些点有任何一个0，则被检元素一定不在；如果都是1，则被检元素很可能在。这就是布隆过滤器的基本思想。</p><p>画个图描述一下</p><img src="/2019/06/23/布隆过滤器/01.jpg"><h4 id="布隆过滤器的误差率"><a href="#布隆过滤器的误差率" class="headerlink" title="布隆过滤器的误差率"></a>布隆过滤器的误差率</h4><p>直观因素：m/n的比率，hash函数的个数</p><p>1个元素，1个hash函数，任意一个比特为1的概率为1/m，依然为0的概率为1-1/m</p><p>k给函数，依然为0的概率为（1-1/m）^k，n个元素，依然为0的概率为(1-1/m)^nk</p><p>被设置为1的概率为1-(1-1/m)^nk</p><p>新元素权重的概率为（1-(1-1/m)^nk）^k</p><h4 id="本地布隆过滤器"><a href="#本地布隆过滤器" class="headerlink" title="本地布隆过滤器"></a>本地布隆过滤器</h4><p>使用Guava来实现</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class BloomFilterDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        //构建布隆过滤器</span><br><span class="line">        BloomFilter&lt;String&gt; bloomFilter = BloomFilter.create(new Funnel&lt;String&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void funnel(String s, PrimitiveSink primitiveSink) &#123;</span><br><span class="line">                primitiveSink.putString(s, Charsets.UTF_8);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,10000,0.0001);</span><br><span class="line">        //插入数据</span><br><span class="line">        for (int i = 0 ; i &lt; 1000 ; i++)&#123;</span><br><span class="line">            bloomFilter.put(&quot;i_&quot;+i);</span><br><span class="line">        &#125;</span><br><span class="line">        //测试结果</span><br><span class="line">        for (int i = 0 ; i &lt; 1005 ; i++)&#123;</span><br><span class="line">            if(!bloomFilter.mightContain(&quot;i_&quot;+i))&#123;</span><br><span class="line">                System.out.println(&quot;no&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="基于Redis的布隆过滤器"><a href="#基于Redis的布隆过滤器" class="headerlink" title="基于Redis的布隆过滤器"></a>基于Redis的布隆过滤器</h4><p>redis 在 4.0 的版本中加入了 module 功能，布隆过滤器可以通过 module 的形式添加到 redis 中，所以使用 redis 4.0 以上的版本可以通过加载 module 来使用 redis 中的布隆过滤器</p><p>在Docker中</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; docker run -d -p 6379:6379 --name bloomfilter redislabs/rebloom</span><br><span class="line">&gt; docker exec -it bloomfilter redis-cli</span><br><span class="line"># redis-cli</span><br><span class="line"># 127.0.0.1:6379&gt;</span><br><span class="line"># 127.0.0.1:6379&gt; BF.ADD newFilter foo</span><br><span class="line">(integer) 1</span><br><span class="line"># 127.0.0.1:6379&gt; BF.EXISTS newFilter foo</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;先探讨一个问题？&lt;/p&gt;
+&lt;p&gt;现在有50亿个电话号码，现在要快速准确判断这些电话号码是否已经存在？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;数据库查询？太慢了&lt;/li&gt;
+&lt;li&gt;数据使用集合存放在内存？内存浪费&lt;/li&gt;
+&lt;li&gt;布隆过滤器！&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;布隆
+      
+    
+    </summary>
+    
+      <category term="技术分享" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Redis-缓存设计</title>
@@ -506,33 +536,6 @@
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
       <category term="爬虫" scheme="http://yoursite.com/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Solr集群版的搭建</title>
-    <link href="http://yoursite.com/2019/01/10/Solr%E9%9B%86%E7%BE%A4%E7%89%88%E7%9A%84%E6%90%AD%E5%BB%BA/"/>
-    <id>http://yoursite.com/2019/01/10/Solr集群版的搭建/</id>
-    <published>2019-01-10T10:35:59.000Z</published>
-    <updated>2019-04-29T06:05:16.131Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="Solr集群版的搭建"><a href="#Solr集群版的搭建" class="headerlink" title="Solr集群版的搭建"></a>Solr集群版的搭建</h3><p>搭建Solr集群</p><p>首选需要配置zookeeper集群</p><p>先搭建四个tomcat</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat01</span><br><span class="line">cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat02</span><br><span class="line">cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat03</span><br><span class="line">cp -r apache-tomcat-7.0.47 /home/quan/app/solr-cloud/tomcat04</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim tomcat01/conf/server.xml</span><br><span class="line">vim tomcat02/conf/server.xml</span><br><span class="line">vim tomcat03/conf/server.xml</span><br><span class="line">vim tomcat04/conf/server.xml</span><br></pre></td></tr></table></figure><p>给不同的Tomcat修改端口，tomcat01为81，tomcat02为82,以此类推，主要修改以下三个地方</p><p>把单机版的Solr放到Tomcat下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r solr /home/app/solr-cloud/tomcat01/webapps/</span><br><span class="line">cp -r solr /home/app/solr-cloud/tomcat02/webapps/</span><br><span class="line">cp -r solr /home/app/solr-cloud/tomcat03/webapps/</span><br><span class="line">cp -r solr /home/app/solr-cloud/tomcat04/webapps/</span><br></pre></td></tr></table></figure><p>再复制四个solrhome到solr-cloud目录下</p><p>再修改每个solrhome下的solr.xml</p><p>注意写自己的端口号和IP地址</p><p>修改每个tomcat的solr的web.xml</p><p>修改catalina文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim tomcat01/bin/catalina.sh</span><br><span class="line">vim tomcat02/bin/catalina.sh</span><br><span class="line">vim tomcat03/bin/catalina.sh</span><br><span class="line">vim tomcat04/bin/catalina.sh</span><br></pre></td></tr></table></figure><p>tomcat运行catalinda.sh脚本命令</p><p>配置JAVA_OPTS</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPTS=&quot;-DzkHost=192.168.25.130:2181,192.168.25.130:2182,192.168.25.130:2183&quot;</span><br></pre></td></tr></table></figure><p>在solr文件下的example目录下的script目下的cloud-scripts目录下有个zkcli.sh</p><p>上传配置文件至zookeeper的命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkcli.sh -zkhost 192.168.25.130:2181,192.168.25.130:2182,192.168.25.130:2183 -cmd upconfig -confdir /home/quan/app/solr-cloud/solrhome01/collection1/conf/ -confname myconf</span><br></pre></td></tr></table></figure><p>进入solr-cloud的zookeeper01中的bin目录下进行连接zookeeper</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh -server 192.168.25.130:2182</span><br></pre></td></tr></table></figure><p>检查一下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh -server 192.168.25.130:2182</span><br></pre></td></tr></table></figure><p>myconf就是我们上传的</p><p>内容里面有我们上传的solr文件</p><p>整个搭建就完成了</p><p>开启四个Tomcat</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/home/quan/app/solr-cloud/tomcat01/bin/startup.sh</span><br><span class="line">/home/quan/app/solr-cloud/tomcat02/bin/startup.sh</span><br><span class="line">/home/quan/app/solr-cloud/tomcat03/bin/startup.sh</span><br><span class="line">/home/quan/app/solr-cloud/tomcat04/bin/startup.sh</span><br></pre></td></tr></table></figure><p>SolrCloud创建Collection的命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.25.130:8180/solr/admin/collections?action=CREATE&amp;name=collection2&amp;numShards=2&amp;relicationFactor=2</span><br></pre></td></tr></table></figure><p>SolrCloud删除Collection的命令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.25.130:8180/solr/admin/collections?action=DELETE&amp;name=collection1</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;Solr集群版的搭建&quot;&gt;&lt;a href=&quot;#Solr集群版的搭建&quot; class=&quot;headerlink&quot; title=&quot;Solr集群版的搭建&quot;&gt;&lt;/a&gt;Solr集群版的搭建&lt;/h3&gt;&lt;p&gt;搭建Solr集群&lt;/p&gt;
-&lt;p&gt;首选需要配置zookeeper集群&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="技术分享" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/"/>
-    
-    
-      <category term="Solr" scheme="http://yoursite.com/tags/Solr/"/>
     
   </entry>
   
