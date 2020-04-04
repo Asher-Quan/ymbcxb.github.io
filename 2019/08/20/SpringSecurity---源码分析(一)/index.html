@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Spring Security源码分析(一) | ymbcxb|个人博客</title>
+  <meta name="description" content="Spring Security源码分析(一)SpringSecurity基本原理是基于一个过滤器链我们启动一个SpringSecurity项目，日志会打印过滤器  一共有十二个过滤器，大致介绍一下  WebAsyncManagerIntegrationFilter将Security上下文与Spring Web中用于处理异步请求映射的 WebAsyncManager 进行集成 SecurityCon">
+<meta name="keywords" content="源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Security源码分析(一)">
+<meta property="og:url" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/index.html">
+<meta property="og:site_name" content="ymbcxb|个人博客">
+<meta property="og:description" content="Spring Security源码分析(一)SpringSecurity基本原理是基于一个过滤器链我们启动一个SpringSecurity项目，日志会打印过滤器  一共有十二个过滤器，大致介绍一下  WebAsyncManagerIntegrationFilter将Security上下文与Spring Web中用于处理异步请求映射的 WebAsyncManager 进行集成 SecurityCon">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/01.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/02.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/03.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/04.png">
+<meta property="og:updated_time" content="2019-08-25T13:24:09.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Security源码分析(一)">
+<meta name="twitter:description" content="Spring Security源码分析(一)SpringSecurity基本原理是基于一个过滤器链我们启动一个SpringSecurity项目，日志会打印过滤器  一共有十二个过滤器，大致介绍一下  WebAsyncManagerIntegrationFilter将Security上下文与Spring Web中用于处理异步请求映射的 WebAsyncManager 进行集成 SecurityCon">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/01.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="ymbcxb|个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ymbcxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">ymbcxb</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">software engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 中国, 广州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java虚拟机/">Java虚拟机</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Security/">Spring Security</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/并发/">并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术分享/">技术分享</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Solr/">Solr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/支付宝当面付/">支付宝当面付</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程/">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Docker/" style="font-size: 13.6px;">Docker</a> <a href="/tags/Git/" style="font-size: 13.4px;">Git</a> <a href="/tags/JVM/" style="font-size: 13.8px;">JVM</a> <a href="/tags/Mysql/" style="font-size: 13px;">Mysql</a> <a href="/tags/Netty/" style="font-size: 13px;">Netty</a> <a href="/tags/PHP/" style="font-size: 13px;">PHP</a> <a href="/tags/Redis/" style="font-size: 13.8px;">Redis</a> <a href="/tags/Solr/" style="font-size: 13.2px;">Solr</a> <a href="/tags/并发/" style="font-size: 13.2px;">并发</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/支付宝当面付/" style="font-size: 13.2px;">支付宝当面付</a> <a href="/tags/源码分析/" style="font-size: 13.2px;">源码分析</a> <a href="/tags/爬虫/" style="font-size: 13px;">爬虫</a> <a href="/tags/线程/" style="font-size: 13px;">线程</a> <a href="/tags/设计模式/" style="font-size: 14px;">设计模式</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java虚拟机/">Java虚拟机</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/19/JVM总结/" class="title">JVM总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-19T09:28:43.000Z" itemprop="datePublished">2019-12-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/26/设计模式-装饰者模式/" class="title">设计模式-装饰者模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-26T11:23:38.000Z" itemprop="datePublished">2019-11-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/19/设计模式-外观模式/" class="title">设计模式-外观模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-18T16:42:14.000Z" itemprop="datePublished">2019-11-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Netty/">Netty</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/11/Netty(一)/" class="title">Netty(一）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-10T20:09:14.000Z" itemprop="datePublished">2019-09-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/并发/">并发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/03/Synchronized详解/" class="title">Synchronized详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-03T14:28:44.000Z" itemprop="datePublished">2019-09-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Security源码分析-一"><span class="toc-number">1.</span> <span class="toc-text">Spring Security源码分析(一)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UsernamePasswordAuthenticationFilter"><span class="toc-number">1.1.</span> <span class="toc-text">UsernamePasswordAuthenticationFilter</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-SpringSecurity---源码分析(一)" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spring Security源码分析(一)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/08/20/SpringSecurity---源码分析(一)/" class="article-date">
+	  <time datetime="2019-08-20T00:49:27.000Z" itemprop="datePublished">2019-08-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Spring-Security/">Spring Security</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/源码分析/">源码分析</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/08/20/SpringSecurity---源码分析(一)/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1,387(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Spring-Security源码分析-一"><a href="#Spring-Security源码分析-一" class="headerlink" title="Spring Security源码分析(一)"></a>Spring Security源码分析(一)</h2><p>SpringSecurity基本原理是基于一个过滤器链<br>我们启动一个SpringSecurity项目，日志会打印过滤器<br><img src="/2019/08/20/SpringSecurity---源码分析(一)/01.png"></p>
+<img src="/2019/08/20/SpringSecurity---源码分析(一)/02.jpg">
+<p>一共有十二个过滤器，大致介绍一下</p>
+<ol>
+<li>WebAsyncManagerIntegrationFilter将Security上下文与Spring Web中用于处理异步请求映射的 WebAsyncManager 进行集成</li>
+<li>SecurityContextPersistenceFilter 两个主要职责：请求来临时，创建SecurityContext安全上下文信息，请求结束时清空SecurityContextHolder。</li>
+<li>HeaderWriterFilter (文档中并未介绍，非核心过滤器) 用来给http响应添加一些Header,比如X-Frame-Options, X-XSS-Protection*，X-Content-Type-Options.</li>
+<li>CsrfFilter 在spring4这个版本中被默认开启的一个过滤器，用于防止csrf攻击</li>
+<li>LogoutFilter 顾名思义，处理注销的过滤器<br>UsernamePasswordAuthenticationFilter 这个会重点分析，表单提交了username和password，被封装成token进行一系列的认证，便是主要通过这个过滤器完成的，在表单认证的方法中，这是最最关键的过滤器。</li>
+<li>RequestCacheAwareFilter (文档中并未介绍，非核心过滤器) 内部维护了一个RequestCache，用于缓存request请求</li>
+<li>SecurityContextHolderAwareRequestFilter 此过滤器对ServletRequest进行了一次包装，使得request具有更加丰富的API</li>
+<li>AnonymousAuthenticationFilter 匿名身份过滤器</li>
+<li>UsernamePasswordAuthenticationFilter 用户名密码过滤器，检验用户名和密码的</li>
+<li>SessionManagementFilter 是和session相关的过滤器，内部维护了一个SessionAuthenticationStrategy，两者组合使用，常用来防止session-fixation protection attack，以及限制同一用户开启多个会话的数量</li>
+<li>ExceptionTranslationFilter 直译成异常翻译过滤器，还是比较形象的，这个过滤器本身不处理异常，而是将认证过程中出现的异常交给内部维护的一些类去处理，具体是那些类下面详细介绍</li>
+<li>FilterSecurityInterceptor 这个过滤器决定了访问特定路径应该具备的权限，访问的用户的角色，权限是什么？访问的路径需要什么样的角色和权限？这些判断和处理都是由该类进行的。</li>
+</ol>
+<p>最常用的就是<strong>UsernamePasswordAuthenticationFilter</strong> 了<br>接下来我们就对UsernamePasswordAuthenticationFilter进行一个源码分析</p>
+<h3 id="UsernamePasswordAuthenticationFilter"><a href="#UsernamePasswordAuthenticationFilter" class="headerlink" title="UsernamePasswordAuthenticationFilter"></a>UsernamePasswordAuthenticationFilter</h3><p>核心方法:attemptAuthentication做了以下几件事情</p>
+<ol>
+<li>判断是不是post请求，不是则抛异常</li>
+<li>获取用户名和密码，判空</li>
+<li>构建UsernamePasswordAuthenticationToken（将权限和用户名和密码进行一个封装）</li>
+<li>执行setDetails，将请求的信息存入token里</li>
+<li>通过AuthenticationManager的authenticate()去进行校验</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(HttpServletRequest request,HttpServletResponse response)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (postOnly &amp;&amp; !request.getMethod().equals(<span class="string">"POST"</span>)) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> AuthenticationServiceException(</span><br><span class="line">					<span class="string">"Authentication method not supported: "</span> + request.getMethod());</span><br><span class="line">		&#125;</span><br><span class="line">		String username = obtainUsername(request);</span><br><span class="line">		String password = obtainPassword(request);</span><br><span class="line">		<span class="keyword">if</span> (username == <span class="keyword">null</span>) &#123;</span><br><span class="line">			username = <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (password == <span class="keyword">null</span>) &#123;</span><br><span class="line">			password = <span class="string">""</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		username = username.trim();</span><br><span class="line">		UsernamePasswordAuthenticationToken authRequest = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(</span><br><span class="line">				username, password);</span><br><span class="line">		<span class="comment">// Allow subclasses to set the "details" property</span></span><br><span class="line">		setDetails(request, authRequest);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.getAuthenticationManager().authenticate(authRequest);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>然而AuthenticationManager是一个接口，对应的实现类是ProviderManager,查看以下authenticate的实现方法</p>
+<p>ProviderManager 中的List，会依照次序去认证，认证成功则立即返回，若认证失败则返回null，下一个AuthenticationProvider会继续尝试认证，如果所有认证器都无法认证成功，则<code>ProviderManager</code> 会抛出一个ProviderNotFoundException异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">authenticate</span><span class="params">(Authentication authentication)</span><span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="keyword">for</span> (AuthenticationProvider provider : getProviders()) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!provider.supports(toTest)) &#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">       		 <span class="keyword">try</span> &#123;</span><br><span class="line">				result = provider.authenticate(authentication);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">					copyDetails(authentication, result);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以实现校验的过程的是AuthenticationProvider的实现类，比如使用表单验证的情况下，默认是使用DaoAuthenticationProvider<br><img src="/2019/08/20/SpringSecurity---源码分析(一)/03.png"><br>DaoAuthenticationProvider继承了AbstractUserDetailsAuthenticationProvider，authenticate方法是在AbstractUserDetailsAuthenticationProvider<br>authenticate方法做了什么呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.从缓存里取UserDetails信息</span></span><br><span class="line">UserDetails user = <span class="keyword">this</span>.userCache.getUserFromCache(username);</span><br><span class="line"><span class="comment">//2.如果缓存没有则通过UserDetailsService去调取loadUserByUsername获取UserDeatails对象</span></span><br><span class="line">user = retrieveUser(username,(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line"><span class="comment">//3.预检查,对UserDetails进行提前的检查，判断是否锁定，是否过期，是否可用</span></span><br><span class="line">preAuthenticationChecks.check(user);</span><br><span class="line"><span class="comment">//4.附加检查,判断是否有证书和是否有用passwordEncoder加密</span></span><br><span class="line">additionalAuthenticationChecks(user,(UsernamePasswordAuthenticationToken) authentication);</span><br><span class="line"><span class="comment">//5.最后检查,判断证书是否过期</span></span><br><span class="line">postAuthenticationChecks.check(user);</span><br><span class="line"><span class="comment">//6.返回认证成功的信息</span></span><br><span class="line"><span class="keyword">return</span> createSuccessAuthentication(principalToReturn, authentication, user);</span><br></pre></td></tr></table></figure>
+<p>createSuccessAuthentication(principalToReturn, authentication, user)源码：</p>
+<p>重写组装了一个UsernamePasswordAuthenticationToken，和第一次的组装不一样的地方在于</p>
+<p>添加了权限和设置了已验证的信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一次的组装</span></span><br><span class="line"><span class="keyword">super</span>(<span class="keyword">null</span>);</span><br><span class="line"><span class="keyword">this</span>.principal = principal;</span><br><span class="line"><span class="keyword">this</span>.credentials = credentials;</span><br><span class="line">setAuthenticated(<span class="keyword">false</span>);</span><br><span class="line"><span class="comment">//第二次的组装</span></span><br><span class="line"><span class="keyword">super</span>(authorities);</span><br><span class="line"><span class="keyword">this</span>.principal = principal;</span><br><span class="line"><span class="keyword">this</span>.credentials = credentials;</span><br><span class="line"><span class="keyword">super</span>.setAuthenticated(<span class="keyword">true</span>); <span class="comment">// must use super, as we override</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Authentication <span class="title">createSuccessAuthentication</span><span class="params">(Object principal,</span></span></span><br><span class="line"><span class="function"><span class="params">			Authentication authentication, UserDetails user)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// Ensure we return the original credentials the user supplied,</span></span><br><span class="line">		<span class="comment">// so subsequent attempts are successful even with encoded passwords.</span></span><br><span class="line">		<span class="comment">// Also ensure we return the original getDetails(), so that future</span></span><br><span class="line">		<span class="comment">// authentication events after cache expiry contain the details</span></span><br><span class="line">		UsernamePasswordAuthenticationToken result = <span class="keyword">new</span> UsernamePasswordAuthenticationToken(</span><br><span class="line">				principal, authentication.getCredentials(),</span><br><span class="line">				authoritiesMapper.mapAuthorities(user.getAuthorities()));</span><br><span class="line">		result.setDetails(authentication.getDetails());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>整个过程 一旦任何一处发送异常，都会被捕获AbstractAuthenticationProcessingFilter类里面捕获</p>
+<ol>
+<li>异常则调用unsuccessfulAuthentication()<ol>
+<li>failureHandler.onAuthenticationFailure(request, response, failed);会调用自己写的failureHandler</li>
+</ol>
+</li>
+<li>成功则调用successfulAuthentication(),<ol>
+<li>successHandler.onAuthenticationSuccess(request, response, authResult);会调用自己写的successHandler</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//这里是UsernamePasswordAuthenticationFilter的最后返回值</span></span><br><span class="line">    authResult = attemptAuthentication(request, response);</span><br><span class="line">    <span class="keyword">if</span> (authResult == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// return immediately as subclass has indicated that it hasn't completed</span></span><br><span class="line">        <span class="comment">// authentication</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sessionStrategy.onAuthentication(authResult, request, response);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (InternalAuthenticationServiceException failed) &#123;</span><br><span class="line">    logger.error(</span><br><span class="line">        <span class="string">"An internal error occurred while trying to authenticate the user."</span>,</span><br><span class="line">        failed);</span><br><span class="line">    unsuccessfulAuthentication(request, response, failed);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (AuthenticationException failed) &#123;</span><br><span class="line">    <span class="comment">// Authentication failed</span></span><br><span class="line">    unsuccessfulAuthentication(request, response, failed);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Authentication success</span></span><br><span class="line"><span class="keyword">if</span> (continueChainBeforeSuccessfulAuthentication) &#123;</span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//调用登陆成功的处理器</span></span><br><span class="line">successfulAuthentication(request, response, chain, authResult);</span><br></pre></td></tr></table></figure>
+<img src="/2019/08/20/SpringSecurity---源码分析(一)/04.png">
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/" title="Spring Security源码分析(一)" target="_blank" rel="external">http://yoursite.com/2019/08/20/SpringSecurity---源码分析(一)/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ymbcxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ymbcxb" target="_blank"><span class="text-dark">ymbcxb</span><small class="ml-1x">software engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/08/22/bTrace/" title="JVM---bTrace"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/08/06/JVM---内存溢出/" title="JVM---内存溢出"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"tagMode":false});</script></body>
+</html>

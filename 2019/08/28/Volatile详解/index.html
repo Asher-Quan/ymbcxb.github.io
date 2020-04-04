@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Volatile详解 | ymbcxb|个人博客</title>
+  <meta name="description" content="在介绍Volatile之前，我们要来先看一段程序(抛砖引玉),最好自己跑一遍程序 12345678910111213141516public class T01 &amp;#123;    public static void main(String[] args) throws InterruptedException &amp;#123;        MyThread myThread = new MyTh">
+<meta name="keywords" content="并发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Volatile详解">
+<meta property="og:url" content="http://yoursite.com/2019/08/28/Volatile详解/index.html">
+<meta property="og:site_name" content="ymbcxb|个人博客">
+<meta property="og:description" content="在介绍Volatile之前，我们要来先看一段程序(抛砖引玉),最好自己跑一遍程序 12345678910111213141516public class T01 &amp;#123;    public static void main(String[] args) throws InterruptedException &amp;#123;        MyThread myThread = new MyTh">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/08/28/Volatile详解/01.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/08/28/Volatile详解/02.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/08/28/Volatile详解/03.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/28/Volatile详解/04.png">
+<meta property="og:updated_time" content="2019-09-03T06:33:52.534Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Volatile详解">
+<meta name="twitter:description" content="在介绍Volatile之前，我们要来先看一段程序(抛砖引玉),最好自己跑一遍程序 12345678910111213141516public class T01 &amp;#123;    public static void main(String[] args) throws InterruptedException &amp;#123;        MyThread myThread = new MyTh">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/28/Volatile详解/01.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://yoursite.com/2019/08/28/Volatile详解/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="ymbcxb|个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ymbcxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">ymbcxb</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">software engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 中国, 广州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java虚拟机/">Java虚拟机</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Security/">Spring Security</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/并发/">并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术分享/">技术分享</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Solr/">Solr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/支付宝当面付/">支付宝当面付</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程/">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Docker/" style="font-size: 13.6px;">Docker</a> <a href="/tags/Git/" style="font-size: 13.4px;">Git</a> <a href="/tags/JVM/" style="font-size: 13.8px;">JVM</a> <a href="/tags/Mysql/" style="font-size: 13px;">Mysql</a> <a href="/tags/Netty/" style="font-size: 13px;">Netty</a> <a href="/tags/PHP/" style="font-size: 13px;">PHP</a> <a href="/tags/Redis/" style="font-size: 13.8px;">Redis</a> <a href="/tags/Solr/" style="font-size: 13.2px;">Solr</a> <a href="/tags/并发/" style="font-size: 13.2px;">并发</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/支付宝当面付/" style="font-size: 13.2px;">支付宝当面付</a> <a href="/tags/源码分析/" style="font-size: 13.2px;">源码分析</a> <a href="/tags/爬虫/" style="font-size: 13px;">爬虫</a> <a href="/tags/线程/" style="font-size: 13px;">线程</a> <a href="/tags/设计模式/" style="font-size: 14px;">设计模式</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java虚拟机/">Java虚拟机</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/19/JVM总结/" class="title">JVM总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-19T09:28:43.000Z" itemprop="datePublished">2019-12-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/26/设计模式-装饰者模式/" class="title">设计模式-装饰者模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-26T11:23:38.000Z" itemprop="datePublished">2019-11-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/19/设计模式-外观模式/" class="title">设计模式-外观模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-18T16:42:14.000Z" itemprop="datePublished">2019-11-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Netty/">Netty</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/11/Netty(一)/" class="title">Netty(一）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-10T20:09:14.000Z" itemprop="datePublished">2019-09-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/并发/">并发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/03/Synchronized详解/" class="title">Synchronized详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-03T14:28:44.000Z" itemprop="datePublished">2019-09-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java内存模型"><span class="toc-number">1.</span> <span class="toc-text">Java内存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java线程之间的通信"><span class="toc-number">2.</span> <span class="toc-text">Java线程之间的通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Volatile"><span class="toc-number">3.</span> <span class="toc-text">Volatile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Happens-before原则"><span class="toc-number">4.</span> <span class="toc-text">Happens-before原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令重排"><span class="toc-number">5.</span> <span class="toc-text">指令重排</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#double和long的非原子性处理"><span class="toc-number">6.</span> <span class="toc-text">double和long的非原子性处理</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Volatile详解" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Volatile详解
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/08/28/Volatile详解/" class="article-date">
+	  <time datetime="2019-08-27T20:04:13.000Z" itemprop="datePublished">2019-08-27</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/并发/">并发</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/并发/">并发</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/08/28/Volatile详解/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2,296(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>在介绍Volatile之前，我们要来先看一段程序(抛砖引玉),最好自己跑一遍程序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        MyThread myThread = <span class="keyword">new</span> MyThread();</span><br><span class="line">        myThread.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        myThread.flag = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (flag)&#123; &#125;</span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试结果是不会输出end</p>
+<p>很奇怪吧，不符合逻辑，接下来我们就引入我们的第一个知识点：</p>
+<h3 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h3><img src="/2019/08/28/Volatile详解/01.jpg">
+<p>简单描述，就是每个线程会有一个私有的本地内存，存放主内存的副本，这样子可以加快线程读的速度</p>
+<p>那么线程之间如何进行通信呢？引出我们第二个知识点</p>
+<h3 id="Java线程之间的通信"><a href="#Java线程之间的通信" class="headerlink" title="Java线程之间的通信"></a>Java线程之间的通信</h3><img src="/2019/08/28/Volatile详解/02.jpg">
+<p>关于主内存与工作内存之间的具体交互协议，即一个变量如何从主内存拷贝到工作内存、如何从工作内存同步到主内存之间的实现细节，Java内存模型定义了以下八种操作以及八种规则来完成</p>
+<img src="/2019/08/28/Volatile详解/03.png">
+<p>这里面其实会有个隐含的问题，假设线程A修改一个值后存进内存，B线程同时去读主内存会发生什么呢？</p>
+<p>1.A修改执行assign操作</p>
+<p>2.B读执行read操作和load操作</p>
+<p>3.A存进内存执行store操作和write操作</p>
+<p><strong>数据不一致</strong></p>
+<p>解决这个问题我们很自然能够想到的就是：锁</p>
+<p>由于锁是相对比较重量级，能不能不用锁呢？这里就到第三个知识点了：</p>
+<h3 id="Volatile"><a href="#Volatile" class="headerlink" title="Volatile"></a>Volatile</h3><p>Volatile有一个特性：<strong>可见性</strong></p>
+<p>什么是可见性，简单来说当一个线程修改了一个值，这个值对别的线程都是可以看见的，去读的时候都能读到这个新的值</p>
+<p>为什么能够保证可见性</p>
+<p>第四个知识点：</p>
+<h3 id="Happens-before原则"><a href="#Happens-before原则" class="headerlink" title="Happens-before原则"></a>Happens-before原则</h3><blockquote>
+<p>Two actions can be ordered by a <em>happens-before</em> relationship. If one action <em>happens-before</em> another, then the first is visible to and ordered before the second.</p>
+<p>If we have two actions <em>x</em> and <em>y</em>, we write <em>hb(x, y)</em> to indicate that <em>x happens-before y</em> —Java8官方文档</p>
+</blockquote>
+<p>Java8关于happens-before文档：<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4.5" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4.5</a></p>
+<p>如果一个事件的发生在另一个事件之前，其结果必须反应出来，记住这句话就好了</p>
+<p>举个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;<span class="comment">//事件1</span></span><br><span class="line"><span class="keyword">int</span> b = a + <span class="number">1</span>;<span class="comment">//事件2</span></span><br></pre></td></tr></table></figure>
+<p>事件1发生在事件2之前，所以其结果是什么？a=1,b=2，,不管如何优化,这个结果一定要反映出来，所以一定要先执行1后执行2才可以有这个结果</p>
+<p>举个反例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;<span class="comment">//事件1</span></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">2</span>;<span class="comment">//事件2</span></span><br></pre></td></tr></table></figure>
+<p>事件1发生在事件2之前，所以其结果是什么？a=1,b=2,这个结果一定要反映出来,此时就有两种可能，基于优化的考虑，我可能先执行1后执行2，或者反过来，其结果都是不会发生改变的</p>
+<p>在官方文档里面有描述happens before遵循的规则</p>
+<p>其中一条是：</p>
+<blockquote>
+<p>A write to a <code>volatile</code> field (<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.3.1.4" target="_blank" rel="noopener">§8.3.1.4</a>) <em>happens-before</em> every subsequent read of that field</p>
+</blockquote>
+<p>对于一个volatile字段进行写操作会 happens-before 任意操作</p>
+<p>讲到这里我们再去扒一扒底层，字节码？不，是汇编</p>
+<p>我这里将程序修改成如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java -server -Xcomp -XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=compileonly,*T01.setData</span></span><br><span class="line"><span class="comment">//只查看setData的汇编</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T01</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> MyThread myThread = <span class="keyword">new</span> MyThread();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        myThread.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        setData();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">()</span></span>&#123;</span><br><span class="line">        myThread.flag = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (flag)&#123;&#125;</span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出的结果如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0000000002c9dbc9</span>: lock add dword ptr [rsp],<span class="number">0</span>h  ;*putfield flag</span><br><span class="line">                                               ; - example.t09.T01::setData@<span class="number">4</span> (line <span class="number">21</span>)</span><br></pre></td></tr></table></figure>
+<p>这句话的意思呢，是指使得本CPU的Cache写入了内存，该写入动作也会引起别的CPU失效其Cache，所以通过这样一个操作，可让前面volatile变量的修改对其他CPU立即可见</p>
+<p>简单来说：</p>
+<ol>
+<li>锁内存</li>
+<li>写内存</li>
+<li>让其余的缓存该值失效</li>
+</ol>
+<p><strong>讲到这里就是为了讲解volatile有可见性</strong></p>
+<p>返回到我们的第一个程序为什么会死循环，也是因为一个线程的修改不能使得另一个线程立刻知道，所以才会导致死循环</p>
+<p>但是严谨来说其实是因为JIT编译的优化，大概是觉得一直循环读值，所以就优化成直接从缓存取值，所以才会导致这种问题</p>
+<p>大家可以试试 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Djava.compiler=NONE &lt;<span class="class"><span class="keyword">class</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样子其实也不会有问题的，但是少了JIT优化，还是不太好的</p>
+<p>只需要加上volatile修饰就可以解决问题了</p>
+<p>但是volatile不单纯是解决可见性问题</p>
+<p>第五个知识点：</p>
+<h3 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h3><p>指令重排就是为了提升程序执行的效率，会按照一定的规则将指令的顺序进行重排，但是不能影响语义</p>
+<p>比如说</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> c = a+b;</span><br></pre></td></tr></table></figure>
+<p>前两条指令是可以重排的，无论谁先都可以，第三条指令必须在这两条指令的后面，因为第三条指令会依赖前两条指令，所以第三条指令是不会被重排的</p>
+<p>来看一段程序，参考《Java并发编程实战》</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T02</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> ready = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> number;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">while</span> (ready)&#123;Thread.yield(); &#125;</span><br><span class="line">            System.out.println(number);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">new</span> MyThread().start();</span><br><span class="line">        number = <span class="number">42</span>;</span><br><span class="line">        ready = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看似结果输出是42，但是实则不然，答案应该有两个，42或者0</p>
+<p>为什么会输出0，这就是因为指令重排，number = 42 和 ready = false 没有依赖关系，所以这两条指令有可能会互换位置（编译器基于性能的考虑），假设互换位置后，则输出的结果就应该是0了</p>
+<p>其实还有另一种可能就是死循环了，上面也提到了，这是可见性问题</p>
+<p>volatile的第二个作用就是可以防止指令重排</p>
+<p>内存屏障：使CPU或编译器对屏障指令之前和之后发出的内存操作执行一个排序约束。 这通常意味着在屏障之前发布的操作被保证在屏障之后发布的操作之前执行</p>
+<blockquote>
+<p>内存屏障可以被分为以下几种类型：</p>
+<ol>
+<li><strong>LoadLoad屏障：</strong>对于这样的语句Load1; LoadLoad; Load2，在Load2及后续读取操作要读取的数据被访问前，保证Load1要读取的数据被读取完毕。</li>
+<li><strong>StoreStore屏障：</strong>对于这样的语句Store1; StoreStore; Store2，在Store2及后续写入操作执行前，保证Store1的写入操作对其它处理器可见。</li>
+<li><strong>LoadStore屏障：</strong>对于这样的语句Load1; LoadStore; Store2，在Store2及后续写入操作被刷出前，保证Load1要读取的数据被读取完毕。</li>
+<li><strong>StoreLoad屏障：</strong>对于这样的语句Store1; StoreLoad; Load2，在Load2及后续所有读取操作执行前，保证Store1的写入对所有处理器可见。它的开销是四种屏障中最大的。在大多数处理器的实现中，这个屏障是个万能屏障，兼具其它三种内存屏障的功能。</li>
+</ol>
+</blockquote>
+<p>很多文章都有说到内存屏障但是都没有出处，我也找了很久终于找到了：</p>
+<p><a href="http://gee.cs.oswego.edu/dl/jmm/cookbook.html" target="_blank" rel="noopener">http://gee.cs.oswego.edu/dl/jmm/cookbook.html</a></p>
+<p>在一个变量被volatile修饰后，JVM会为我们做两件事：</p>
+<p>1.在每个volatile写操作前插入<strong>StoreStore</strong>屏障，在写操作后插入<strong>StoreLoad</strong>屏障</p>
+<p>2.在每个volatile读操作前插入<strong>LoadLoad</strong>屏障，在读操作后插入<strong>LoadStore</strong>屏障</p>
+<p>贴一张图来说明一下</p>
+<img src="/2019/08/28/Volatile详解/04.png">
+<p>最后一个特性是：</p>
+<h3 id="double和long的非原子性处理"><a href="#double和long的非原子性处理" class="headerlink" title="double和long的非原子性处理"></a>double和long的非原子性处理</h3><blockquote>
+<p>某些 Java内存模型实现可能发现将对 64 位 long 或 double 值的写操作分成两次相邻的 32位值写操作更方便。为了效率起见，这种行为是实现可以自行决定的。JavaTM 虚拟机可以自由地决定是原子性的对待 long 和 double 值的写操作还是一分为二的对待。<br>鉴于本内存模型的目的，我们将对非 volatile long 或 double 值的单次写操作视作两次分开的写操作：每次 32 位。这可能会导致一种情况，某个线程会看到某次写操作中 64 位的前 32 位，以及另外一次写操作的后 32 位。读写 volatile 的 long 和double 总是原子的。读写引用也总是原子的，而不管引用的实现采用的是 32 位还<br>是 64 位。<br>我们鼓励 VM 的实现者尽可能避免将 64 位值的写操作分开。鼓励编码人员将共享<br>的 64 位值声明为 volaitle 的或将其程序正确同步以避免可能的并发问题</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2019/08/28/Volatile详解/" title="Volatile详解" target="_blank" rel="external">http://yoursite.com/2019/08/28/Volatile详解/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ymbcxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ymbcxb" target="_blank"><span class="text-dark">ymbcxb</span><small class="ml-1x">software engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/09/03/Synchronized详解/" title="Synchronized详解"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/08/22/JVM---字节码指令操作/" title="JVM---字节码指令"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"tagMode":false});</script></body>
+</html>

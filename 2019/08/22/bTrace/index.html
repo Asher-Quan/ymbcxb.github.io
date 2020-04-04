@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>JVM---bTrace | ymbcxb|个人博客</title>
+  <meta name="description" content="BTraceBTrace可用于动态跟踪正在运行的Java程序（类似于OpenSolaris应用程序和操作系统的DTrace）。BTrace动态检测目标应用程序的类以注入跟踪代码（“字节码跟踪”） 不用修改源代码，既可以追踪Java程序 如果使用远程Debug，会对线上的项目产生巨大影响 编写BTrace 脚本时，也有如下约定：  不能创建对象，数组 不能throw，catch 异常 不能有循环(f">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM---bTrace">
+<meta property="og:url" content="http://yoursite.com/2019/08/22/bTrace/index.html">
+<meta property="og:site_name" content="ymbcxb|个人博客">
+<meta property="og:description" content="BTraceBTrace可用于动态跟踪正在运行的Java程序（类似于OpenSolaris应用程序和操作系统的DTrace）。BTrace动态检测目标应用程序的类以注入跟踪代码（“字节码跟踪”） 不用修改源代码，既可以追踪Java程序 如果使用远程Debug，会对线上的项目产生巨大影响 编写BTrace 脚本时，也有如下约定：  不能创建对象，数组 不能throw，catch 异常 不能有循环(f">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/08/22/bTrace/01.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/08/22/bTrace/02.png">
+<meta property="og:updated_time" content="2019-08-25T01:03:27.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM---bTrace">
+<meta name="twitter:description" content="BTraceBTrace可用于动态跟踪正在运行的Java程序（类似于OpenSolaris应用程序和操作系统的DTrace）。BTrace动态检测目标应用程序的类以注入跟踪代码（“字节码跟踪”） 不用修改源代码，既可以追踪Java程序 如果使用远程Debug，会对线上的项目产生巨大影响 编写BTrace 脚本时，也有如下约定：  不能创建对象，数组 不能throw，catch 异常 不能有循环(f">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/22/bTrace/01.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://yoursite.com/2019/08/22/bTrace/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="ymbcxb|个人博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/ymbcxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">ymbcxb</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">software engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 中国, 广州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java虚拟机/">Java虚拟机</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Netty/">Netty</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Security/">Spring Security</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/并发/">并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术分享/">技术分享</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/运维/">运维</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/">JVM</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/">PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Solr/">Solr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/支付宝当面付/">支付宝当面付</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程/">线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Docker/" style="font-size: 13.6px;">Docker</a> <a href="/tags/Git/" style="font-size: 13.4px;">Git</a> <a href="/tags/JVM/" style="font-size: 13.8px;">JVM</a> <a href="/tags/Mysql/" style="font-size: 13px;">Mysql</a> <a href="/tags/Netty/" style="font-size: 13px;">Netty</a> <a href="/tags/PHP/" style="font-size: 13px;">PHP</a> <a href="/tags/Redis/" style="font-size: 13.8px;">Redis</a> <a href="/tags/Solr/" style="font-size: 13.2px;">Solr</a> <a href="/tags/并发/" style="font-size: 13.2px;">并发</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/支付宝当面付/" style="font-size: 13.2px;">支付宝当面付</a> <a href="/tags/源码分析/" style="font-size: 13.2px;">源码分析</a> <a href="/tags/爬虫/" style="font-size: 13px;">爬虫</a> <a href="/tags/线程/" style="font-size: 13px;">线程</a> <a href="/tags/设计模式/" style="font-size: 14px;">设计模式</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java虚拟机/">Java虚拟机</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/19/JVM总结/" class="title">JVM总结</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-19T09:28:43.000Z" itemprop="datePublished">2019-12-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/26/设计模式-装饰者模式/" class="title">设计模式-装饰者模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-26T11:23:38.000Z" itemprop="datePublished">2019-11-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/设计模式/">设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/11/19/设计模式-外观模式/" class="title">设计模式-外观模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-11-18T16:42:14.000Z" itemprop="datePublished">2019-11-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Netty/">Netty</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/11/Netty(一)/" class="title">Netty(一）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-10T20:09:14.000Z" itemprop="datePublished">2019-09-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/并发/">并发</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/03/Synchronized详解/" class="title">Synchronized详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-03T14:28:44.000Z" itemprop="datePublished">2019-09-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BTrace"><span class="toc-number">1.</span> <span class="toc-text">BTrace</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单使用"><span class="toc-number">1.1.</span> <span class="toc-text">简单使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#btrace的一些用法："><span class="toc-number">1.2.</span> <span class="toc-text">btrace的一些用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#拦截方法："><span class="toc-number">1.2.1.</span> <span class="toc-text">拦截方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#拦截时机"><span class="toc-number">1.2.2.</span> <span class="toc-text">拦截时机</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Kind-ENTRY"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Kind.ENTRY</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kind-RETURN"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Kind.RETURN</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kind-THROW"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">Kind.THROW</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#打印复杂类型"><span class="toc-number">1.2.3.</span> <span class="toc-text">打印复杂类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注意"><span class="toc-number">1.2.4.</span> <span class="toc-text">注意</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-bTrace" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM---bTrace
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/08/22/bTrace/" class="article-date">
+	  <time datetime="2019-08-21T17:35:09.000Z" itemprop="datePublished">2019-08-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java虚拟机/">Java虚拟机</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/JVM/">JVM</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/08/22/bTrace/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1,076(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 5(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="BTrace"><a href="#BTrace" class="headerlink" title="BTrace"></a>BTrace</h2><p>BTrace可用于动态跟踪正在运行的Java程序（类似于OpenSolaris应用程序和操作系统的DTrace）。BTrace动态检测目标应用程序的类以注入跟踪代码（“字节码跟踪”）</p>
+<p>不用修改源代码，既可以追踪Java程序</p>
+<p>如果使用远程Debug，会对线上的项目产生巨大影响</p>
+<p>编写BTrace 脚本时，也有如下约定：</p>
+<ol>
+<li>不能创建对象，数组</li>
+<li>不能throw，catch 异常</li>
+<li>不能有循环(for，while，do..while)</li>
+<li>不能实现接口</li>
+<li>不能有同步块及同步方法</li>
+<li>不能有断言语句</li>
+<li>不能有外部，内部，嵌套 或本地类</li>
+<li>不能进行任何实例好或静态方法调用，只能从com.sun.btrace.BtraceUtils类的公共静态方法</li>
+<li>……</li>
+</ol>
+<p>下载地址：<a href="https://github.com/btraceio/btrace/releases/tag/v1.3.11.3" target="_blank" rel="noopener">https://github.com/btraceio/btrace/releases/tag/v1.3.11.3</a></p>
+<p>下载Btrace对应的版本后进行解压</p>
+<p>在环境变量中自行配置（我这里写的是Windows下）</p>
+<p>BTRACE_HOME=bTrace的安装路径</p>
+<p>%BTRACE_HOME%\bin</p>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><p>demo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceDemo</span> </span>&#123;</span><br><span class="line">    <span class="comment">//public static void test02(User user)&#123;&#125; 在打印复杂类型的例子里开启</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String  <span class="title">test01</span><span class="params">(String name)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> User(name);</span><br><span class="line">        test02(user);</span><br><span class="line">        <span class="comment">//int i = 1 / 0;在Kind.THROW的例子里开启</span></span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">15</span>);</span><br><span class="line">        System.out.println(test01(<span class="string">"aaa"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@OnMethod</span>(</span><br><span class="line">            clazz = <span class="string">"BTraceDemo"</span>,<span class="comment">//类名</span></span><br><span class="line">            method = <span class="string">"test01"</span>,<span class="comment">//方法名</span></span><br><span class="line">            location = <span class="meta">@Location</span>(Kind.ENTRY)<span class="comment">//在方法进入的时候进行拦截</span></span><br><span class="line">    )</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(@ProbeClassName String className, @ProbeMethodName String methodName, AnyType args[])</span></span>&#123;</span><br><span class="line">        BTraceUtils.println(<span class="string">"className: "</span>+className);<span class="comment">//打印类名</span></span><br><span class="line">        BTraceUtils.println(<span class="string">"methodName: "</span>+methodName);<span class="comment">//打印方法名</span></span><br><span class="line">        BTraceUtils.printArray(args);<span class="comment">//打印参数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一：首先运行BTraceDemo</p>
+<p>然后使用jps - l查询到pid，进行追踪</p>
+<img src="/2019/08/22/bTrace/01.jpg">
+<p>一般为了在IDE工具上打bTrace代码更加方便，通常需要引入一下jar包</p>
+<p>贴一下我的项目结构：</p>
+<img src="/2019/08/22/bTrace/02.png">
+<p>Maven的依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;com.sun.tools.btrace&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;btrace-boot&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;1.3.11.3&lt;/version&gt;</span><br><span class="line">           &lt;scope&gt;system&lt;/scope&gt;</span><br><span class="line">           &lt;systemPath&gt;$&#123;basedir&#125;/src/main/resources/lib/btrace-boot.jar&lt;/systemPath&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;com.sun.tools.btrace&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;btrace-client&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;1.3.11.3&lt;/version&gt;</span><br><span class="line">           &lt;scope&gt;system&lt;/scope&gt;</span><br><span class="line">           &lt;systemPath&gt;$&#123;basedir&#125;/src/main/resources/lib/btrace-boot.jar&lt;/systemPath&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;com.sun.tools.btrace&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;btrace-agent&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;1.3.11.3&lt;/version&gt;</span><br><span class="line">           &lt;scope&gt;system&lt;/scope&gt;</span><br><span class="line">           &lt;systemPath&gt;$&#123;basedir&#125;/src/main/resources/lib/btrace-boot.jar&lt;/systemPath&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">   &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="btrace的一些用法："><a href="#btrace的一些用法：" class="headerlink" title="btrace的一些用法："></a>btrace的一些用法：</h3><h4 id="拦截方法："><a href="#拦截方法：" class="headerlink" title="拦截方法："></a>拦截方法：</h4><p>普通方法:@OnMethod(clazz=””,method=””)</p>
+<p>上面的Demo已经写过了</p>
+<p>构造函数:@OnMethod(clazz=””,method=”<init>“)</init></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz = <span class="string">"User"</span>,method = <span class="string">"&lt;init&gt;"</span>,location = <span class="meta">@Location</span>(Kind.ENTRY))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(@ProbeClassName String className, @ProbeMethodName String methodName, String name)</span></span>&#123;</span><br><span class="line">        BTraceUtils.print(name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="拦截时机"><a href="#拦截时机" class="headerlink" title="拦截时机"></a>拦截时机</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Kind.ENTRY ：入口</span><br><span class="line">Kind.RETURN：返回</span><br><span class="line">Kind.THROW：异常</span><br><span class="line">Kind.Line：行</span><br></pre></td></tr></table></figure>
+<h5 id="Kind-ENTRY"><a href="#Kind-ENTRY" class="headerlink" title="Kind.ENTRY"></a>Kind.ENTRY</h5><p>上面已经演示过了</p>
+<h5 id="Kind-RETURN"><a href="#Kind-RETURN" class="headerlink" title="Kind.RETURN"></a>Kind.RETURN</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz = <span class="string">"BTraceDemo"</span>, method = <span class="string">"test01"</span>, location = <span class="meta">@Location</span>(Kind.RETURN))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(@ProbeClassName String className, @ProbeMethodName String methodName,@Return String value)</span></span>&#123;</span><br><span class="line">        BTraceUtils.print(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Kind-THROW"><a href="#Kind-THROW" class="headerlink" title="Kind.THROW"></a>Kind.THROW</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@TLS</span></span><br><span class="line">    <span class="keyword">static</span> Throwable currentException;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz=<span class="string">"java.lang.Throwable"</span>, method=<span class="string">"&lt;init&gt;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onthrow</span><span class="params">(@Self Throwable self)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new Throwable()</span></span><br><span class="line">        currentException = self; &#125;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz=<span class="string">"java.lang.Throwable"</span>, method=<span class="string">"&lt;init&gt;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onthrow1</span><span class="params">(@Self Throwable self, String s)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new Throwable(String msg)</span></span><br><span class="line">        currentException = self; &#125;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz=<span class="string">"java.lang.Throwable"</span>, method=<span class="string">"&lt;init&gt;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onthrow1</span><span class="params">(@Self Throwable self, String s, Throwable cause)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new Throwable(String msg, Throwable cause)</span></span><br><span class="line">        currentException = self; &#125;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz=<span class="string">"java.lang.Throwable"</span>, method=<span class="string">"&lt;init&gt;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onthrow2</span><span class="params">(@Self Throwable self, Throwable cause)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new Throwable(Throwable cause)</span></span><br><span class="line">        currentException = self; &#125;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz=<span class="string">"java.lang.Throwable"</span>, method=<span class="string">"&lt;init&gt;"</span>, location=<span class="meta">@Location</span>(Kind.RETURN))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onthrowreturn</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (currentException != <span class="keyword">null</span>) &#123;</span><br><span class="line">            BTraceUtils.Threads.jstack(currentException);</span><br><span class="line">            BTraceUtils.println(<span class="string">"====================="</span>);</span><br><span class="line">            currentException = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kind.LINE</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz = <span class="string">"BTraceDemo"</span>, method = <span class="string">"test01"</span>, location = <span class="meta">@Location</span>(value = Kind.LINE,line = N<span class="comment">//自己写自己要监控的行数))</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> line)</span></span>&#123;</span><br><span class="line">        BTraceUtils.print(line);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="打印复杂类型"><a href="#打印复杂类型" class="headerlink" title="打印复杂类型"></a>打印复杂类型</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BTrace</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BTraceMonitor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@OnMethod</span>(clazz = <span class="string">"BTraceDemo"</span>, method = <span class="string">"test02"</span>, location = <span class="meta">@Location</span>(value = Kind.ENTRY))</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(User user)</span></span>&#123;</span><br><span class="line">        BTraceUtils.printFields(user);</span><br><span class="line">        Field field = BTraceUtils.field(<span class="string">"User"</span>, <span class="string">"name"</span>);</span><br><span class="line">        BTraceUtils.printFields(BTraceUtils.get(field,user));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//如果报错找不到User类则 执行脚本修改为：bTrace -cp "字节码存放的路径" pid BTraceMonitor.java</span></span><br></pre></td></tr></table></figure>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><strong>BTrace对字节码的修改不可逆</strong></p>
+<p><strong>默认只能监控本地Java进程</strong></p>
+<p><strong>如果想要监控远程Java进程，需要修改源代码</strong></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2019/08/22/bTrace/" title="JVM---bTrace" target="_blank" rel="external">http://yoursite.com/2019/08/22/bTrace/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/ymbcxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/ymbcxb" target="_blank"><span class="text-dark">ymbcxb</span><small class="ml-1x">software engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/08/22/JVM---字节码指令操作/" title="JVM---字节码指令"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/08/20/SpringSecurity---源码分析(一)/" title="Spring Security源码分析(一)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/ymbcxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"tagMode":false});</script></body>
+</html>
